@@ -1,12 +1,38 @@
 execute pathogen#infect()
-let g:ycm_key_list_select_completion = ['<Down>']
-let g:ycm_key_list_previous_completion = ['<Up>']
-let g:UltiSnipsExpandTrigger = '<tab>'
-" let g:ycm_key_list_select_completion = ['<s-cr>']
+
+
+
+
+" let g:ycm_key_list_select_completion = ['<Down>']
+" let g:ycm_key_list_previous_completion = ['<Up>']
+" let g:UltiSnipsExpandTrigger = '<tab>'
+" function! g:UltiSnips_Complete()
+"     call UltiSnips_ExpandSnippet()
+"     if g:ulti_expand_res == 0
+"         if pumvisible()
+"             return "\<C-n>"
+"         else
+"             call UltiSnips_JumpForwards()
+"             if g:ulti_jump_forwards_res == 0
+"                return "\<TAB>"
+"             endif
+"         endif
+"     endif
+"     return ""
+" endfunction
+" 
+" au BufEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:UltiSnips_Complete()<cr>"
+" let g:UltiSnipsJumpForwardTrigger="<tab>"
+" let g:UltiSnipsListSnippets="<c-e>"
+" 
+" " let g:ycm_key_list_select_completion = ['<s-cr>']
+
+
+
 
 set nocompatible
 "filetype off  " required!
-"set rtp+=~/.vim/vundle.git/ 
+"set rtp+=~/.vim/vundle.git/
 "call vundle#rc()
 "filetype plugin indent on " required!
 
@@ -90,8 +116,6 @@ let g:indent_guides_start_level = 2
 let g:indent_guides_guide_size = 1
 let g:indent_guides_enable_on_vim_startup = 1
 
-
-
 " ======
 " Coding
 " ======
@@ -103,63 +127,64 @@ set completeopt=longest,menuone
 " GVIM- (here instead of .gvimrc)
 " ===============================
 if has('gui_running')
-    set guifont=Courier\ New\ Bold\ 13 " Police pour gVim
-    color solarized " load a colorscheme, it's redundant to use
-    set lines=40 " 40 lines of text instead of 24,
-    " set guioptions-=T " remove the toolbar
-    " Ajout d'icones personnalisees dans la ToolBar pour split
-    :aunmenu ToolBar.EnregTout
-    :aunmenu ToolBar.Imprimer
-    :aunmenu ToolBar.Annuler
-    :aunmenu ToolBar.Refaire
-    :aunmenu ToolBar.Couper
-    :aunmenu ToolBar.Copier
-    :aunmenu ToolBar.Coller
-    :aunmenu ToolBar.Remplacer
-    :aunmenu ToolBar.CherchSuiv
-    :aunmenu ToolBar.CherchPrec
-    :aunmenu ToolBar.OuvrirSess
-    :aunmenu ToolBar.EnregSess
-    :aunmenu ToolBar.LancScript
-    :aunmenu ToolBar.CréerEtiqu
-    :aunmenu ToolBar.AllerEtiqu
-    :aunmenu ToolBar.Aide
-    :aunmenu ToolBar.CherchAide
-    :aunmenu ToolBar.Make
-    :aunmenu ToolBar.-sep1-
-    :aunmenu ToolBar.-sep2-
-    :aunmenu ToolBar.-sep3-
-    :aunmenu ToolBar.-sep5-
-    :aunmenu ToolBar.-sep6-
-    :aunmenu ToolBar.-sep7-
-    " Separateur
-    :amenu ToolBar.-sep_1- :
-    " HSplit
-    ":amenu icon=/usr/share/icons/gnome/22x22/actions/object-flip-vertical.png ToolBar.Split :split<cr>
-    ":tmenu ToolBar.Split Sépare la fenêtre horizontalement
-    " Vsplit
-    ":amenu icon=/usr/share/icons/gnome/22x22/actions/object-flip-horizontal.png ToolBar.VSplit :vsplit<cr>
-    ":tmenu ToolBar.VSplit Sépare la fenêtre verticalement
-    " NERDTreeMirrorToggle
-    :amenu icon=/usr/share/icons/gnome/22x22/actions/go-first.png ToolBar.NERDTreeMirrorToggle :NERDTreeMirrorToggle<cr>
-    :tmenu ToolBar.NERDTreeMirrorToggle Toggle Tree pane
-    " ResyncSyntax
-    :amenu icon=/usr/share/icons/gnome/22x22/actions/format-justify-left.png ToolBar.ResyncSyntax :syntax sync fromstart<cr>
-    :tmenu ToolBar.ResyncSyntax Resynchronize syntax highlighting from start
-    " SyntasticToggleMode
-    :amenu icon=/usr/share/icons/gnome/22x22/actions/gtk-spell-check.png ToolBar.SyntasticToggleMode :SyntasticToggleMod<cr>
-    :tmenu ToolBar.SyntasticToggleMode Toggle syntax check
-    " Separateur
-    :amenu ToolBar.-sep_2- :
-    " Close tab
-    :amenu icon=/usr/share/icons/gnome/22x22/actions/gtk-close.png ToolBar.Close :close<cr>
-    :tmenu ToolBar.Close Close current window
+    set guifont=Monaco:h14 " Police pour gVim
+    " set guifont=Monospace\ Bold\ 13 " Police pour gVim
+    " set guifont=Courier\ New\ Bold\ 13 " Police pour gVim
+    " set lines=40 " 40 lines of text instead of 24,
+"     set guioptions+=T " show the toolbar
+"     " Ajout d'icones personnalisees dans la ToolBar pour split
+"     :aunmenu ToolBar.EnregTout
+"     :aunmenu ToolBar.Imprimer
+"     :aunmenu ToolBar.Annuler
+"     :aunmenu ToolBar.Refaire
+"     :aunmenu ToolBar.Couper
+"     :aunmenu ToolBar.Copier
+"     :aunmenu ToolBar.Coller
+"     :aunmenu ToolBar.Remplacer
+"     :aunmenu ToolBar.CherchSuiv
+"     :aunmenu ToolBar.CherchPrec
+"     :aunmenu ToolBar.OuvrirSess
+"     :aunmenu ToolBar.EnregSess
+"     :aunmenu ToolBar.LancScript
+"     :aunmenu ToolBar.CréerEtiqu
+"     :aunmenu ToolBar.AllerEtiqu
+"     :aunmenu ToolBar.Aide
+"     :aunmenu ToolBar.CherchAide
+"     :aunmenu ToolBar.Make
+"     :aunmenu ToolBar.-sep1-
+"     :aunmenu ToolBar.-sep2-
+"     :aunmenu ToolBar.-sep3-
+"     :aunmenu ToolBar.-sep5-
+"     :aunmenu ToolBar.-sep6-
+"     :aunmenu ToolBar.-sep7-
+"     " Separateur
+"     :amenu ToolBar.-sep_1- :
+"     " HSplit
+"     ":amenu icon=/usr/share/icons/gnome/22x22/actions/object-flip-vertical.png ToolBar.Split :split<cr>
+"     ":tmenu ToolBar.Split Sépare la fenêtre horizontalement
+"     " Vsplit
+"     ":amenu icon=/usr/share/icons/gnome/22x22/actions/object-flip-horizontal.png ToolBar.VSplit :vsplit<cr>
+"     ":tmenu ToolBar.VSplit Sépare la fenêtre verticalement
+"     " NERDTreeMirrorToggle
+"     :amenu icon=/usr/share/icons/gnome/22x22/actions/go-first.png ToolBar.NERDTreeMirrorToggle :NERDTreeMirrorToggle<cr>
+"     :tmenu ToolBar.NERDTreeMirrorToggle Toggle Tree pane
+"     " ResyncSyntax
+"     :amenu icon=/usr/share/icons/gnome/22x22/actions/format-justify-left.png ToolBar.ResyncSyntax :syntax sync fromstart<cr>
+"     :tmenu ToolBar.ResyncSyntax Resynchronize syntax highlighting from start
+"     " SyntasticToggleMode
+"     :amenu icon=/usr/share/icons/gnome/22x22/actions/gtk-spell-check.png ToolBar.SyntasticToggleMode :SyntasticToggleMod<cr>
+"     :tmenu ToolBar.SyntasticToggleMode Toggle syntax check
+"     " Separateur
+"     :amenu ToolBar.-sep_2- :
+"     " Close tab
+"     :amenu icon=/usr/share/icons/gnome/22x22/actions/gtk-close.png ToolBar.Close :close<cr>
+"     :tmenu ToolBar.Close Close current window
 endif
 
 
 
 " ============
-" Comportement 
+" Comportement
 " ============
 set mouse=a " la souris fonctionnne aussi dans le terminal
 set mousemodel=popup " Le clic droit ouvre un menu
@@ -175,11 +200,14 @@ map - _f
 " je deteste le mode Ex
 noremap Q <Esc>
 let mapleader = "," " <leader> sera ,
+" visually select a search result (cf. http://superuser.com/questions/224865/vim-select-text-highlighted-by-search)
+nnoremap g/ //e<CR>v??<CR>
+nnoremap g? ??b<CR>v//e<CR>
 set scrolloff=3 " lignes de contexte autour du curseur
 set fileformats=unix,dos,mac " File formats
 if version >= 500
-    set enc=utf-8 fenc=utf-8 
-    set foldmethod=manual 
+    set enc=utf-8 fenc=utf-8
+    set foldmethod=manual
     set foldmarker:{,}
     let php_sql_query = 1
     let php_htmlInStrings = 1
@@ -191,11 +219,11 @@ if version >= 500
     " Omni-completion avec CTRL-X O, completion locale + includes avec CTRL-n
     autocmd FileType python set omnifunc=pythoncomplete#Complete
     autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-    autocmd FileType html set omnifunc=htmlcomplete#CompleteTags filetype=html.javascript
-    autocmd FileType html source $VIM/vim74b/indent/html.vim
+    autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
+    autocmd FileType html source $VIM/runtime/indent/html.vim
     autocmd FileType css set omnifunc=csscomplete#CompleteCSS
     autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
-    autocmd FileType php set omnifunc=phpcomplete#CompletePHP filetype=php.html.javascript.sql
+    autocmd FileType php set omnifunc=phpcomplete#CompletePHP
     autocmd FileType php setlocal iskeyword-=$
     autocmd FileType php normal zR
     autocmd FileType c set omnifunc=ccomplete#Complete
@@ -212,7 +240,7 @@ autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
 " Affiche la limite de 160 caractères
 " autocmd BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>160v.\+', -1)
 
-" remap hjkl en ijkl et reporte le i sur le h 
+" remap hjkl en ijkl et reporte le i sur le h
 " map i <Up>
 " map j <Left>
 " map k <Down>
@@ -226,7 +254,7 @@ autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
 " =================================
 if has('statusline')
   " set statusline=[%n]\ %<%f\ %((%1*%M%*%R%Y)%)\ %=%-19(\LINE\ [%3l/%3L]\ COL\ [%02c%03V]%)\ %{\"[\".(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &&\ &bomb)?\",B\":\"\").\"]\"}\ %P
-    set statusline=[%n]\ %<%f\ \ %=%-19(\LINE\ %3l[%02c%03V]/%3L%)\ %{\"[\".(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &&\ &bomb)?\",B\":\"\").\"]\"}\ %P
+    set statusline=[%n]\ %<%F\ \ %=%-19(\LINE\ %3l[%02c%03V]/%3L%)\ %{\"[\".(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &&\ &bomb)?\",B\":\"\").\"]\"}\ %P
     set laststatus=2 " Statusline on all windows
     set ruler " Where am I
     set ch=4 " Make command line two lines high
@@ -244,7 +272,7 @@ set backup
 if filewritable(expand("~/.vim/backup/.vim/backup")) == 2
 else
     if has("unix") || has("win32unix")
-        " C'est c'est un système compatible UNIX, on va créer le répertoire et l'utiliser.
+        " C'est un système compatible UNIX, on va créer le répertoire et l'utiliser.
         call system("ln -s /dev/shm $HOME/.vim/backup")
         call system("mkdir $HOME/.vim/backup/.vim/backup -p")
     endif
@@ -260,12 +288,23 @@ else
 endif
 call system("mkdir $HOME/.vim/swap/.vim/swap/pa -p && chmod 700 $HOME/.vim/swap/.vim/swap/pa")
 set dir=$HOME/.vim/swap/.vim/swap/pa
-" Persistent undo dans ~/.vim/undodir/.vim/undodir/pa
-if filewritable(expand("~/.vim/undodir/.vim/undodir")) == 2
+" Persistent undo
+"if filewritable(expand("~/.vim/undodir/.vim/undodir")) == 2
+"else
+    "if has("unix") || has("win32unix")
+        "call system("ln -s /Volumes/ramdisk $HOME/.vim/undodir")
+    "endif
+"endif
+"try
+    "call system("mkdir -p $HOME/.vim/undodir/.vim/undodir/pa && chmod 700 $HOME/.vim/undodir/.vim/undodir/pa")
+    "set undodir=$HOME/.vim/undodir/.vim/undodir/pa
+    "set undofile
+"catch
+"endtry
+if filewritable(expand("~/.vim/undodir")) == 2
 else
     if has("unix") || has("win32unix")
-        " C'est c'est un système compatible UNIX, on va créer le répertoire et l'utiliser.
-        call system("ln -s /dev/shm $HOME/.vim/undodir")
+        call system("mkdir -p $HOME/.vim/undodir")
     endif
 endif
 try
@@ -277,18 +316,17 @@ endtry
 
 
 
-
 " =====================================
 " CORRECTION ORTHOGRAPHIQUE EN FRANCAIS
 " =====================================
 " if version >= 500
-"   if filereadable(expand("/usr/share/vim/vimcurrent/spell/fr.utf-8.spl")) 
+"   if filereadable(expand("/usr/share/vim/vimcurrent/spell/fr.utf-8.spl"))
 "   else
 "     mkspell /tmp/fr /usr/share/dict/french
 "     call system("sudo /bin/mv /tmp/fr.utf-8.spl /usr/share/vim/vimcurrent/spell/")
 "   endif
 " endif
-" desactive pour eviter les faux positifs lors des comparaisons ! 
+" desactive pour eviter les faux positifs lors des comparaisons !
 " setlocal spell spelllang=fr
 set nospell " spell checking off
 
@@ -317,9 +355,9 @@ if version >= 500
     " necessite : sudo pear install php_beautifier
     " ... voire : sudo pear install channel://pear.php.net/php_beautifier-0.1.14
     " ... ou    : sudo pear install PHP_Beautifier-0.1.14
-    command Check silent !cd /home/pa/public_html/phpcheckstyle/ && /usr/bin/php5 run.php --src %:p && /usr/bin/iceweasel /home/pa/public_html/phpcheckstyle/style-report/index.html & 
-    command CheckDir silent !cd /home/pa/public_html/phpcheckstyle/ && /usr/bin/php5 run.php --src %:p:h && /usr/bin/iceweasel /home/pa/public_html/phpcheckstyle/style-report/index.html & 
-    command CheckHtml silent !cd /home/pa/public_html/phpcheckstyle/ && /usr/bin/php5 -f quai13_strip.php %:p > /home/pa/public_html/phpcheckstyle/style-report/test.html; tidy -eq /home/pa/public_html/phpcheckstyle/style-report/test.html > /home/pa/public_html/phpcheckstyle/style-report/html.txt 2>&1; /usr/bin/iceweasel /home/pa/public_html/phpcheckstyle/style-report/html.txt & 
+    command Check silent !cd /home/pa/public_html/phpcheckstyle/ && /usr/bin/php5 run.php --src %:p && /usr/bin/iceweasel /home/pa/public_html/phpcheckstyle/style-report/index.html &
+    command CheckDir silent !cd /home/pa/public_html/phpcheckstyle/ && /usr/bin/php5 run.php --src %:p:h && /usr/bin/iceweasel /home/pa/public_html/phpcheckstyle/style-report/index.html &
+    command CheckHtml silent !cd /home/pa/public_html/phpcheckstyle/ && /usr/bin/php5 -f quai13_strip.php %:p > /home/pa/public_html/phpcheckstyle/style-report/test.html; tidy -eq /home/pa/public_html/phpcheckstyle/style-report/test.html > /home/pa/public_html/phpcheckstyle/style-report/html.txt 2>&1; /usr/bin/iceweasel /home/pa/public_html/phpcheckstyle/style-report/html.txt &
     " command Validate :%s/<?=\(.?*[^;]*\) *?>/<?php echo \1; ?>/g
     function! Validate()
         :%s/<?\//<?php\//g
@@ -337,22 +375,20 @@ if version >= 500
         :w !sudo tee %
     endfunction
     " reformatte le code PHP avec <C-I>
-    map <C-I> :%! php_beautifier 2>/dev/null <CR>
+    map <C-I> :%! php_beautifier --filters "ArrayNested() Lowercase() Pear(newline_class=true,newline_function=true,switch_without_indent=false) NewLines(before=if:switch:T_COMMENT)" 2>/dev/null <CR>
 
-    " remet en forme du code PHP avec php_beautifier
-    " ignore les warnings PHP de php_beautifier
-    " preserve les lignes vides
-    " TODO: actuellement ça passe sur tout le fichier, c'est pas compatible avec le mode Visual
-    func! ParsePHP()
+    " remet en forme du code PHP avec php_beautify, qui utilise php_beautifier
+    " et php-cs-fixer
+    func! ParsePHP(mode) range
         :set ff=unix
-        :exe 'g/^\_$\n\_^$/d'
-        :%s/^[\ \t]*\n/\/\/THIS IS AN EMPTY LINE\r/ge
-        :exe '%!php_beautifier --filters "ArrayNested() Lowercase() Pear(\"newline_class\"=false,\"newline_function\"=false,\"switch_without_indent\"=false)" 2>/dev/null'
-        " :exe '%!php_beautifier --filters "ArrayNested() Lowercase()" 2>/dev/null'
-        :g/^[\ \t]*\n/d
-        :%s/^[\ \t]*\/\/THIS IS AN EMPTY LINE//ge
+        if (a:mode == 'visual')
+            :exe "'<,'>!php_beautify -"
+        else
+            :exe "%!php_beautify -"
+        endif
     endfunc
-    map <c-b> :call ParsePHP()<CR>
+    noremap <c-b> :call ParsePHP('normal')<CR>
+    vnoremap <c-b> :call ParsePHP('visual')<CR>
 
     "--------------------
     " Function: Open tag under cursor in new tab
@@ -401,6 +437,11 @@ endfunction
 " let Tlist_WinWidth = 40
 " let Tlist_Process_File_Always = 1
 
+" Plugin Tagbar avec phpctags
+let g:tagbar_phpctags_bin='/home/pa/.vim/bundle/phpctags/phpctags'
+let g:tagbar_phpctags_memory_limit = '512M'
+nmap <F8> :TagbarToggle<CR>
+
 " NerdTree
 " autocmd VimEnter * NERDTree
 " autocmd BufAdd * NERDTreeMirror
@@ -411,7 +452,10 @@ let g:NERDTreeMouseMode = 3 " single click
 let g:nerdtree_tabs_open_on_gui_startup = 0 " start closed
 
 " Syntastic
-let g:syntastic_phpcs_disable = 1
+" let g:syntastic_phpcs_disable = 1
+let g:syntastic_php_checkers = ['php']
+let g:syntastic_html_tidy_ignore_errors=[ " proprietary attribute \"ng-", "<ons-", "discarding unexpected </ons-" ]
+
 
 " phpErrorMarker
 " let g:phpErrorMarker#automake = 1
@@ -421,3 +465,64 @@ let g:syntastic_phpcs_disable = 1
 " # sudo pear install doc.php.net/pman
 set keywordprg=pman
 
+autocmd FilterWritePre * if &diff | setlocal wrap< | endif
+
+" highlight DiffAdd    cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
+" highlight DiffDelete cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
+" highlight DiffChange cterm=bold ctermfg=10 ctermbg=17 gui=none guifg=bg guibg=Red
+" highlight DiffText   cterm=bold ctermfg=10 ctermbg=88 gui=none guifg=bg guibg=Red
+
+
+" Fix the difficult-to-read default setting for diff text highlighting.  The
+" bang (!) is required since we are overwriting the DiffText setting. The highlighting
+" for "Todo" also looks nice (yellow) if you don't like the "MatchParen" colors.
+" highlight! link DiffText MatchParen
+
+
+
+
+" ==============
+" Autocompletion
+" ==============
+"
+" Disable AutoComplPop.
+let g:acp_enableAtStartup = 0
+" Use neocomplete.
+let g:neocomplete#enable_at_startup = 1
+" Use smartcase.
+let g:neocomplete#enable_smart_case = 1
+" Set minimum syntax keyword length.
+let g:neocomplete#sources#syntax#min_keyword_length = 3
+let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+
+" AutoComplPop like behavior.
+let g:neocomplete#enable_auto_select = 1
+
+" Shell like behavior(not recommended).
+"set completeopt+=longest
+"let g:neocomplete#enable_auto_select = 1
+"let g:neocomplete#disable_auto_complete = 1
+"inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
+
+
+" Plugin key-mappings.
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-k>     <Plug>(neosnippet_expand_target)
+
+" SuperTab like snippets behavior.
+imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+\ "\<Plug>(neosnippet_expand_or_jump)"
+\: pumvisible() ? "\<C-n>" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+\ "\<Plug>(neosnippet_expand_or_jump)"
+\: "\<TAB>"
+
+" For snippet_complete marker.
+if has('conceal')
+  set conceallevel=2 concealcursor=i
+endif
+
+
+
+runtime! macros/matchit.vim
