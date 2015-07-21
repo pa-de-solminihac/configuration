@@ -1,0 +1,29 @@
+" ================================================================
+" Fichier de configuration portable pour utilisation à travers SSH
+" ================================================================
+
+if filereadable("/usr/share/vim/vimrc")
+    source /usr/share/vim/vimrc
+endif
+
+set et sw=4 ts=4
+set is ic hls
+syntax on
+" set t_Co=256
+colo elflord
+set listchars=tab:-\-,trail:\ ,extends:>,precedes:<,nbsp:.
+set list
+" highlight NonText cterm=underline gui=underline ctermbg=darkblue guibg=darkblue ctermfg=blue guifg=blue
+highlight SpecialKey cterm=underline gui=underline ctermbg=darkblue guibg=darkblue ctermfg=blue guifg=blue
+
+" =================================
+" Statusline personnalisee (deluxe)
+" =================================
+if has('statusline')
+    set statusline=[%n]\ %<%F\ \ %=%-19(\LINE\ %3l[%02c%03V]/%3L%)\ %{\"[\".(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &&\ &bomb)?\",B\":\"\").\"]\"}\ %P
+    set laststatus=2 " Statusline on all windows
+    set ruler " Where am I
+    set ch=4 " Make command line two lines high
+    set shm="aAI" " What will be shown on the commandline
+    set showcmd " show partial commands in status line and selected characters/lines in visual mode
+endif

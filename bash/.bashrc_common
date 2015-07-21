@@ -1,0 +1,122 @@
+# do not source this file twice!
+if [ "$SBASH_ALREADY_INCLUDED" == "" ]; then
+    SBASH_ALREADY_INCLUDED=1
+
+    # ================================================================
+    # Fichier de configuration portable pour utilisation à travers SSH
+    # ================================================================
+
+    #################
+    # HISTORIQUE LONG
+    #################
+    HISTTIMEFORMAT="%Y/%m/%d @ %T "
+    HISTFILESIZE=999999
+    HISTSIZE=999999
+
+    ################################
+    # LANGUE et encodage du terminal
+    ################################
+    #LANG="en_US.UTF-8"
+
+    #################
+    # bash_completion
+    #################
+    if [ -f /etc/bash_completion ]; then
+        . /etc/bash_completion
+    fi
+
+    ########
+    # PROMPT
+    ########
+    NORMAL="[0m"
+    RED="[0;31m"
+    GREEN="[0;32m"
+    BROWN="[0;33m"
+    BLUE="[0;34m"
+    CYAN="[0;36m"
+    YELLOW="[0;33m"
+    LIGHT_RED="[1;31m"
+    LIGHT_GREEN="[1;32m"
+    LIGHT_BLUE="[1;34m"
+    LIGHT_YELLOW="[1;33m"
+    WHITE="[1;37m"
+    BLACK="[0;30m"
+    MAGENTA="[1;35m"
+    LIGHT_CYAN="[1;36m"
+    LIGHT_GRAY="[0;37m"
+    GRAY="[01;30m"
+    BOLD="[1m"
+    UNDERSCORE="[4m"
+    REVERSE="[7m"
+    # MODIF PA 2014-09-25 : better git-prompt (cf. http://www.git-attitude.fr/2013/05/22/prompt-git-qui-dechire/)
+    # MODIF PA 2014-07-17 : git completion et git-prompt (cf. http://stackoverflow.com/questions/10435117/ps1-env-variable-does-not-work-on-mac)
+    # MODIF PA : prompt avec mise en evidence de la valeur de retour (adapte de http://www.austinriba.com/2010/09/best-bash-prompt-ever/)
+    # MODIF PA : prompt avec integration GIT (cf. http://www.bramschoenmakers.nl/en/node/624)
+    # *: modified, +: added, %: untracked, u=: up to date
+    export GIT_PS1_SHOWDIRTYSTATE=1 GIT_PS1_SHOWSTASHSTATE=1 GIT_PS1_SHOWUNTRACKEDFILES=1 GIT_PS1_SHOWUPSTREAM=verbose GIT_PS1_DESCRIBE_STYLE=branch
+    # linux ou osx
+    source /usr/share/git/completion/git-prompt.sh 2>/dev/null || source /Library/Developer/CommandLineTools/usr/share/git-core/git-prompt.sh 2>/dev/null
+    source /usr/share/git/completion/git-completion.bash 2>/dev/null || source /Library/Developer/CommandLineTools/usr/share/git-core/git-completion.bash 2>/dev/null
+    # cygwin
+    #source "/cygdrive/c/Program Files (x86)/Git/etc/git-prompt.sh"
+    #source "/cygdrive/c/Program Files (x86)/Git/etc/git-completion.bash"
+    alias SBASH_git_ps1="$(command -v __git_ps1)"
+    $(command -v __git_ps1) || alias SBASH_git_ps1=""
+    PS1="\n\`if [ \$? = 0 ]; then echo -e '\[\033${GRAY}\]'; else echo -e '\[\033${LIGHT_RED}\]'; fi\`\D{%d-%m:%H:%M }\[\033\`if [ '$SBASH_SUFFIX' = '' ]; then echo "\${GREEN}"; else echo "\${CYAN}"; fi\`\]\`if [ \$(whoami) = 'root' ]; then echo -e '\[\033${LIGHT_RED}\]root'; else echo '\u'; fi\`@\h:\[\033\`if [ '$SBASH_SUFFIX' = '' ]; then echo "\${LIGHT_GREEN}"; else echo "\${LIGHT_CYAN}"; fi\`\]\w\`if [ '$SBASH_SUFFIX' = '' ]; then echo ''; else echo ' \[\033${LIGHT_RED}\]SSH\[\033${NORMAL}\]'; fi\`\[\033${LIGHT_YELLOW}\]\$(SBASH_git_ps1)\[\033${NORMAL}\]\n\[\033${NORMAL}\]\`if [ \$(whoami) = 'root' ]; then echo '#'; else echo '$'; fi\` "
+
+    ####################
+    # ALIAS et fonctions
+    ####################
+    alias rm="rm -i"
+    alias mv="mv -i"
+    alias cp="cp -i"
+    alias ll="ls -alh --color=auto"
+    alias grep="grep --color"
+    alias curdate='date +%Y%m%d%H%M%S'
+    alias mysql="mysql --show-warnings "
+    alias vim="vim -u /tmp/.vimrc_$SBASH_SUFFIX "
+    #alias git="git -c color.ui=auto -c alias.st='status --short' -c alias.fa='fetch --all' -c alias.unpushed='!GIT_CURRENT_BRANCH=\$(git rev-parse --symbolic-full-name --abbrev-ref HEAD) && git log origin/\$GIT_CURRENT_BRANCH..HEAD --name-status' -c alias.incoming='!GIT_CURRENT_BRANCH=\$(git rev-parse --symbolic-full-name --abbrev-ref HEAD) && git log ..origin/\$GIT_CURRENT_BRANCH --name-status' -c merge.tool=diffconflicts -c mergetool.diffconflicts.cmd='/tmp/.diffconflicts_$SBASH_SUFFIX vim \$BASE \$LOCAL \$REMOTE \$MERGED' "
+    alias git="git -c color.ui=auto"
+    alias gitst="git status --short"
+    alias gitfa="git fetch --all"
+    alias gitunpushed="GIT_CURRENT_BRANCH=\"\$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)\" && git log origin/\$GIT_CURRENT_BRANCH..HEAD --name-status"
+    alias gitincoming="GIT_CURRENT_BRANCH=\"\$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)\" && git log ..origin/\$GIT_CURRENT_BRANCH --name-status"
+    alias gitdifftool="git -c diff.tool=vimdiff -c difftool.prompt=false difftool"
+    alias gitmergetool="git -c merge.tool=diffconflicts -c mergetool.diffconflicts.cmd='/tmp/.diffconflicts_$SBASH_SUFFIX vim \$BASE \$LOCAL \$REMOTE \$MERGED' mergetool"
+    alias generate_password="openssl rand -base64 37 | cut -c1-16"
+
+    function monip() { echo "Private"; /sbin/ifconfig | grep 'inet ' | grep -v '127.0.0.1' | awk '{print $2}' | sort | uniq; echo; echo "Public"; dig +short myip.opendns.com @208.67.220.220; } # AKA @resolver1.opendns.com
+
+    function mesip() { /sbin/ifconfig | grep 'inet ' | grep -v '127.0.0.1' | awk '{print $2}' | sed 's/.*://g' | sort | uniq | tr "\\n" " " | sed 's/ $//g' | sed 's/ /\\\|/g'; }
+
+    function follow_http() { wget -O /dev/null -S "$1" 2>&1 | grep 'HTTP/\|Location'; }
+
+    function dirdiff() { local DIFFCMD="diff -rw --exclude=.svn --exclude=.git "; local VIMDIFF="gvimdiff"; local DIFFCMD_MINUS="${DIFFCMD:1:-1}"; local DIFFCMD_SIZE=${#DIFFCMD_MINUS}; LANG=C $DIFFCMD $1 $2 | grep "^diff \|^Only in " | sed "s/^d.\{$DIFFCMD_SIZE\}/$VIMDIFF/g"; }
+
+    function cGET() { curl -s -S -L "$1"; }
+
+    # sudo et SSH en transportant la configuration BASH et VIM
+    alias groot="sudo -s bash --rcfile /tmp/.bashrc_$SBASH_SUFFIX "
+    # usage: sbash user@host [port]
+    function sbash() {
+        PORT=22
+        if [ "$2" != "" ]; then
+            PORT=$2;
+        fi;
+        SBASH_SUFFIX="$RANDOM"
+        echo "SBASH_SUFFIX=$SBASH_SUFFIX" > /tmp/.bashrc_$SBASH_SUFFIX
+        cat ~/.bashrc_common >> /tmp/.bashrc_$SBASH_SUFFIX
+        cp -f ~/.vimrc_common /tmp/.vimrc_$SBASH_SUFFIX
+        cp -f ~/bin/diffconflicts /tmp/.diffconflicts_$SBASH_SUFFIX
+        chmod 700 /tmp/.{bashrc,vimrc,diffconflicts}_$SBASH_SUFFIX
+        # connect only once for scp
+        scp -P $PORT -Cqp /tmp/.{bashrc,vimrc,diffconflicts}_$SBASH_SUFFIX $1:/tmp/
+        ssh -p $PORT -C -t $1 "bash --rcfile /tmp/.bashrc_$SBASH_SUFFIX ; rm -f /tmp/.{bashrc,vimrc,diffconflicts}_$SBASH_SUFFIX "
+        rm -f /tmp/.{bashrc,vimrc,diffconflicts}_$SBASH_SUFFIX
+        unset SBASH_SUFFIX
+    }
+
+    # remet chaque utilisateur dans son $HOME par défaut
+    cd $HOME
+
+fi;
