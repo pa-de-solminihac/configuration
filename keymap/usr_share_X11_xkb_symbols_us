@@ -839,11 +839,12 @@ xkb_symbols "altgr-intl" {
 
    include "level3(ralt_switch)"
 
-// MODIF PA : surcharge certains caracteres : à, ô, è, ê
+// MODIF PA : surcharge certains caracteres : à, ô, è, ê, ë
     key <AC01> { [ a, A, agrave, Agrave ] };
     key <AD07> { [ u, U, ugrave, Ugrave ] };
     key <AD08> { [ i, I, icircumflex, Icircumflex ] };
     key <AD09> { [ o, O, ocircumflex, Ocircumflex ] };
+    key <AC03> { [ d, D, ediaeresis, Ediaeresis ] };
     key <AD04> { [ r, R, egrave, Egrave ] };
     key <AD05> { [ t, T, ecircumflex, Ecircumflex ] };
 
