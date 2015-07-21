@@ -1,7 +1,6 @@
 execute pathogen#infect()
 
-
-
+source ~/.vimrc_common
 
 " let g:ycm_key_list_select_completion = ['<Down>']
 " let g:ycm_key_list_previous_completion = ['<Up>']
@@ -27,9 +26,6 @@ execute pathogen#infect()
 " 
 " " let g:ycm_key_list_select_completion = ['<s-cr>']
 
-
-
-
 set nocompatible
 "filetype off  " required!
 "set rtp+=~/.vim/vundle.git/
@@ -53,11 +49,7 @@ if version >= 500
     syntax on " enable syntax highlighting
     set background=dark
     color evening " load a colorscheme, it's redundant to use
-    " set listchars=nbsp:¤,tab:>-,trail:¤,extends:>,precedes:<
-    set listchars=tab:▸\ ,trail:\ ,extends:>,precedes:<,nbsp:·
-    set list
 endif
-
 
 
 " ==========================================
@@ -71,7 +63,6 @@ hi cursorcolumn guibg=#3a3a3a " highlight cursor
 hi ColorColumn guibg=#2e2e2e
 hi ExtraWhitespace guibg=#550000
 hi SpecialKey term=bold ctermfg=DarkCyan guifg=#555555
-
 
 
 " =============
@@ -116,71 +107,13 @@ let g:indent_guides_start_level = 2
 let g:indent_guides_guide_size = 1
 let g:indent_guides_enable_on_vim_startup = 1
 
+
 " ======
 " Coding
 " ======
 " setlocal omnifunc=syntaxcomplete#Complete " activate autocomplete (intellisense)
 " set cot+=menuone " show preview of function prototype
 set completeopt=longest,menuone
-
-" ===============================
-" GVIM- (here instead of .gvimrc)
-" ===============================
-if has('gui_running')
-    set guifont=Monaco:h14 " Police pour gVim
-    " set guifont=Monospace\ Bold\ 13 " Police pour gVim
-    " set guifont=Courier\ New\ Bold\ 13 " Police pour gVim
-    " set lines=40 " 40 lines of text instead of 24,
-"     set guioptions+=T " show the toolbar
-"     " Ajout d'icones personnalisees dans la ToolBar pour split
-"     :aunmenu ToolBar.EnregTout
-"     :aunmenu ToolBar.Imprimer
-"     :aunmenu ToolBar.Annuler
-"     :aunmenu ToolBar.Refaire
-"     :aunmenu ToolBar.Couper
-"     :aunmenu ToolBar.Copier
-"     :aunmenu ToolBar.Coller
-"     :aunmenu ToolBar.Remplacer
-"     :aunmenu ToolBar.CherchSuiv
-"     :aunmenu ToolBar.CherchPrec
-"     :aunmenu ToolBar.OuvrirSess
-"     :aunmenu ToolBar.EnregSess
-"     :aunmenu ToolBar.LancScript
-"     :aunmenu ToolBar.CréerEtiqu
-"     :aunmenu ToolBar.AllerEtiqu
-"     :aunmenu ToolBar.Aide
-"     :aunmenu ToolBar.CherchAide
-"     :aunmenu ToolBar.Make
-"     :aunmenu ToolBar.-sep1-
-"     :aunmenu ToolBar.-sep2-
-"     :aunmenu ToolBar.-sep3-
-"     :aunmenu ToolBar.-sep5-
-"     :aunmenu ToolBar.-sep6-
-"     :aunmenu ToolBar.-sep7-
-"     " Separateur
-"     :amenu ToolBar.-sep_1- :
-"     " HSplit
-"     ":amenu icon=/usr/share/icons/gnome/22x22/actions/object-flip-vertical.png ToolBar.Split :split<cr>
-"     ":tmenu ToolBar.Split Sépare la fenêtre horizontalement
-"     " Vsplit
-"     ":amenu icon=/usr/share/icons/gnome/22x22/actions/object-flip-horizontal.png ToolBar.VSplit :vsplit<cr>
-"     ":tmenu ToolBar.VSplit Sépare la fenêtre verticalement
-"     " NERDTreeMirrorToggle
-"     :amenu icon=/usr/share/icons/gnome/22x22/actions/go-first.png ToolBar.NERDTreeMirrorToggle :NERDTreeMirrorToggle<cr>
-"     :tmenu ToolBar.NERDTreeMirrorToggle Toggle Tree pane
-"     " ResyncSyntax
-"     :amenu icon=/usr/share/icons/gnome/22x22/actions/format-justify-left.png ToolBar.ResyncSyntax :syntax sync fromstart<cr>
-"     :tmenu ToolBar.ResyncSyntax Resynchronize syntax highlighting from start
-"     " SyntasticToggleMode
-"     :amenu icon=/usr/share/icons/gnome/22x22/actions/gtk-spell-check.png ToolBar.SyntasticToggleMode :SyntasticToggleMod<cr>
-"     :tmenu ToolBar.SyntasticToggleMode Toggle syntax check
-"     " Separateur
-"     :amenu ToolBar.-sep_2- :
-"     " Close tab
-"     :amenu icon=/usr/share/icons/gnome/22x22/actions/gtk-close.png ToolBar.Close :close<cr>
-"     :tmenu ToolBar.Close Close current window
-endif
-
 
 
 " ============
@@ -248,6 +181,64 @@ autocmd BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
 " noremap H I
 
 
+" ===============================
+" GVIM- (here instead of .gvimrc)
+" ===============================
+if has('gui_running')
+    set guifont=Monaco:h14 " Police pour gVim
+    " set guifont=Monospace\ Bold\ 13 " Police pour gVim
+    " set guifont=Courier\ New\ Bold\ 13 " Police pour gVim
+    " set lines=40 " 40 lines of text instead of 24,
+"     set guioptions+=T " show the toolbar
+"     " Ajout d'icones personnalisees dans la ToolBar pour split
+"     :aunmenu ToolBar.EnregTout
+"     :aunmenu ToolBar.Imprimer
+"     :aunmenu ToolBar.Annuler
+"     :aunmenu ToolBar.Refaire
+"     :aunmenu ToolBar.Couper
+"     :aunmenu ToolBar.Copier
+"     :aunmenu ToolBar.Coller
+"     :aunmenu ToolBar.Remplacer
+"     :aunmenu ToolBar.CherchSuiv
+"     :aunmenu ToolBar.CherchPrec
+"     :aunmenu ToolBar.OuvrirSess
+"     :aunmenu ToolBar.EnregSess
+"     :aunmenu ToolBar.LancScript
+"     :aunmenu ToolBar.CréerEtiqu
+"     :aunmenu ToolBar.AllerEtiqu
+"     :aunmenu ToolBar.Aide
+"     :aunmenu ToolBar.CherchAide
+"     :aunmenu ToolBar.Make
+"     :aunmenu ToolBar.-sep1-
+"     :aunmenu ToolBar.-sep2-
+"     :aunmenu ToolBar.-sep3-
+"     :aunmenu ToolBar.-sep5-
+"     :aunmenu ToolBar.-sep6-
+"     :aunmenu ToolBar.-sep7-
+"     " Separateur
+"     :amenu ToolBar.-sep_1- :
+"     " HSplit
+"     ":amenu icon=/usr/share/icons/gnome/22x22/actions/object-flip-vertical.png ToolBar.Split :split<cr>
+"     ":tmenu ToolBar.Split Sépare la fenêtre horizontalement
+"     " Vsplit
+"     ":amenu icon=/usr/share/icons/gnome/22x22/actions/object-flip-horizontal.png ToolBar.VSplit :vsplit<cr>
+"     ":tmenu ToolBar.VSplit Sépare la fenêtre verticalement
+"     " NERDTreeMirrorToggle
+"     :amenu icon=/usr/share/icons/gnome/22x22/actions/go-first.png ToolBar.NERDTreeMirrorToggle :NERDTreeMirrorToggle<cr>
+"     :tmenu ToolBar.NERDTreeMirrorToggle Toggle Tree pane
+"     " ResyncSyntax
+"     :amenu icon=/usr/share/icons/gnome/22x22/actions/format-justify-left.png ToolBar.ResyncSyntax :syntax sync fromstart<cr>
+"     :tmenu ToolBar.ResyncSyntax Resynchronize syntax highlighting from start
+"     " SyntasticToggleMode
+"     :amenu icon=/usr/share/icons/gnome/22x22/actions/gtk-spell-check.png ToolBar.SyntasticToggleMode :SyntasticToggleMod<cr>
+"     :tmenu ToolBar.SyntasticToggleMode Toggle syntax check
+"     " Separateur
+"     :amenu ToolBar.-sep_2- :
+"     " Close tab
+"     :amenu icon=/usr/share/icons/gnome/22x22/actions/gtk-close.png ToolBar.Close :close<cr>
+"     :tmenu ToolBar.Close Close current window
+endif
+
 
 " =================================
 " Statusline personnalisee (deluxe)
@@ -263,30 +254,29 @@ if has('statusline')
 endif
 
 
-
 " ==========================
 " Fichiers de backup et swap
 " ==========================
 set backup
-" Backup dans ~/.vim/backup/.vim/backup/pa
+" Backup dans ~/.vim/backup
 if filewritable(expand("~/.vim/backup/.vim/backup")) == 2
 else
     if has("unix") || has("win32unix")
         " C'est un système compatible UNIX, on va créer le répertoire et l'utiliser.
-        call system("ln -s /dev/shm $HOME/.vim/backup")
-        call system("mkdir $HOME/.vim/backup/.vim/backup -p")
+        " call system("ln -s /dev/shm $HOME/.vim/backup")
+        call system("mkdir -p $HOME/.vim/backup/.vim/backup")
     endif
 endif
-call system("mkdir $HOME/.vim/backup/.vim/backup/pa -p && chmod 700 $HOME/.vim/backup/.vim/backup/pa")
+call system("mkdir -p $HOME/.vim/backup && chmod 700 $HOME/.vim/backup")
 set backupdir=$HOME/.vim/backup/.vim/backup/pa
 " Swapdir dans ~/.vim/swap/.vim/swap/pa
 if filewritable(expand("~/.vim/swap/.vim/swap")) == 2
 else
     if has("unix") || has("win32unix")
-        call system("ln -s /dev/shm $HOME/.vim/swap")
+        " call system("ln -s /dev/shm $HOME/.vim/swap")
     endif
 endif
-call system("mkdir $HOME/.vim/swap/.vim/swap/pa -p && chmod 700 $HOME/.vim/swap/.vim/swap/pa")
+call system("mkdir -p $HOME/.vim/swap/.vim/swap/pa && chmod 700 $HOME/.vim/swap/.vim/swap/pa")
 set dir=$HOME/.vim/swap/.vim/swap/pa
 " Persistent undo
 "if filewritable(expand("~/.vim/undodir/.vim/undodir")) == 2
@@ -308,12 +298,11 @@ else
     endif
 endif
 try
-    call system("mkdir $HOME/.vim/undodir/.vim/undodir/pa -p && chmod 700 $HOME/.vim/undodir/.vim/undodir/pa")
-    set undodir=$HOME/.vim/undodir/.vim/undodir/pa
+    call system("mkdir -p $HOME/.vim/undodir && chmod 700 $HOME/.vim/undodir")
+    set undodir=$HOME/.vim/undodir
     set undofile
 catch
 endtry
-
 
 
 " =====================================
@@ -345,8 +334,6 @@ let g:ctrlp_working_path_mode = 'ra' " the nearest ancestor that contains one of
 nmap <F8> :TagbarToggle<CR>
 
 
-
-
 " ========================
 " Commandes personnalisees
 " ========================
@@ -371,24 +358,22 @@ if version >= 500
         :retab
         gg=G
     endfunction
-    function SaveAsRoot()
-        :w !sudo tee %
-    endfunction
     " reformatte le code PHP avec <C-I>
     map <C-I> :%! php_beautifier --filters "ArrayNested() Lowercase() Pear(newline_class=true,newline_function=true,switch_without_indent=false) NewLines(before=if:switch:T_COMMENT)" 2>/dev/null <CR>
+    " save as root
+    cmap w!! %!sudo tee > /dev/null %
 
-    " remet en forme du code PHP avec php_beautify, qui utilise php_beautifier
-    " et php-cs-fixer
-    func! ParsePHP(mode) range
+    " format PHP code with php-auto-indent
+    func! PHPAutoIndent(mode) range
         :set ff=unix
         if (a:mode == 'visual')
-            :exe "'<,'>!php_beautify -"
+            :exe "'<,'>!php-auto-indent -"
         else
-            :exe "%!php_beautify -"
+            :exe "%!php-auto-indent -"
         endif
     endfunc
-    noremap <c-b> :call ParsePHP('normal')<CR>
-    vnoremap <c-b> :call ParsePHP('visual')<CR>
+    noremap <c-b> :call PHPAutoIndent('normal')<CR>
+    vnoremap <c-b> :call PHPAutoIndent('visual')<CR>
 
     "--------------------
     " Function: Open tag under cursor in new tab
@@ -423,6 +408,8 @@ noremap <C-f1> mt:%s/$//g<CR>`t
 inoremap <C-f1> <ESC>mt:%s/$//g<CR>`ta
 noremap <C-f5> :w<CR>:!wmctrl -a Iceweasel && sleep 0.1 && xdotool key "ctrl+F5" && wmctrl -a GVIM<CR><CR>
 inoremap <C-f5> <ESC>:w<CR>:!wmctrl -a Iceweasel && sleep 0.1 && xdotool key "ctrl+F5" && wmctrl -a GVIM<CR><CR>
+" space+l = <a href> avec clipboard (source. http://robertnyman.com/2014/10/16/getting-started-with-understanding-the-power-of-vim/)
+vmap <Space>l c<a href="<C-r>+"><C-r>"</a>
 
 " Pour aller plus loin : http://amix.dk/vim/vimrc.html
 
@@ -522,7 +509,6 @@ smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 if has('conceal')
   set conceallevel=2 concealcursor=i
 endif
-
 
 
 runtime! macros/matchit.vim
