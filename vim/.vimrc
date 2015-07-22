@@ -119,7 +119,6 @@ set completeopt=longest,menuone
 " ============
 " Comportement
 " ============
-set mouse=a " la souris fonctionnne aussi dans le terminal
 set mousemodel=popup " Le clic droit ouvre un menu
 set wildchar=<Tab> " Use <Tab> to complete
 set ignorecase smartcase incsearch " Smart search

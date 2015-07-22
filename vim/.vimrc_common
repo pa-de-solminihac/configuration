@@ -15,6 +15,7 @@ set listchars=tab:-\-,trail:\ ,extends:>,precedes:<,nbsp:.
 set list
 " highlight NonText cterm=underline gui=underline ctermbg=darkblue guibg=darkblue ctermfg=blue guifg=blue
 highlight SpecialKey cterm=underline gui=underline ctermbg=darkblue guibg=darkblue ctermfg=blue guifg=blue
+set mouse=a " la souris fonctionnne aussi dans le terminal
 
 " =================================
 " Statusline personnalisee (deluxe)
