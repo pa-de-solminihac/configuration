@@ -267,16 +267,16 @@ else
     endif
 endif
 call system("mkdir -p $HOME/.vim/backup && chmod 700 $HOME/.vim/backup")
-set backupdir=$HOME/.vim/backup/.vim/backup/pa
-" Swapdir dans ~/.vim/swap/.vim/swap/pa
+set backupdir=$HOME/.vim/backup
+" Swapdir dans ~/.vim/swap
 if filewritable(expand("~/.vim/swap/.vim/swap")) == 2
 else
     if has("unix") || has("win32unix")
         " call system("ln -s /dev/shm $HOME/.vim/swap")
     endif
 endif
-call system("mkdir -p $HOME/.vim/swap/.vim/swap/pa && chmod 700 $HOME/.vim/swap/.vim/swap/pa")
-set dir=$HOME/.vim/swap/.vim/swap/pa
+call system("mkdir -p $HOME/.vim/swap && chmod 700 $HOME/.vim/swap")
+set dir=$HOME/.vim/swap
 " Persistent undo
 "if filewritable(expand("~/.vim/undodir/.vim/undodir")) == 2
 "else
@@ -285,8 +285,8 @@ set dir=$HOME/.vim/swap/.vim/swap/pa
     "endif
 "endif
 "try
-    "call system("mkdir -p $HOME/.vim/undodir/.vim/undodir/pa && chmod 700 $HOME/.vim/undodir/.vim/undodir/pa")
-    "set undodir=$HOME/.vim/undodir/.vim/undodir/pa
+    "call system("mkdir -p $HOME/.vim/undodir && chmod 700 $HOME/.vim/undodir")
+    "set undodir=$HOME/.vim/undodir
     "set undofile
 "catch
 "endtry
@@ -341,9 +341,6 @@ if version >= 500
     " necessite : sudo pear install php_beautifier
     " ... voire : sudo pear install channel://pear.php.net/php_beautifier-0.1.14
     " ... ou    : sudo pear install PHP_Beautifier-0.1.14
-    command Check silent !cd /home/pa/public_html/phpcheckstyle/ && /usr/bin/php5 run.php --src %:p && /usr/bin/iceweasel /home/pa/public_html/phpcheckstyle/style-report/index.html &
-    command CheckDir silent !cd /home/pa/public_html/phpcheckstyle/ && /usr/bin/php5 run.php --src %:p:h && /usr/bin/iceweasel /home/pa/public_html/phpcheckstyle/style-report/index.html &
-    command CheckHtml silent !cd /home/pa/public_html/phpcheckstyle/ && /usr/bin/php5 -f quai13_strip.php %:p > /home/pa/public_html/phpcheckstyle/style-report/test.html; tidy -eq /home/pa/public_html/phpcheckstyle/style-report/test.html > /home/pa/public_html/phpcheckstyle/style-report/html.txt 2>&1; /usr/bin/iceweasel /home/pa/public_html/phpcheckstyle/style-report/html.txt &
     " command Validate :%s/<?=\(.?*[^;]*\) *?>/<?php echo \1; ?>/g
     function! Validate()
         :%s/<?\//<?php\//g
@@ -424,7 +421,7 @@ endfunction
 " let Tlist_Process_File_Always = 1
 
 " Plugin Tagbar avec phpctags
-let g:tagbar_phpctags_bin='/home/pa/.vim/bundle/phpctags/phpctags'
+let g:tagbar_phpctags_bin="$HOME/.vim/bundle/phpctags/phpctags"
 let g:tagbar_phpctags_memory_limit = '512M'
 nmap <F8> :TagbarToggle<CR>
 
