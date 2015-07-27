@@ -81,10 +81,12 @@ if [ "$SBASH_ALREADY_INCLUDED" == "" ]; then
     alias gitunpushed="GIT_CURRENT_BRANCH=\"\$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)\" && git log origin/\$GIT_CURRENT_BRANCH..HEAD --name-status"
     alias gitincoming="GIT_CURRENT_BRANCH=\"\$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)\" && git log ..origin/\$GIT_CURRENT_BRANCH --name-status"
     alias gitdifftool="git -c diff.tool=vimdiff -c difftool.prompt=false difftool"
-    alias gitmergetool="git -c merge.tool=diffconflicts -c mergetool.diffconflicts.cmd='/tmp/.diffconflicts_$SBASH_SUFFIX vim \$BASE \$LOCAL \$REMOTE \$MERGED' mergetool"
     if [[ "$SBASH_SUFFIX" != "" ]];
     then
         alias vim="vim -u /tmp/.vimrc_$SBASH_SUFFIX"
+        alias gitmergetool="git -c merge.tool=diffconflicts -c mergetool.diffconflicts.cmd='/usr/bin/env bash /tmp/.diffconflicts_$SBASH_SUFFIX vim \$BASE \$LOCAL \$REMOTE \$MERGED' mergetool"
+    else
+        alias gitmergetool="git -c merge.tool=diffconflicts -c mergetool.diffconflicts.cmd='/usr/bin/env bash ~/bin/diffconflicts vim \$BASE \$LOCAL \$REMOTE \$MERGED' mergetool"
     fi
 
     function monip() { echo "Private"; /sbin/ifconfig | grep 'inet ' | grep -v '127.0.0.1' | awk '{print $2}' | sort | uniq; echo; echo "Public"; dig +short myip.opendns.com @208.67.220.220; } # AKA @resolver1.opendns.com
