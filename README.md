@@ -77,11 +77,10 @@ Utilisation d'alias pour fournir les fonctionnalités suivantes :
   - pour annuler le merge, il faut quitter avec `:cq`
 
 
-# Emporter cette confiuration partout
+# Emporter cette configuration partout
 
-L'alias `groot` sert à devenir root en emportant cette configuration.
-
-L'alias `sbash <user@host> [PORT]` sert à se connecter en SSH en emportant cette configuration.
+- `sbash <user@host> [PORT]` : à utiliser à la place de `ssh` pour se connecter en SSH en emportant cette configuration
+- `groot` : à utiliser à la place de `sudo -s` pour devenir root en emportant cette configuration
 
 
 # Compatibilité
