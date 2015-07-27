@@ -74,8 +74,7 @@ if [ "$SBASH_ALREADY_INCLUDED" == "" ]; then
     alias grep="grep --color"
     alias curdate='date +%Y%m%d%H%M%S'
     alias mysql="mysql --show-warnings "
-    alias vim="vim -u /tmp/.vimrc_$SBASH_SUFFIX "
-    #alias git="git -c color.ui=auto -c alias.st='status --short' -c alias.fa='fetch --all' -c alias.unpushed='!GIT_CURRENT_BRANCH=\$(git rev-parse --symbolic-full-name --abbrev-ref HEAD) && git log origin/\$GIT_CURRENT_BRANCH..HEAD --name-status' -c alias.incoming='!GIT_CURRENT_BRANCH=\$(git rev-parse --symbolic-full-name --abbrev-ref HEAD) && git log ..origin/\$GIT_CURRENT_BRANCH --name-status' -c merge.tool=diffconflicts -c mergetool.diffconflicts.cmd='/tmp/.diffconflicts_$SBASH_SUFFIX vim \$BASE \$LOCAL \$REMOTE \$MERGED' "
+    alias generate_password="openssl rand -base64 37 | cut -c1-16"
     alias git="git -c color.ui=auto"
     alias gitst="git status --short"
     alias gitfa="git fetch --all"
@@ -83,7 +82,10 @@ if [ "$SBASH_ALREADY_INCLUDED" == "" ]; then
     alias gitincoming="GIT_CURRENT_BRANCH=\"\$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)\" && git log ..origin/\$GIT_CURRENT_BRANCH --name-status"
     alias gitdifftool="git -c diff.tool=vimdiff -c difftool.prompt=false difftool"
     alias gitmergetool="git -c merge.tool=diffconflicts -c mergetool.diffconflicts.cmd='/tmp/.diffconflicts_$SBASH_SUFFIX vim \$BASE \$LOCAL \$REMOTE \$MERGED' mergetool"
-    alias generate_password="openssl rand -base64 37 | cut -c1-16"
+    if [[ "$SBASH_SUFFIX" != "" ]];
+    then
+        alias vim="vim -u /tmp/.vimrc_$SBASH_SUFFIX"
+    fi
 
     function monip() { echo "Private"; /sbin/ifconfig | grep 'inet ' | grep -v '127.0.0.1' | awk '{print $2}' | sort | uniq; echo; echo "Public"; dig +short myip.opendns.com @208.67.220.220; } # AKA @resolver1.opendns.com
 
