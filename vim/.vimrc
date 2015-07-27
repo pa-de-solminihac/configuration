@@ -1,4 +1,4 @@
-execute pathogen#infect()
+" execute pathogen#infect()
 
 source ~/.vimrc_common
 
