@@ -8,11 +8,10 @@ Configuration de base pour `bash`, `vim` et `git`
   - au travers de `sudo`
 - peut s'intégrer avec votre configuration existante
 
+
 # Installation
 
-Pas de script d'install pour l'instant, mais ça reste simple.
-
-Il suffit de copier coller les lignes suivantes dans un terminal :
+Pas de script d'install pour l'instant, mais ça reste relativement simple : il suffit de copier-coller les lignes suivantes dans un terminal :
 
 ```bash
 git clone https://github.com/pa-de-solminihac/configuration.git
@@ -28,9 +27,11 @@ mkdir -p bin
 ln -s configuration/bin/diffconflicts bin/
 ```
 
+
 # Utilisation
 
 Ces fichiers définissent une configuration basique pour `bash`, `vim`, et `git`
+
 
 ## Bash
 
@@ -50,6 +51,7 @@ Fonctions simples :
 - `dirdiff <dossier1> <dossier2>` : diff entre deux dossiers
 - `cGET "<url>"` : raccourci afficher le contenu d'une URL avec `curl`
 
+
 ## VIM
 
 Le fichier `.vimrc_common` définit quelques réglages de base de vim, avec notamment :
@@ -59,6 +61,7 @@ Le fichier `.vimrc_common` définit quelques réglages de base de vim, avec nota
 - une statusline améliorée avec mise en évidence de l'encodage
 - mise en évidence de caractères tels que les espaces insécables, tabulations, espaces en fin de lignes...
 - tabulations expandtab
+
 
 ## GIT
 
@@ -73,8 +76,16 @@ Utilisation d'alias pour fournir les fonctionnalités suivantes :
   - lorsqu'on quitte, le fichier de la fenêtre de gauche sera utilisé comme résultat du merge
   - pour annuler le merge, il faut quitter avec `:cq`
 
+
 # Emporter cette confiuration partout
 
 L'alias `groot` sert à devenir root en emportant cette configuration.
 
 L'alias `sbash <user@host> [PORT]` sert à se connecter en SSH en emportant cette configuration.
+
+
+# Compatibilité
+
+- Linux
+- OSX (avec les outils GNU : `brew install coreutils`)
+- Windows (avec Cygwin)
