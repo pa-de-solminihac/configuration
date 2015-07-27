@@ -54,12 +54,9 @@ if [ "$SBASH_ALREADY_INCLUDED" == "" ]; then
     # MODIF PA : prompt avec integration GIT (cf. http://www.bramschoenmakers.nl/en/node/624)
     # *: modified, +: added, %: untracked, u=: up to date
     export GIT_PS1_SHOWDIRTYSTATE=1 GIT_PS1_SHOWSTASHSTATE=1 GIT_PS1_SHOWUNTRACKEDFILES=1 GIT_PS1_SHOWUPSTREAM=verbose GIT_PS1_DESCRIBE_STYLE=branch
-    # linux ou osx
-    source /usr/share/git/completion/git-prompt.sh 2>/dev/null || source /Library/Developer/CommandLineTools/usr/share/git-core/git-prompt.sh 2>/dev/null
-    source /usr/share/git/completion/git-completion.bash 2>/dev/null || source /Library/Developer/CommandLineTools/usr/share/git-core/git-completion.bash 2>/dev/null
-    # cygwin
-    #source "/cygdrive/c/Program Files (x86)/Git/etc/git-prompt.sh"
-    #source "/cygdrive/c/Program Files (x86)/Git/etc/git-completion.bash"
+    # linux || osx || cygwin
+    source /usr/share/git/completion/git-prompt.sh 2>/dev/null || source /Library/Developer/CommandLineTools/usr/share/git-core/git-prompt.sh 2>/dev/null || source "/cygdrive/c/Program Files (x86)/Git/etc/git-prompt.sh" 2>/dev/null
+    source /usr/share/git/completion/git-completion.bash 2>/dev/null || source /Library/Developer/CommandLineTools/usr/share/git-core/git-completion.bash 2>/dev/null || source "/cygdrive/c/Program Files (x86)/Git/etc/git-completion.bash" 2>/dev/null
     alias SBASH_git_ps1="$(command -v __git_ps1)"
     $(command -v __git_ps1) || alias SBASH_git_ps1=""
     PS1="\n\`if [ \$? = 0 ]; then echo -e '\[\033${GRAY}\]'; else echo -e '\[\033${LIGHT_RED}\]'; fi\`\D{%d-%m:%H:%M }\[\033\`if [ '$SBASH_SUFFIX' = '' ]; then echo "\${GREEN}"; else echo "\${CYAN}"; fi\`\]\`if [ \$(whoami) = 'root' ]; then echo -e '\[\033${LIGHT_RED}\]root'; else echo '\u'; fi\`@\h:\[\033\`if [ '$SBASH_SUFFIX' = '' ]; then echo "\${LIGHT_GREEN}"; else echo "\${LIGHT_CYAN}"; fi\`\]\w\`if [ '$SBASH_SUFFIX' = '' ]; then echo ''; else echo ' \[\033${LIGHT_RED}\]SSH\[\033${NORMAL}\]'; fi\`\[\033${LIGHT_YELLOW}\]\$(SBASH_git_ps1)\[\033${NORMAL}\]\n\[\033${NORMAL}\]\`if [ \$(whoami) = 'root' ]; then echo '#'; else echo '$'; fi\` "
