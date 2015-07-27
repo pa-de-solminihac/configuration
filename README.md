@@ -10,7 +10,9 @@ Configuration de base pour `bash`, `vim` et `git`
 
 # Installation
 
-Copier coller les lignes suivantes dans un terminal :
+Pas de script d'install pour l'instant, mais ça reste simple.
+
+Il suffit de copier coller les lignes suivantes dans un terminal :
 
 ```bash
 git clone https://github.com/pa-de-solminihac/configuration.git
