@@ -16,7 +16,7 @@ Pas de script d'install pour l'instant, mais ça reste relativement simple : il 
 ```bash
 git clone https://github.com/pa-de-solminihac/configuration.git
 # install pour bash
-echo "source ~/.bashrc_local" >> ~/.bash_profile
+echo "source ~/.bashrc_local" >> ~/.bashrc
 ln -s configuration/bash/.bashrc_local
 ln -s configuration/bash/.bashrc_common
 # install pour vim
