@@ -6,6 +6,7 @@ if filereadable("/usr/share/vim/vimrc")
     source /usr/share/vim/vimrc
 endif
 
+set enc=utf-8
 set et sw=4 ts=4
 set is ic hls
 syntax on
