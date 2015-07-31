@@ -93,7 +93,7 @@ if [ "$SBASH_ALREADY_INCLUDED" == "" ]; then
 
     function follow_http() { wget -O /dev/null -S "$1" 2>&1 | grep 'HTTP/\|Location'; }
 
-    function dirdiff() { local DIFFCMD="diff -rw --exclude=.svn --exclude=.git "; local VIMDIFF="vimdiff"; local DIFFCMD_MINUS="${DIFFCMD:1:-1}"; local DIFFCMD_SIZE=${#DIFFCMD_MINUS}; LANG=C $DIFFCMD $1 $2 | grep "^diff \|^Only in " | sed "s/^d.\{$DIFFCMD_SIZE\}/$VIMDIFF/g"; }
+    function dirdiff() { local DIFFCMD="diff -rwq --exclude=.svn --exclude=.git "; local VIMDIFF="vimdiff"; LANG=C $DIFFCMD $1 $2 | sed "s/^Files /$VIMDIFF /g" | sed 's/ and / /g' | sed 's/ differ//g'; }
 
     function cGET() { curl -s -S -L "$1"; }
 
