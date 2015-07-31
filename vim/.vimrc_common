@@ -21,8 +21,10 @@ set t_Co=256
 colo evening
 set background=dark
 highlight! Visual guibg=Black
-highlight! DiffChange cterm=bold ctermbg=8 gui=none guifg=bg guibg=Grey
-highlight! DiffText   cterm=bold ctermbg=0 gui=none guifg=bg guibg=Black
+highlight! DiffAdd    cterm=bold ctermbg=17 gui=none guibg=DarkBlue
+highlight! DiffDelete cterm=bold ctermbg=0 gui=none guibg=Black
+highlight! DiffChange cterm=bold ctermbg=8 gui=none guibg=#555555
+highlight! DiffText   cterm=bold ctermbg=52 gui=none guibg=DarkRed
 
 " =================================
 " Statusline personnalisee (deluxe)
