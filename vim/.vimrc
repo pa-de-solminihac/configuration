@@ -41,17 +41,6 @@ set nocompatible
 "" }
 
 
-" =====================
-" Coloration syntaxique
-" =====================
-if version >= 500
-    " set t_Co=256
-    syntax on " enable syntax highlighting
-    set background=dark
-    color evening " load a colorscheme, it's redundant to use
-endif
-
-
 " ==========================================
 " Met en surbrillance des lignes et colonnes
 " ==========================================
@@ -487,7 +476,6 @@ let g:neocomplete#enable_auto_select = 1
 "let g:neocomplete#disable_auto_complete = 1
 "inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
 
-
 " Plugin key-mappings.
 imap <C-k>     <Plug>(neosnippet_expand_or_jump)
 smap <C-k>     <Plug>(neosnippet_expand_or_jump)
@@ -505,6 +493,5 @@ smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 if has('conceal')
   set conceallevel=2 concealcursor=i
 endif
-
 
 runtime! macros/matchit.vim

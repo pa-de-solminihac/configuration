@@ -10,13 +10,19 @@ set enc=utf-8
 set et sw=4 ts=4
 set is ic hls
 syntax on
-" set t_Co=256
-colo evening
 set listchars=tab:-\-,trail:\ ,extends:>,precedes:<,nbsp:.
 set list
 " highlight NonText cterm=underline gui=underline ctermbg=darkblue guibg=darkblue ctermfg=blue guifg=blue
 highlight SpecialKey cterm=underline gui=underline ctermbg=darkblue guibg=darkblue ctermfg=blue guifg=blue
-set mouse=a " la souris fonctionnne aussi dans le terminal
+set mouse=a " pour que la souris fonctionnne aussi dans le terminal
+
+" colorscheme
+set t_Co=256
+colo evening
+set background=dark
+highlight! Visual guibg=Black
+highlight! DiffChange cterm=bold ctermbg=8 gui=none guifg=bg guibg=Grey
+highlight! DiffText   cterm=bold ctermbg=0 gui=none guifg=bg guibg=Black
 
 " =================================
 " Statusline personnalisee (deluxe)
