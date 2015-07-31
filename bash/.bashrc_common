@@ -78,6 +78,7 @@ if [ "$SBASH_ALREADY_INCLUDED" == "" ]; then
     alias gitunpushed="GIT_CURRENT_BRANCH=\"\$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)\" && git log origin/\$GIT_CURRENT_BRANCH..HEAD --name-status"
     alias gitincoming="GIT_CURRENT_BRANCH=\"\$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)\" && git log ..origin/\$GIT_CURRENT_BRANCH --name-status"
     alias gitdifftool="git -c diff.tool=vimdiff -c difftool.prompt=false difftool"
+    alias gitlg="git log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all"
     if [[ "$SBASH_SUFFIX" != "" ]];
     then
         alias vim="vim -u /tmp/.vimrc_$SBASH_SUFFIX"
