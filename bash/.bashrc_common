@@ -77,16 +77,25 @@ if [ "$SBASH_ALREADY_INCLUDED" == "" ]; then
     alias gitfa="git fetch --all"
     alias gitunpushed="GIT_CURRENT_BRANCH=\"\$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)\" && git log origin/\$GIT_CURRENT_BRANCH..HEAD --name-status"
     alias gitincoming="GIT_CURRENT_BRANCH=\"\$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)\" && git log ..origin/\$GIT_CURRENT_BRANCH --name-status"
-    alias gitdifftool="git -c diff.tool=vimdiff -c difftool.prompt=false difftool"
     alias gitlg="git log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all"
     if [[ "$SBASH_SUFFIX" != "" ]];
     then
         alias vim="vim -u /tmp/.vimrc_$SBASH_SUFFIX"
         alias vimdiff="vimdiff -u /tmp/.vimrc_$SBASH_SUFFIX"
+        alias_gitdifftool="git -c diff.tool=vimdiff -c difftool.prompt=false -c difftool.vimdiff.cmd='vimdiff -u /tmp/.vimrc_$SBASH_SUFFIX \$LOCAL \$REMOTE' difftool"
         alias gitmergetool="git -c merge.tool=diffconflicts -c mergetool.diffconflicts.cmd='/usr/bin/env bash /tmp/.diffconflicts_$SBASH_SUFFIX vim \$BASE \$LOCAL \$REMOTE \$MERGED' mergetool"
     else
+        alias_gitdifftool="git -c diff.tool=vimdiff -c difftool.prompt=false difftool"
         alias gitmergetool="git -c merge.tool=diffconflicts -c mergetool.diffconflicts.cmd='/usr/bin/env bash ~/bin/diffconflicts vim \$BASE \$LOCAL \$REMOTE \$MERGED' mergetool"
     fi
+    alias gitdifftool="$alias_gitdifftool"
+
+    function gitshowtool() {
+        REVISION='HEAD';
+        if [[ "$1" != "" ]]; then REVISION="$1"; fi
+        shift;
+        git -c diff.tool=vimdiff -c difftool.prompt=false difftool $REVISION~ $REVISION $@
+    }
 
     function monip() { echo "Private"; /sbin/ifconfig | grep 'inet ' | grep -v '127.0.0.1' | awk '{print $2}' | sort | uniq; echo; echo "Public"; dig +short myip.opendns.com @208.67.220.220; } # AKA @resolver1.opendns.com
 
