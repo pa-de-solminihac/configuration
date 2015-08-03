@@ -115,12 +115,17 @@ if [ "$SBASH_ALREADY_INCLUDED" == "" ]; then
         if [ "$2" != "" ]; then
             PORT=$2;
         fi;
-        SBASH_SUFFIX="$RANDOM"
-        echo "SBASH_SUFFIX=$SBASH_SUFFIX" > /tmp/.bashrc_$SBASH_SUFFIX
-        cat ~/.bashrc_common >> /tmp/.bashrc_$SBASH_SUFFIX
-        cp -f ~/.vimrc_common /tmp/.vimrc_$SBASH_SUFFIX
-        cp -f ~/bin/diffconflicts /tmp/.diffconflicts_$SBASH_SUFFIX
-        chmod 700 /tmp/.{bashrc,vimrc,diffconflicts}_$SBASH_SUFFIX
+        if [[ "$SBASH_SUFFIX" == "" ]];
+        then
+            SBASH_SUFFIX="$RANDOM"
+            echo "SBASH_SUFFIX=$SBASH_SUFFIX" > /tmp/.bashrc_$SBASH_SUFFIX
+            cat ~/.bashrc_common >> /tmp/.bashrc_$SBASH_SUFFIX
+            cp -f ~/.vimrc_common /tmp/.vimrc_$SBASH_SUFFIX
+            cp -f ~/bin/diffconflicts /tmp/.diffconflicts_$SBASH_SUFFIX
+            chmod 700 /tmp/.{bashrc,vimrc,diffconflicts}_$SBASH_SUFFIX
+        fi
+        # ask for password only once in a lifetime
+        ssh-copy-id -o ControlMaster=yes -p $PORT $1 2>/dev/null
         # connect only once for scp
         scp -P $PORT -Cqp /tmp/.{bashrc,vimrc,diffconflicts}_$SBASH_SUFFIX $1:/tmp/
         ssh -p $PORT -C -t $1 "bash --rcfile /tmp/.bashrc_$SBASH_SUFFIX ; rm -f /tmp/.{bashrc,vimrc,diffconflicts}_$SBASH_SUFFIX "
