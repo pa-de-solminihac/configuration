@@ -16,16 +16,6 @@ set list
 highlight SpecialKey cterm=underline gui=underline ctermbg=darkblue guibg=darkblue ctermfg=blue guifg=blue
 set mouse=a " pour que la souris fonctionnne aussi dans le terminal
 
-" colorscheme
-set t_Co=256
-colo evening
-set background=dark
-highlight! Visual guibg=Black
-highlight! DiffAdd    cterm=bold ctermbg=17 gui=none guibg=DarkBlue
-highlight! DiffDelete cterm=bold ctermbg=0 gui=none guibg=Black
-highlight! DiffChange cterm=bold ctermbg=8 gui=none guibg=#555555
-highlight! DiffText   cterm=bold ctermbg=52 gui=none guibg=DarkRed
-
 " =================================
 " Statusline personnalisee (deluxe)
 " =================================
@@ -37,3 +27,16 @@ if has('statusline')
     set shm="aAI" " What will be shown on the commandline
     set showcmd " show partial commands in status line and selected characters/lines in visual mode
 endif
+
+" colorscheme
+set t_Co=256
+colo evening
+set background=dark
+highlight DiffAdd    cterm=bold ctermbg=17 gui=none guibg=DarkBlue
+highlight DiffDelete cterm=bold ctermbg=0  gui=none guibg=Black
+highlight DiffChange cterm=bold ctermbg=8  gui=none guibg=#555555
+highlight DiffText   cterm=bold ctermbg=52 gui=none guibg=DarkRed
+highlight Visual     ctermfg=0 ctermbg=250 guifg=#000000 guibg=#bcbcbc
+highlight Normal     ctermbg=232 guibg=#121212
+set background=dark
+
