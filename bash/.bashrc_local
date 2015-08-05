@@ -16,5 +16,4 @@ LANG=fr_FR.UTF-8
 source ~/.bashrc_common
 
 alias vi="gvim -p --remote-tab-silent "
-alias ll="ls -alh --color=auto "
 
