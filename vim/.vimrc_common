@@ -30,13 +30,68 @@ endif
 
 " colorscheme
 set t_Co=256
-colo evening
+" terminal/gui equivalent colorscheme, based on slate
 set background=dark
-highlight DiffAdd    cterm=bold ctermbg=17 gui=none guibg=DarkBlue
-highlight DiffDelete cterm=bold ctermbg=0  gui=none guibg=Black
-highlight DiffChange cterm=bold ctermbg=8  gui=none guibg=#555555
-highlight DiffText   cterm=bold ctermbg=52 gui=none guibg=DarkRed
-highlight Visual     ctermfg=0 ctermbg=250 guifg=#000000 guibg=#bcbcbc
-highlight Normal     ctermbg=232 guibg=#121212
-set background=dark
+highlight clear
+hi Normal ctermbg=233 guibg=#121212 ctermfg=15 guifg=#ffffff
 
+" TODO
+hi Cursor guibg=khaki guifg=slategrey
+
+hi VertSplit guibg=#080808 guifg=#c0c0c0 ctermbg=232 ctermfg=7
+hi Folded guibg=#c0c0c0 guifg=#ffffff ctermfg=15 ctermbg=7 cterm=bold gui=bold
+hi FoldColumn guibg=#c0c0c0 guifg=#ffffff ctermfg=15 ctermbg=7
+hi IncSearch guifg=#ffff00 guibg=#000000 cterm=reverse,bold ctermfg=11 ctermbg=0
+
+" TODO
+hi ModeMsg guifg=goldenrod cterm=none ctermfg=brown
+
+hi MoreMsg guifg=#000800 ctermfg=2
+hi NonText guifg=#0000ff guibg=#000000 cterm=bold ctermfg=12
+hi Question guifg=#00ff00 ctermfg=10
+hi Search guibg=#000000 guifg=#ffff00 gui=reverse cterm=reverse ctermfg=11 ctermbg=0
+
+" TODO
+hi SpecialKey guifg=yellowgreen ctermfg=darkgreen
+
+hi StatusLine guibg=#c0c0c0 guifg=#000000 ctermbg=0 ctermfg=7 gui=bold cterm=bold,reverse
+hi StatusLineNC guibg=#808080 guifg=#000000 ctermbg=0 ctermfg=8 gui=none cterm=reverse
+
+" TODO
+hi Title guifg=gold gui=bold cterm=bold ctermfg=yellow
+
+hi Statement guifg=#5f87ff ctermfg=69 cterm=bold gui=bold
+hi Visual gui=none guifg=#000000 cterm=reverse ctermbg=0
+hi WarningMsg guifg=#080000 ctermfg=1
+hi String guifg=#00d7ff guibg=#080808 ctermfg=45 ctermbg=232
+hi Comment ctermfg=242 guifg=#666666
+hi phpDocTags cterm=bold gui=bold ctermfg=242 guifg=#666666
+hi Constant guifg=#ff8700 ctermfg=208 gui=bold cterm=bold
+hi Special guifg=#ffff00 ctermfg=11 cterm=bold gui=bold
+hi Number ctermbg=0 guibg=#000000 gui=bold cterm=bold
+hi Identifier guifg=#00afff ctermfg=39
+hi Include guifg=#ff0000 ctermfg=9
+hi PreProc guifg=#d70000 ctermfg=160
+hi Operator guifg=#ff5f5f ctermfg=203 gui=bold cterm=bold
+hi Define guifg=#ffff00 gui=bold cterm=bold ctermfg=11
+hi Type guifg=#00d75f ctermfg=41 gui=bold cterm=bold
+hi Function guifg=#87ffff ctermfg=123
+hi Structure guifg=#5f5fff ctermfg=63
+hi LineNr guifg=#808080 ctermfg=8
+
+" TODO
+hi Ignore guifg=grey40 cterm=bold ctermfg=7
+
+hi Todo ctermbg=2 ctermfg=10 guibg=#008000 guifg=#00ff00
+hi Directory guifg=#008080 ctermfg=6
+
+hi ErrorMsg guifg=#c0c0c0 guibg=#800000 gui=bold cterm=bold ctermfg=7 ctermbg=1
+
+" TODO
+hi VisualNOS cterm=bold,underline
+
+hi WildMenu ctermfg=0 ctermbg=3
+hi DiffAdd cterm=none ctermbg=0 gui=none guibg=DarkBlue
+hi DiffChange cterm=none ctermbg=235  gui=none guibg=#555555
+hi DiffDelete cterm=none ctermfg=233 ctermbg=0  gui=none guibg=Black
+hi DiffText cterm=bold ctermbg=52 gui=none guibg=DarkRed
