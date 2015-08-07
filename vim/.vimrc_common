@@ -12,8 +12,6 @@ set is ic hls
 syntax on
 set listchars=tab:-\-,trail:\ ,extends:>,precedes:<,nbsp:.
 set list
-" highlight NonText cterm=underline gui=underline ctermbg=darkblue guibg=darkblue ctermfg=blue guifg=blue
-highlight SpecialKey cterm=underline gui=underline ctermbg=darkblue guibg=darkblue ctermfg=blue guifg=blue
 set mouse=a " pour que la souris fonctionnne aussi dans le terminal
 
 " =================================
@@ -48,12 +46,13 @@ hi IncSearch guifg=#ffff00 guibg=#000000 cterm=reverse,bold ctermfg=11 ctermbg=0
 hi ModeMsg guifg=goldenrod cterm=none ctermfg=brown
 
 hi MoreMsg guifg=#000800 ctermfg=2
+" highlight NonText cterm=underline gui=underline ctermbg=darkblue guibg=darkblue ctermfg=blue guifg=blue
 hi NonText guifg=#0000ff guibg=#000000 cterm=bold ctermfg=12
 hi Question guifg=#00ff00 ctermfg=10
 hi Search guibg=#000000 guifg=#ffff00 gui=reverse cterm=reverse ctermfg=11 ctermbg=0
 
 " TODO
-hi SpecialKey guifg=yellowgreen ctermfg=darkgreen
+highlight SpecialKey cterm=underline gui=underline ctermbg=0 ctermfg=235 guibg=#000000 guifg=#262626
 
 hi StatusLine guibg=#c0c0c0 guifg=#000000 ctermbg=0 ctermfg=7 gui=bold cterm=bold,reverse
 hi StatusLineNC guibg=#808080 guifg=#000000 ctermbg=0 ctermfg=8 gui=none cterm=reverse
@@ -94,5 +93,5 @@ hi VisualNOS cterm=bold,underline
 hi WildMenu ctermfg=0 ctermbg=3
 hi DiffAdd cterm=none ctermbg=0 gui=none guibg=DarkBlue
 hi DiffChange cterm=none ctermbg=237  gui=none guibg=#3a3a3a
-hi DiffDelete cterm=none ctermfg=235 ctermbg=0  gui=none guibg=#000000
+hi DiffDelete cterm=none ctermfg=235 ctermbg=0  gui=none guifg=#262626 guibg=#000000
 hi DiffText cterm=bold ctermbg=52 gui=none guibg=DarkRed
