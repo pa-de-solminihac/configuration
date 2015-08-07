@@ -31,6 +31,7 @@ endif
 " colorscheme
 set t_Co=256
 " terminal/gui equivalent colorscheme, based on slate
+let macvim_skip_colorscheme=1
 set background=dark
 highlight clear
 hi Normal ctermbg=235 guibg=#262626 ctermfg=15 guifg=#ffffff
