@@ -14,6 +14,10 @@ set listchars=tab:-\-,trail:\ ,extends:>,precedes:<,nbsp:.
 set list
 set mouse=a " pour que la souris fonctionnne aussi dans le terminal
 
+" highlight 'en space'U+2002 and 'em space'U+2003
+au VimEnter,BufWinEnter * syn match ErrorMsg " "
+au VimEnter,BufWinEnter * syn match ErrorMsg " "
+
 " =================================
 " Statusline personnalisee (deluxe)
 " =================================
