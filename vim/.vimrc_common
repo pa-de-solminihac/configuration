@@ -42,9 +42,7 @@ hi Folded guibg=#c0c0c0 guifg=#ffffff ctermfg=15 ctermbg=7 cterm=bold gui=bold
 hi FoldColumn guibg=#c0c0c0 guifg=#ffffff ctermfg=15 ctermbg=7
 hi IncSearch guifg=#ffff00 guibg=#000000 cterm=reverse,bold ctermfg=11 ctermbg=0
 
-" TODO
-hi ModeMsg guifg=goldenrod cterm=none ctermfg=brown
-
+hi ModeMsg guifg=#00d75f ctermfg=41
 hi MoreMsg guifg=#000800 ctermfg=2
 " highlight NonText cterm=underline gui=underline ctermbg=darkblue guibg=darkblue ctermfg=blue guifg=blue
 hi NonText guifg=#0000ff guibg=#000000 cterm=bold ctermfg=12
@@ -60,22 +58,25 @@ hi StatusLineNC guibg=#808080 guifg=#000000 ctermbg=0 ctermfg=8 gui=none cterm=r
 " TODO
 hi Title guifg=gold gui=bold cterm=bold ctermfg=yellow
 
-hi Statement guifg=#5f87ff ctermfg=69 cterm=bold gui=bold
+hi Statement guifg=#00d75f ctermfg=41 cterm=bold gui=bold
+
 hi Visual gui=none guifg=#000000 cterm=reverse ctermbg=0
 hi WarningMsg guifg=#080000 ctermfg=1
-hi String guifg=#00d7ff guibg=#121212 ctermfg=45 ctermbg=233
+hi String guifg=#87ffff ctermfg=123 guibg=#121212 ctermbg=233
 hi Comment ctermfg=242 guifg=#666666
 hi phpDocTags cterm=bold gui=bold ctermfg=242 guifg=#666666
-hi Constant guifg=#ff8700 ctermfg=208 gui=bold cterm=bold
+hi Constant guifg=#ff8787 ctermfg=210 gui=bold cterm=bold
 hi Special guifg=#ffff00 ctermfg=11 cterm=bold gui=bold
-hi Number ctermbg=0 guibg=#000000 gui=bold cterm=bold
+hi Number ctermfg=210 guifg=#ff8787 gui=none cterm=none
 hi Identifier guifg=#00afff ctermfg=39
 hi Include guifg=#ff0000 ctermfg=9
 hi PreProc guifg=#d70000 ctermfg=160
 hi Operator guifg=#ff5f5f ctermfg=203 gui=bold cterm=bold
-hi Define guifg=#ffff00 gui=bold cterm=bold ctermfg=11
-hi Type guifg=#00d75f ctermfg=41 gui=bold cterm=bold
-hi Function guifg=#87ffff ctermfg=123
+hi Define guifg=#800000 ctermfg=1 gui=bold cterm=bold
+
+hi Type guifg=#5fafff ctermfg=75 gui=none cterm=none
+
+hi Function guifg=#00d7ff ctermfg=45
 hi Structure guifg=#5f5fff ctermfg=63
 hi LineNr guifg=#808080 ctermfg=8
 
@@ -85,7 +86,7 @@ hi Ignore guifg=grey40 cterm=bold ctermfg=7
 hi Todo ctermbg=2 ctermfg=10 guibg=#008000 guifg=#00ff00
 hi Directory guifg=#008080 ctermfg=6
 
-hi ErrorMsg guifg=#c0c0c0 guibg=#800000 gui=bold cterm=bold ctermfg=7 ctermbg=1
+hi ErrorMsg guifg=#ffffff guibg=#800000 gui=bold cterm=bold ctermfg=15 ctermbg=1
 
 " TODO
 hi VisualNOS cterm=bold,underline
