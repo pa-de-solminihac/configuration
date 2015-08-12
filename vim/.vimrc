@@ -44,8 +44,8 @@ set nocompatible
 " ==========================================
 " Met en surbrillance des lignes et colonnes
 " ==========================================
-set cursorline " highlight current line
-set cursorcolumn " highlight current column
+" set cursorline " highlight current line
+" set cursorcolumn " highlight current column
 set colorcolumn=78
 hi cursorline guibg=#3a3a3a " highlight bg color of current line
 hi cursorcolumn guibg=#3a3a3a " highlight cursor

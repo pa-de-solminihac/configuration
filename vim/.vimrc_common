@@ -39,7 +39,7 @@ highlight clear
 hi Normal ctermbg=235 guibg=#262626 ctermfg=15 guifg=#ffffff
 
 " TODO
-hi Cursor guibg=khaki guifg=slategrey
+hi Cursor ctermbg=9 guibg=#ff0000
 
 hi VertSplit guibg=#121212 guifg=#c0c0c0 ctermbg=233 ctermfg=7
 hi Folded guibg=#c0c0c0 guifg=#ffffff ctermfg=15 ctermbg=7 cterm=bold gui=bold
@@ -94,7 +94,7 @@ hi ErrorMsg guifg=#ffffff guibg=#af0000 gui=bold cterm=bold ctermfg=15 ctermbg=1
 hi VisualNOS cterm=bold,underline
 
 hi WildMenu ctermfg=0 ctermbg=3
-hi DiffAdd cterm=none ctermbg=0 gui=none guibg=DarkBlue
-hi DiffChange cterm=none ctermbg=237  gui=none guibg=#3a3a3a
+hi DiffAdd cterm=none ctermbg=22 gui=none guibg=DarkBlue
+hi DiffChange cterm=none ctermbg=240  gui=none guibg=#3a3a3a
 hi DiffDelete cterm=none ctermfg=235 ctermbg=0  gui=none guifg=#262626 guibg=#000000
 hi DiffText cterm=bold ctermbg=52 gui=none guibg=DarkRed
