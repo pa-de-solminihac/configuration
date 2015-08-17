@@ -47,7 +47,7 @@ hi FoldColumn guibg=#c0c0c0 guifg=#ffffff ctermfg=15 ctermbg=7
 hi IncSearch guifg=#ffff00 guibg=#000000 cterm=reverse,bold ctermfg=11 ctermbg=0
 
 hi ModeMsg guifg=#00d75f ctermfg=41
-hi MoreMsg guifg=#000800 ctermfg=2
+hi MoreMsg guifg=#008000 ctermfg=2
 " highlight NonText cterm=underline gui=underline ctermbg=darkblue guibg=darkblue ctermfg=blue guifg=blue
 hi NonText guifg=#0000ff guibg=#000000 cterm=bold ctermfg=12
 hi Question guifg=#00ff00 ctermfg=10
@@ -94,7 +94,7 @@ hi ErrorMsg guifg=#ffffff guibg=#af0000 gui=bold cterm=bold ctermfg=15 ctermbg=1
 hi VisualNOS cterm=bold,underline
 
 hi WildMenu ctermfg=0 ctermbg=3
-hi DiffAdd cterm=none ctermbg=22 gui=none guibg=DarkBlue
+hi DiffAdd cterm=none ctermbg=22 gui=none guibg=#264426
 hi DiffChange cterm=none ctermbg=240  gui=none guibg=#3a3a3a
 hi DiffDelete cterm=none ctermfg=235 ctermbg=0  gui=none guifg=#262626 guibg=#000000
 hi DiffText cterm=bold ctermbg=52 gui=none guibg=DarkRed
