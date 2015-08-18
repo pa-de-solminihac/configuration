@@ -20,7 +20,7 @@ if [ "$SBASH_ALREADY_INCLUDED" == "" ]; then
 
     #####################
     # actual user rcfiles
-    #####################
+    ####################
     if [ -f /etc/profile ]; then
         . /etc/profile
     fi
@@ -87,7 +87,26 @@ if [ "$SBASH_ALREADY_INCLUDED" == "" ]; then
     alias git="git -c color.ui=auto"
     alias gitst="git status --short"
     alias gitfa="git fetch --all"
-    alias gitpur="git pull --rebase=preserve"
+    alias gitpure="git pull --rebase=preserve"
+    function gitrebase() {
+        GIT_CURRENT_BRANCH="$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)"
+        MERGE_FAILED=0
+        git merge --ff-only $1 || MERGE_FAILED=1
+        if [ "$MERGE_FAILED" == "1" ]; then
+            echo
+            echo -e "\033${TERM_COLOR_RED}You should try a rebase first:\033${TERM_COLOR_NORMAL}"
+            cat <<EOF
+    git checkout $1 && git rebase $GIT_CURRENT_BRANCH
+
+Then you will be allowed to merge:
+    git checkout $GIT_CURRENT_BRANCH
+    gitmerge $1
+
+Then delete merged branch:
+    git branch -d $1
+EOF
+        fi
+    }
     alias gitunpushed="GIT_CURRENT_BRANCH=\"\$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)\" && git log origin/\$GIT_CURRENT_BRANCH..HEAD --name-status"
     alias gitincoming="GIT_CURRENT_BRANCH=\"\$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)\" && git log ..origin/\$GIT_CURRENT_BRANCH --name-status"
     alias gitlg="git log --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' "
