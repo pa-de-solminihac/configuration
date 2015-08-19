@@ -10,7 +10,7 @@ set enc=utf-8
 set et sw=4 ts=4
 set is ic hls
 syntax on
-set listchars=tab:-\-,trail:\ ,extends:>,precedes:<,nbsp:.
+set listchars=tab:_\ ,trail:\ ,extends:>,precedes:<,nbsp:.
 set list
 set mouse=a " pour que la souris fonctionnne aussi dans le terminal
 
@@ -73,7 +73,7 @@ hi Question guifg=#00ff00 ctermfg=10
 hi Search guibg=#000000 guifg=#ffff00 gui=reverse cterm=reverse ctermfg=11 ctermbg=0
 
 " TODO
-highlight SpecialKey cterm=underline gui=underline ctermbg=0 ctermfg=235 guibg=#000000 guifg=#262626
+hi SpecialKey term=none cterm=underline gui=underline ctermbg=0 ctermfg=17 guibg=#000000 guifg=#00005f
 
 hi StatusLine guibg=#c0c0c0 guifg=#000000 ctermbg=0 ctermfg=7 gui=bold cterm=bold,reverse
 hi StatusLineNC guibg=#808080 guifg=#000000 ctermbg=0 ctermfg=8 gui=none cterm=reverse
@@ -85,7 +85,7 @@ hi Statement guifg=#00d75f ctermfg=41 cterm=bold gui=bold
 
 hi Visual gui=none guifg=#000000 cterm=reverse ctermbg=0
 hi WarningMsg guifg=#af0000 ctermfg=1
-hi String guifg=#87ffff ctermfg=123 guibg=#121212 ctermbg=233
+hi String guifg=#bcbcbc ctermfg=250 guibg=#121212 ctermbg=233
 hi Comment ctermfg=242 guifg=#666666
 hi phpDocTags cterm=bold gui=bold ctermfg=242 guifg=#666666
 hi Constant guifg=#ff8787 ctermfg=210 gui=bold cterm=bold
