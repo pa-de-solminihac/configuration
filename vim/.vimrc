@@ -369,23 +369,6 @@ if version >= 500
 endif
 
 " Touche TAB améliorée
-" decalage en mode visuel
-vmap <TAB> >gv
-vmap <S-TAB> <gv
-" navigue entre les onglets
-map <C-TAB> gt
-map <C-S-TAB> gT
-imap <C-TAB> <Esc>gt
-imap <C-S-TAB> <Esc>gT
-" ouvrir un nouvel onglet
-" map <C-T> :tabnew<CR><ESC>:Explore<CR>
-" map <C-T> :tabnew<CR>
-map <C-T> :tabnew<CR><ESC>:edit .<CR>
-" ouvrir les tags dans un nouveal onglet
-map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
-" ouvre le fichier sous le curseur dans un nouvel onglet
-map gf :tabnew <cfile><CR>
-let g:netrw_browse_split=3 " ouvre les fichiers de netrw dans un nouvel onglet
 " map Control + F10 to Vtree
 map <c-f10> <esc>:vsp<cr>:VTree<cr>
 " retours a la ligne DOS => UNIX
