@@ -37,11 +37,6 @@ endif
 " decalage en mode visuel
 vmap <TAB> >gv
 vmap <S-TAB> <gv
-" navigue entre les onglets
-map <C-S-RIGHT> gt
-map <C-S-LEFT> gT
-imap <C-S-RIGHT> <ESC>gt
-imap <C-S-LEFT> <ESC>gT
 " ouvrir un nouvel onglet
 map <C-T> :tabnew<CR><ESC>:edit .<CR>
 " ouvrir les tags dans un nouveal onglet
@@ -49,6 +44,12 @@ map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
 " ouvre le fichier sous le curseur dans un nouvel onglet
 map gf :tabnew <cfile><CR>
 let g:netrw_browse_split=3 " ouvre les fichiers de netrw dans un nouvel onglet
+
+" navigue entre les onglets
+map <F2> gt
+map <F1> gT
+imap <F2> <ESC>gt
+imap <F1> <ESC>gT
 
 " colorscheme
 set t_Co=256
