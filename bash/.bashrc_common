@@ -72,9 +72,9 @@ if [ "$SBASH_ALREADY_INCLUDED" == "" ]; then
     $(command -v __git_ps1) || alias SBASH_git_ps1=""
     PS1="\n\`if [ \$? = 0 ]; then echo -e '\[\033${TERM_COLOR_LIGHT_GRAY}\]'; else echo -e '\[\033${TERM_COLOR_LIGHT_RED}\]'; fi\`\D{%d-%m:%H:%M }\[\033\`if [ '$SBASH_SUFFIX' = '' ]; then echo "\${TERM_COLOR_GREEN}"; else echo "\${TERM_COLOR_CYAN}"; fi\`\]\`if [ \$(whoami) = 'root' ]; then echo -e '\[\033${TERM_COLOR_LIGHT_RED}\]root'; else echo '\u'; fi\`@\h:\[\033\`if [ '$SBASH_SUFFIX' = '' ]; then echo "\${TERM_COLOR_LIGHT_GREEN}"; else echo "\${TERM_COLOR_LIGHT_CYAN}"; fi\`\]\w\`if [ '$SBASH_SUFFIX' = '' ]; then echo ''; else echo ' \[\033${TERM_COLOR_LIGHT_RED}\]SSH\[\033${TERM_COLOR_NORMAL}\]'; fi\`\[\033${TERM_COLOR_LIGHT_YELLOW}\]\$(SBASH_git_ps1)\[\033${TERM_COLOR_NORMAL}\]\n\[\033${TERM_COLOR_NORMAL}\]\`if [ \$(whoami) = 'root' ]; then echo '\[\033${TERM_COLOR_WHITE}\]#\[\033${TERM_COLOR_NORMAL}\]'; else echo '\[\033${TERM_COLOR_WHITE}\]$\[\033${TERM_COLOR_NORMAL}\]'; fi\` "
 
-    ####################
-    # ALIAS et fonctions
-    ####################
+    ###########################
+    # ALIAS et fonctions divers
+    ###########################
     alias rm="rm -i"
     alias mv="mv -i"
     alias cp="cp -i"
@@ -83,7 +83,15 @@ if [ "$SBASH_ALREADY_INCLUDED" == "" ]; then
     alias curdate='date +%Y%m%d%H%M%S'
     alias mysql="mysql --show-warnings "
     alias generate_password="openssl rand -base64 37 | cut -c1-16"
-    # GIT
+    function monip() { echo "Private"; /sbin/ifconfig | grep 'inet ' | grep -v '127.0.0.1' | awk '{print $2}' | sort | uniq; echo; echo "Public"; dig +short myip.opendns.com @208.67.220.220; } # AKA @resolver1.opendns.com
+    function mesip() { /sbin/ifconfig | grep 'inet ' | grep -v '127.0.0.1' | awk '{print $2}' | sed 's/.*://g' | sort | uniq | tr "\\n" " " | sed 's/ $//g' | sed 's/ /\\\|/g'; }
+    function follow_http() { wget -O /dev/null -S "$1" 2>&1 | grep 'HTTP/\|Location'; }
+    function dirdiff() { local DIFFCMD="diff -rwq --exclude=.svn --exclude=.git "; local VIMDIFF="vimdiff"; LANG=C $DIFFCMD $1 $2 | sed "s/^Files /$VIMDIFF /g" | sed 's/ and / /g' | sed 's/ differ//g'; }
+    function cGET() { curl -s -S -L "$1"; }
+
+    ########################
+    # ALIAS et fonctions GIT
+    ########################
     alias git="git -c color.ui=auto"
     alias gitst="git status --short"
     alias gitfa="git fetch --all"
@@ -147,23 +155,16 @@ EOF
         alias gitmergetool="git -c merge.tool=diffconflicts -c mergetool.diffconflicts.cmd='/usr/bin/env bash ~/bin/diffconflicts vim \$BASE \$LOCAL \$REMOTE \$MERGED' mergetool"
     fi
     alias gitdifftool="$alias_gitdifftool"
-
     function gitshowtool() {
         REVISION='HEAD';
         if [[ "$1" != "" ]]; then REVISION="$1"; fi
         shift;
         git -c diff.tool=vimdiff -c difftool.prompt=false difftool $REVISION~ $REVISION $@
     }
-
-    function monip() { echo "Private"; /sbin/ifconfig | grep 'inet ' | grep -v '127.0.0.1' | awk '{print $2}' | sort | uniq; echo; echo "Public"; dig +short myip.opendns.com @208.67.220.220; } # AKA @resolver1.opendns.com
-
-    function mesip() { /sbin/ifconfig | grep 'inet ' | grep -v '127.0.0.1' | awk '{print $2}' | sed 's/.*://g' | sort | uniq | tr "\\n" " " | sed 's/ $//g' | sed 's/ /\\\|/g'; }
-
-    function follow_http() { wget -O /dev/null -S "$1" 2>&1 | grep 'HTTP/\|Location'; }
-
-    function dirdiff() { local DIFFCMD="diff -rwq --exclude=.svn --exclude=.git "; local VIMDIFF="vimdiff"; LANG=C $DIFFCMD $1 $2 | sed "s/^Files /$VIMDIFF /g" | sed 's/ and / /g' | sed 's/ differ//g'; }
-
-    function cGET() { curl -s -S -L "$1"; }
+    function gitdiffwith() {
+        GIT_CURRENT_BRANCH="$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)"
+        git show-branch --topics --sha1-name $1 $GIT_CURRENT_BRANCH
+    }
 
     # sudo et SSH en transportant la configuration BASH et VIM
     alias groot="sudo -s bash --rcfile /tmp/.bashrc_$SBASH_SUFFIX "
