@@ -124,7 +124,7 @@ EOF
             echo
             echo -e "\033${TERM_COLOR_LIGHT_GREEN}Then you will be allowed to merge:\033${TERM_COLOR_NORMAL}"
             cat <<EOF
-    git checkout $GIT_CURRENT_BRANCH && $FUNCNAME $1"
+    git checkout $GIT_CURRENT_BRANCH && $FUNCNAME $1
 EOF
             echo
             cat <<EOF
