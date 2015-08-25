@@ -88,20 +88,46 @@ if [ "$SBASH_ALREADY_INCLUDED" == "" ]; then
     alias gitst="git status --short"
     alias gitfa="git fetch --all"
     alias gitpure="git pull --rebase=preserve"
-    function gitrebase() {
+    function gitmergerebase() {
         GIT_CURRENT_BRANCH="$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)"
+        if [ "$GIT_CURRENT_BRANCH" == "" ]; then
+            return 1
+        fi
+        if [ "$1" == "" ]; then
+            echo
+            echo -e "\033${TERM_COLOR_LIGHT_RED}Usage: $FUNCNAME <feature_branch>\033${TERM_COLOR_NORMAL}"
+            echo
+                cat <<EOF
+    Cleanly merge <feature_branch> in "$GIT_CURRENT_BRANCH" (eg. "master") by rebasing first
+EOF
+            return 2
+        fi
         MERGE_FAILED=0
         git merge --ff-only $1 || MERGE_FAILED=1
         if [ "$MERGE_FAILED" == "1" ]; then
             echo
-            echo -e "\033${TERM_COLOR_RED}You should try a rebase first:\033${TERM_COLOR_NORMAL}"
+            echo -e "\033${TERM_COLOR_LIGHT_RED}You should try a rebase first:\033${TERM_COLOR_NORMAL}"
             cat <<EOF
+    # rebase
     git checkout $1 && git rebase $GIT_CURRENT_BRANCH
-
-Then you will be allowed to merge:
-    git checkout $GIT_CURRENT_BRANCH
-    gitmerge $1
-
+    # or interactive rebase if you want something cleaner:
+    git checkout $1 && git rebase -i $GIT_CURRENT_BRANCH
+EOF
+            echo
+            echo "Solve conflicts (if any, wash-and-rinse till no conflicts remains) with these:"
+            cat <<EOF
+    # wash...
+    gitmergetool
+    # ... and rinse
+    git rebase --continue
+EOF
+            echo
+            echo -e "\033${TERM_COLOR_LIGHT_GREEN}Then you will be allowed to merge:\033${TERM_COLOR_NORMAL}"
+            cat <<EOF
+    git checkout $GIT_CURRENT_BRANCH && $FUNCNAME $1"
+EOF
+            echo
+            cat <<EOF
 Then delete merged branch:
     git branch -d $1
 EOF
