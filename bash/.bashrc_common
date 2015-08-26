@@ -96,7 +96,7 @@ if [ "$SBASH_ALREADY_INCLUDED" == "" ]; then
     alias gitst="git status --short"
     alias gitfa="git fetch --all"
     alias gitpure="git pull --rebase=preserve"
-    function gitmergerebase() {
+    function gitmergerebased() {
         GIT_CURRENT_BRANCH="$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)"
         if [ "$GIT_CURRENT_BRANCH" == "" ]; then
             return 1
@@ -130,13 +130,15 @@ EOF
     git rebase --continue
 EOF
             echo
-            echo -e "\033${TERM_COLOR_LIGHT_GREEN}Then you will be allowed to merge:\033${TERM_COLOR_NORMAL}"
+            echo -e "\033${TERM_COLOR_LIGHT_GREEN}Then you will be allowed to merge and delete merged branch:\033${TERM_COLOR_NORMAL}"
             cat <<EOF
     git checkout $GIT_CURRENT_BRANCH && $FUNCNAME $1
+    git branch -d $1
 EOF
+        else
             echo
             cat <<EOF
-Then delete merged branch:
+Now delete merged branch:
     git branch -d $1
 EOF
         fi
