@@ -91,7 +91,8 @@ Utilisation d'alias pour fournir les fonctionnalités suivantes :
 ## Notes pour OSX
 
 Installer une version plus récente de *bash* (celle du système date de... 2007), ainsi que les outils GNU portables *coreutils* et *ssh-copy-id*
-```
+
+```bash
 brew install coreutils
 brew install ssh-copy-id
 brew install bash
