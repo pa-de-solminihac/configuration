@@ -1,8 +1,7 @@
-# Description
+# Configuration de base pour `bash`, `vim` et `git`
 
 Le minimum vital, sur place ou à emporter.
 
-Configuration de base pour `bash`, `vim` et `git`
 - à utiliser en local ou à emporter :
   - au travers de vos connexions `SSH`
   - au travers de `sudo`
