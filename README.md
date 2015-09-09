@@ -90,9 +90,10 @@ Utilisation d'alias pour fournir les fonctionnalités suivantes :
 
 ## Notes pour OSX
 
-Installer une version plus récente de bash (celle du système date de... 2007), et les outils GNU portables *coreutils*
+Installer une version plus récente de *bash* (celle du système date de... 2007), ainsi que les outils GNU portables *coreutils* et *ssh-copy-id*
 ```
 brew install coreutils
+brew install ssh-copy-id
 brew install bash
 # changer son shell par défaut pour cette version de bash
 sudo bash -c 'echo /usr/local/bin/bash >> /etc/shells'
