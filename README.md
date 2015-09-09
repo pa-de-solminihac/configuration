@@ -85,5 +85,16 @@ Utilisation d'alias pour fournir les fonctionnalités suivantes :
 # Compatibilité
 
 - Linux
-- OSX (avec les outils GNU : `brew install coreutils`)
+- OSX
 - Windows (avec Cygwin)
+
+## Notes pour OSX
+
+Installer une version plus récente de bash (celle du système date de... 2007), et les outils GNU portables *coreutils*
+```
+brew install coreutils
+brew install bash
+# changer son shell par défaut pour cette version de bash
+sudo bash -c 'echo /usr/local/bin/bash >> /etc/shells'
+chsh -s /usr/local/bin/bash 
+```
