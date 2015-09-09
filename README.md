@@ -15,7 +15,7 @@ Pas de script d'install pour l'instant, mais ça reste relativement simple : il 
 ```bash
 git clone https://github.com/pa-de-solminihac/configuration.git
 # install pour bash
-echo "source ~/.bashrc_local" >> ~/.bashrc
+echo "source ~/.bashrc_local" >> ~/.bash_profile
 ln -s ~/configuration/bash/.bashrc_local
 ln -s ~/configuration/bash/.bashrc_common
 # install pour vim
@@ -99,4 +99,10 @@ brew install bash
 # changer son shell par défaut pour cette version de bash
 sudo bash -c 'echo /usr/local/bin/bash >> /etc/shells'
 chsh -s /usr/local/bin/bash 
+```
+
+Pour une meilleure intégration on peut ajouter les lignes suivantes dans le `.bash_profile` :
+```
+alias ll="gls -alh --color=auto --group-directories-first "
+alias vi="gvim -p --remote-tab-silent "
 ```
