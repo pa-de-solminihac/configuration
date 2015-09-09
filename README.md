@@ -1,6 +1,6 @@
 # Configuration de base pour `bash`, `vim` et `git`
 
-Le minimum vital, sur place ou à emporter.
+Le **minimum vital**, sur place ou à emporter.
 
 - à utiliser en local ou à emporter :
   - au travers de vos connexions `SSH`
