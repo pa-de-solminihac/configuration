@@ -245,18 +245,7 @@ endif
 " ==========================
 " Fichiers de backup et swap
 " ==========================
-set backup
-" Backup dans ~/.vim/backup
-if filewritable(expand("~/.vim/backup/.vim/backup")) == 2
-else
-    if has("unix") || has("win32unix")
-        " C'est un système compatible UNIX, on va créer le répertoire et l'utiliser.
-        " call system("ln -s /dev/shm $HOME/.vim/backup")
-        call system("mkdir -p $HOME/.vim/backup/.vim/backup")
-    endif
-endif
-call system("mkdir -p $HOME/.vim/backup && chmod 700 $HOME/.vim/backup")
-set backupdir=$HOME/.vim/backup
+set nobackup " insecure on production servers, and problematic with NFS
 " Swapdir dans ~/.vim/swap
 if filewritable(expand("~/.vim/swap/.vim/swap")) == 2
 else
