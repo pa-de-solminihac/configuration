@@ -64,7 +64,8 @@ set wildmode=list:longest,full " comand <tab> completion, list matches and compl
 set shortmess+=filmnrxoOtT " abbrev. of messages (avoids 'hit enter')
 set showmode " display the current mode
 " set spell " spell checking on
-set relativenumber " Relative line numbers on
+" set relativenumber " Relative line numbers on
+set norelativenumber " perf tip
 set tabpagemax=15 " only show 15 tabs
 set guitablabel=%N/\ %t\ %M " affiche le numero de l'onglet, le fichier, et un "+" si le contenu de l'onglet a ete modifie
 autocmd BufNew * if winnr('$') == 1 | tabmove999 | endif " open new tabs at the end

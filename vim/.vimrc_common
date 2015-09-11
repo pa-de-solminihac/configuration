@@ -9,11 +9,18 @@ endif
 set enc=utf-8
 set et sw=4 ts=4
 set is ic hls
-syntax on
 set listchars=tab:\ \ ,trail:\ ,extends:>,precedes:<,nbsp:.
 set list
 set mouse=a " pour que la souris fonctionnne aussi dans le terminal
 set mousemodel=popup
+
+" syntax with performance tips
+syntax on
+syn sync minlines=256
+syn sync maxlines=512
+" set synmaxcol=256 " fait planter la coloration des lignes suivantes
+set nocursorline
+set nocursorcolumn
 
 " highlight 'en space'U+2002 and 'em space'U+2003
 au VimEnter,BufWinEnter * syn match ErrorMsg " "
