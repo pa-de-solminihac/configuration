@@ -78,16 +78,22 @@ if [ "$SBASH_ALREADY_INCLUDED" == "" ]; then
     alias rm="rm -i"
     alias mv="mv -i"
     alias cp="cp -i"
-    alias ll="ls -alh --color=auto --group-directories-first "
+    if [[ "$(ls --group-directories-first /tmp >/dev/null 2>&1 && echo '1' || echo '0')" == "1" ]]; then
+        alias ll="ls -alh --color=auto --group-directories-first "
+    else
+        alias ll="ls -alh --color=auto "
+    fi
     alias grep="grep --color"
     alias curdate='date +%Y%m%d%H%M%S'
     alias mysql="mysql --show-warnings "
     alias generate_password="openssl rand -base64 37 | cut -c1-16"
+    alias generate_strong_password="head -n 999 /dev/urandom | grep -ao '[[:graph:]]' | tr -d '\n' | grep -o '^.\{32\}' | head -n 1"
     function monip() { echo "Private"; /sbin/ifconfig | grep 'inet ' | grep -v '127.0.0.1' | awk '{print $2}' | sort | uniq; echo; echo "Public"; dig +short myip.opendns.com @208.67.220.220; } # AKA @resolver1.opendns.com
     function mesip() { /sbin/ifconfig | grep 'inet ' | grep -v '127.0.0.1' | awk '{print $2}' | sed 's/.*://g' | sort | uniq | tr "\\n" " " | sed 's/ $//g' | sed 's/ /\\\|/g'; }
     function follow_http() { wget -O /dev/null -S "$1" 2>&1 | grep 'HTTP/\|Location'; }
     function dirdiff() { local DIFFCMD="diff -rwq --exclude=.svn --exclude=.git "; local VIMDIFF="vimdiff"; LANG=C $DIFFCMD $1 $2 | sed "s/^Files /$VIMDIFF /g" | sed 's/ and / /g' | sed 's/ differ//g'; }
-    function cGET() { curl -s -S -L "$1"; }
+    function cGET() { curl -s -S -L -k "$1"; }
+    function cHEAD() { curl -s -S -L -I -k "$1"; }
 
     ########################
     # ALIAS et fonctions GIT
@@ -186,10 +192,13 @@ EOF
             cp -f ~/bin/diffconflicts /tmp/.diffconflicts_$SBASH_SUFFIX
             chmod 700 /tmp/.{bashrc,vimrc,diffconflicts}_$SBASH_SUFFIX
         fi
+        echo -ne "\r."
         # ask for password only once in a lifetime
         ssh-copy-id -o ControlMaster=yes -p $PORT $1 2>/dev/null
+        echo -ne "\r.."
         # connect only once for scp
         scp -P $PORT -Cqp /tmp/.{bashrc,vimrc,diffconflicts}_$SBASH_SUFFIX $1:/tmp/
+        echo -e "\r..."
         ssh -p $PORT -C -t $1 "bash --rcfile /tmp/.bashrc_$SBASH_SUFFIX ; rm -f /tmp/.{bashrc,vimrc,diffconflicts}_$SBASH_SUFFIX "
         rm -f /tmp/.{bashrc,vimrc,diffconflicts}_$SBASH_SUFFIX
         unset SBASH_SUFFIX
