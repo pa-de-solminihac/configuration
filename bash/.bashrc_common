@@ -78,10 +78,14 @@ if [ "$SBASH_ALREADY_INCLUDED" == "" ]; then
     alias rm="rm -i"
     alias mv="mv -i"
     alias cp="cp -i"
-    if [[ "$(ls --group-directories-first /tmp >/dev/null 2>&1 && echo '1' || echo '0')" == "1" ]]; then
-        alias ll="ls -alh --color=auto --group-directories-first "
+    if [[ "$(ls --version >/dev/null 2>&1 && echo '1' || echo '0')" == "1" ]]; then
+        if [[ "$(ls --group-directories-first /tmp >/dev/null 2>&1 && echo '1' || echo '0')" == "1" ]]; then
+            alias ll="ls -alh --color=auto --group-directories-first "
+        else
+            alias ll="ls -alh --color=auto "
+        fi
     else
-        alias ll="ls -alh --color=auto "
+        alias ll="ls -alhG "
     fi
     alias grep="grep --color"
     alias curdate='date +%Y%m%d%H%M%S'
@@ -192,13 +196,22 @@ EOF
             cp -f ~/bin/diffconflicts /tmp/.diffconflicts_$SBASH_SUFFIX
             chmod 700 /tmp/.{bashrc,vimrc,diffconflicts}_$SBASH_SUFFIX
         fi
-        echo -ne "\r."
+        #echo -ne "\r."
         # ask for password only once in a lifetime
+        #SSH_COPY_ID_FAILED=1
+        #for TRYING in 1 2 3
+        #do
         ssh-copy-id -o ControlMaster=yes -p $PORT $1 2>/dev/null
-        echo -ne "\r.."
+        SSH_COPY_ID_FAILED=$?
+        if [ "$SSH_COPY_ID_FAILED" != "0" ]; then
+            echo "ssh-copy-id failed... sorry";
+            return 1;
+        fi
+        #done
+        echo -ne "\r."
         # connect only once for scp
         scp -P $PORT -Cqp /tmp/.{bashrc,vimrc,diffconflicts}_$SBASH_SUFFIX $1:/tmp/
-        echo -e "\r..."
+        echo -e "\r.."
         ssh -p $PORT -C -t $1 "bash --rcfile /tmp/.bashrc_$SBASH_SUFFIX ; rm -f /tmp/.{bashrc,vimrc,diffconflicts}_$SBASH_SUFFIX "
         rm -f /tmp/.{bashrc,vimrc,diffconflicts}_$SBASH_SUFFIX
         unset SBASH_SUFFIX
