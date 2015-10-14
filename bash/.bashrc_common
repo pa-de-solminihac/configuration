@@ -205,7 +205,7 @@ EOF
         SSH_COPY_ID_FAILED=$?
         if [ "$SSH_COPY_ID_FAILED" != "0" ]; then
             echo "ssh-copy-id failed... sorry";
-            return 1;
+            #return 1;
         fi
         #done
         echo -ne "\r."

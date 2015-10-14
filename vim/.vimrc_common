@@ -13,6 +13,7 @@ set listchars=tab:\ \ ,trail:\ ,extends:>,precedes:<,nbsp:.
 set list
 set mouse=a " pour que la souris fonctionnne aussi dans le terminal
 set mousemodel=popup
+set backspace=indent,eol,start
 
 " syntax with performance tips
 syntax on
