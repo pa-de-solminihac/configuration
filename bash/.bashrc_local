@@ -14,6 +14,3 @@ LANG=fr_FR.UTF-8
 # ALIAS et fonctions
 ####################
 source ~/.bashrc_common
-
-alias vi="gvim -p --remote-tab-silent "
-
