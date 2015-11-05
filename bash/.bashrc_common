@@ -94,7 +94,7 @@ if [ "$SBASH_ALREADY_INCLUDED" == "" ]; then
     alias generate_strong_password="head -n 999 /dev/urandom | grep -ao '[[:graph:]]' | tr -d '\n' | grep -o '^.\{32\}' | head -n 1"
     function monip() { echo "Private"; /sbin/ifconfig | grep 'inet ' | grep -v '127.0.0.1' | awk '{print $2}' | sort | uniq; echo; echo "Public"; dig +short myip.opendns.com @208.67.220.220; } # AKA @resolver1.opendns.com
     function mesip() { /sbin/ifconfig | grep 'inet ' | grep -v '127.0.0.1' | awk '{print $2}' | sed 's/.*://g' | sort | uniq | tr "\\n" " " | sed 's/ $//g' | sed 's/ /\\\|/g'; }
-    function follow_http() { wget -O /dev/null -S "$1" 2>&1 | grep 'HTTP/\|Location'; }
+    function follow_http() { wget --no-check-certificate -O /dev/null -S "$1" 2>&1 | grep 'HTTP/\|Location'; }
     function dirdiff() { local DIFFCMD="diff -rwq --exclude=.svn --exclude=.git "; local VIMDIFF="vimdiff"; LANG=C $DIFFCMD $1 $2 | sed "s/^Files /$VIMDIFF /g" | sed 's/ and / /g' | sed 's/ differ//g'; }
     function cGET() { curl -s -S -L -k "$1"; }
     function cHEAD() { curl -s -S -L -I -k "$1"; }
@@ -162,7 +162,7 @@ EOF
         alias vim="vim -u /tmp/.vimrc_$SBASH_SUFFIX"
         alias vimdiff="vimdiff -u /tmp/.vimrc_$SBASH_SUFFIX"
         alias_gitdifftool="git -c diff.tool=vimdiff -c difftool.prompt=false -c difftool.vimdiff.cmd='vimdiff -u /tmp/.vimrc_$SBASH_SUFFIX \$LOCAL \$REMOTE' difftool"
-        alias gitmergetool="git -c merge.tool=diffconflicts -c mergetool.diffconflicts.cmd='/usr/bin/env bash /tmp/.diffconflicts_$SBASH_SUFFIX vim \$BASE \$LOCAL \$REMOTE \$MERGED' mergetool"
+        alias gitmergetool="git -c merge.tool=diffconflicts -c mergetool.diffconflicts.cmd='/usr/bin/env bash /tmp/.diffconflicts_$SBASH_SUFFIX \"vim -u /tmp/.vimrc_$SBASH_SUFFIX\" \$BASE \$LOCAL \$REMOTE \$MERGED' mergetool"
     else
         alias_gitdifftool="git -c diff.tool=vimdiff -c difftool.prompt=false difftool"
         alias gitmergetool="git -c merge.tool=diffconflicts -c mergetool.diffconflicts.cmd='/usr/bin/env bash ~/bin/diffconflicts vim \$BASE \$LOCAL \$REMOTE \$MERGED' mergetool"
@@ -181,11 +181,12 @@ EOF
 
     # sudo et SSH en transportant la configuration BASH et VIM
     alias groot="sudo -s bash --rcfile /tmp/.bashrc_$SBASH_SUFFIX "
-    # usage: sbash user@host [port]
+    # usage: sbash <[user@]host> [port]
     function sbash() {
+        HOST="$1"
         PORT=22
         if [ "$2" != "" ]; then
-            PORT=$2;
+            PORT="$2";
         fi;
         if [[ "$SBASH_SUFFIX" == "" ]];
         then
@@ -206,13 +207,15 @@ EOF
         if [ "$SSH_COPY_ID_FAILED" != "0" ]; then
             echo "ssh-copy-id failed... sorry";
             #return 1;
+        else
+            echo -ne "\r."
         fi
         #done
-        echo -ne "\r."
         # connect only once for scp
-        scp -P $PORT -Cqp /tmp/.{bashrc,vimrc,diffconflicts}_$SBASH_SUFFIX $1:/tmp/
+        scp -P $PORT -Cqp /tmp/.{bashrc,vimrc,diffconflicts}_$SBASH_SUFFIX $1:/tmp/ || return 2;
         echo -e "\r.."
-        ssh -p $PORT -C -t $1 "bash --rcfile /tmp/.bashrc_$SBASH_SUFFIX ; rm -f /tmp/.{bashrc,vimrc,diffconflicts}_$SBASH_SUFFIX "
+        SBASH_CMD="bash --rcfile /tmp/.bashrc_$SBASH_SUFFIX ; rm -f /tmp/.{bashrc,vimrc,diffconflicts}_$SBASH_SUFFIX "
+        ssh -p $PORT -C -t "$HOST" "$SBASH_CMD"
         rm -f /tmp/.{bashrc,vimrc,diffconflicts}_$SBASH_SUFFIX
         unset SBASH_SUFFIX
     }
