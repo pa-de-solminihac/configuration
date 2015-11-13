@@ -28,6 +28,7 @@ ln -s ~/configuration/bin/diffconflicts bin/
 
 C'est tout. Fermez votre terminal et ouvrez-en un nouveau, vous devriez voir un nouveau prompt... qui signifie que tout s'est bien passé.
 
+**Remarque** : si vous êtes sous OS X, vous devriez sans doute [utiliser une version de BASH plus récente sous OS X](https://github.com/pa-de-solminihac/configuration/blob/master/README.md#notes-pour-osx)
 
 # Utilisation
 
