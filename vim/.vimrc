@@ -449,11 +449,6 @@ let g:neocomplete#enable_auto_select = 1
 "let g:neocomplete#disable_auto_complete = 1
 "inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
 
-" Plugin key-mappings.
-imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-xmap <C-k>     <Plug>(neosnippet_expand_target)
-
 " SuperTab like snippets behavior.
 imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 \ "\<Plug>(neosnippet_expand_or_jump)"
@@ -466,5 +461,14 @@ smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 if has('conceal')
   set conceallevel=2 concealcursor=i
 endif
+
+" test mappings pour Francis (pour remonter/descendre une ligne comme dans Notepadd++)
+inoremap <C-k> <esc>V"pdk"pPi
+noremap <C-k> V"pdk"pP
+vnoremap <C-k> V<esc>gv<esc>`<k"pdd`>"ppgv
+
+inoremap <C-j> <esc>V"pd"ppi
+noremap <C-j> V"pd"pp
+vnoremap <C-j> V<esc>gv<esc>`>j"pdd`<"pPgv
 
 runtime! macros/matchit.vim
