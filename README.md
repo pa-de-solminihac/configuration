@@ -26,6 +26,8 @@ mkdir -p bin
 ln -s ~/configuration/bin/diffconflicts bin/
 ```
 
+C'est tout. Fermez votre terminal et ouvrez-en un nouveau, vous devriez voir un nouveau prompt... qui signifie que tout s'est bien passé.
+
 
 # Utilisation
 
