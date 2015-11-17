@@ -59,18 +59,56 @@ if [ "$SBASH_ALREADY_INCLUDED" == "" ]; then
     TERM_COLOR_BOLD="[1m"
     TERM_COLOR_UNDERSCORE="[4m"
     TERM_COLOR_REVERSE="[7m"
-    # MODIF PA 2014-09-25 : better git-prompt (cf. http://www.git-attitude.fr/2013/05/22/prompt-git-qui-dechire/)
-    # MODIF PA 2014-07-17 : git completion et git-prompt (cf. http://stackoverflow.com/questions/10435117/ps1-env-variable-does-not-work-on-mac)
-    # MODIF PA : prompt avec mise en evidence de la valeur de retour (adapte de http://www.austinriba.com/2010/09/best-bash-prompt-ever/)
-    # MODIF PA : prompt avec integration GIT (cf. http://www.bramschoenmakers.nl/en/node/624)
-    # *: modified, +: added, %: untracked, u=: up to date
-    export GIT_PS1_SHOWDIRTYSTATE=1 GIT_PS1_SHOWSTASHSTATE=1 GIT_PS1_SHOWUNTRACKEDFILES=1 GIT_PS1_SHOWUPSTREAM=verbose GIT_PS1_DESCRIBE_STYLE=branch
-    # linux || osx || cygwin
-    source /usr/share/git/completion/git-prompt.sh 2>/dev/null || source /Library/Developer/CommandLineTools/usr/share/git-core/git-prompt.sh 2>/dev/null || source "/cygdrive/c/Program Files (x86)/Git/etc/git-prompt.sh" 2>/dev/null
-    source /usr/share/git/completion/git-completion.bash 2>/dev/null || source /Library/Developer/CommandLineTools/usr/share/git-core/git-completion.bash 2>/dev/null || source "/cygdrive/c/Program Files (x86)/Git/etc/git-completion.bash" 2>/dev/null
-    alias SBASH_git_ps1="$(command -v __git_ps1)"
-    $(command -v __git_ps1) || alias SBASH_git_ps1=""
+
+    # GIT prompt replacement
+    function SBASH_git_ps1() {
+        echo -n " "
+        gitsym="$(git symbolic-ref HEAD 2>/dev/null)"
+        branch="${gitsym##refs/heads/}"
+        if [ "$branch" == "" ]; then
+            branch="$(git branch 2>/dev/null | grep '^\* ' | sed 's/^\* //g')"
+        fi
+        if [ "$branch" == "" ]; then
+            exit 0;
+        fi
+        status_nb="$(LANG=C git status -suno | wc -l | sed 's/ *//g')"
+        status_long="$(LANG=C git status -uno)"
+        incoming="$(LANG=C git log --oneline ..origin/$branch 2>/dev/null | wc -l | sed 's/ *//g')"
+        unpushed="$(LANG=C git log --oneline origin/$branch..HEAD 2>/dev/null | wc -l | sed 's/ *//g')"
+        stashed="$(LANG=C git stash list | wc -l | sed 's/ *//g')"
+        merging="$(echo "$status_long" | grep '^You have unmerged paths' | wc -l | sed 's/ *//g')"
+        rebasing="$(echo "$status_long" | grep '^You are currently rebasing' | wc -l | sed 's/ *//g')"
+        echo -n "[$branch]"
+        if [ "$status_nb $incoming $unpushed $stashed $merging $rebasing" != "0 0 0 0 0 0" ]; then
+            local statusline=""
+            if [ "$status_nb" != "0" ]; then
+                statusline="$statusline$status_nb files changed, "
+            fi
+            if [ "$stashed" != "0" ]; then
+                statusline="$statusline$stashed stashed, "
+            fi
+            if [ "$incoming" != "0" ]; then
+                statusline="$statusline$incoming incoming, "
+            fi
+            if [ "$unpushed" != "0" ]; then
+                statusline="$statusline$unpushed unpushed, "
+            fi
+            if [ "$merging" != "0" ]; then
+                statusline="$statusline MERGING, "
+            fi
+            if [ "$rebasing" != "0" ]; then
+                statusline="$statusline REBASING, "
+            fi
+            if [ "$statusline" != "" ]; then
+                statusline="$(echo "$statusline" | sed 's/, $//g')"
+                echo -n " (";
+                echo -n $statusline
+                echo -n ")";
+            fi
+        fi
+    }
     PS1="\n\`if [ \$? = 0 ]; then echo -e '\[\033${TERM_COLOR_LIGHT_GRAY}\]'; else echo -e '\[\033${TERM_COLOR_LIGHT_RED}\]'; fi\`\D{%d-%m:%H:%M }\[\033\`if [ '$SBASH_SUFFIX' = '' ]; then echo "\${TERM_COLOR_GREEN}"; else echo "\${TERM_COLOR_CYAN}"; fi\`\]\`if [ \$(whoami) = 'root' ]; then echo -e '\[\033${TERM_COLOR_LIGHT_RED}\]root'; else echo '\u'; fi\`@\h:\[\033\`if [ '$SBASH_SUFFIX' = '' ]; then echo "\${TERM_COLOR_LIGHT_GREEN}"; else echo "\${TERM_COLOR_LIGHT_CYAN}"; fi\`\]\w\`if [ '$SBASH_SUFFIX' = '' ]; then echo ''; else echo ' \[\033${TERM_COLOR_LIGHT_RED}\]SSH\[\033${TERM_COLOR_NORMAL}\]'; fi\`\[\033${TERM_COLOR_LIGHT_YELLOW}\]\$(SBASH_git_ps1)\[\033${TERM_COLOR_NORMAL}\]\n\[\033${TERM_COLOR_NORMAL}\]\`if [ \$(whoami) = 'root' ]; then echo '\[\033${TERM_COLOR_WHITE}\]#\[\033${TERM_COLOR_NORMAL}\]'; else echo '\[\033${TERM_COLOR_WHITE}\]$\[\033${TERM_COLOR_NORMAL}\]'; fi\` "
+
 
     ###########################
     # ALIAS et fonctions divers
@@ -219,6 +257,9 @@ EOF
         rm -f /tmp/.{bashrc,vimrc,diffconflicts}_$SBASH_SUFFIX
         unset SBASH_SUFFIX
     }
+
+    # set default editor to vim if not already set
+    export EDITOR=${EDITOR-vim}
 
     # remet chaque utilisateur dans son $HOME par défaut
     cd $HOME
