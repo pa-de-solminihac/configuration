@@ -316,29 +316,10 @@ nmap <F8> :TagbarToggle<CR>
 " Commandes personnalisees
 " ========================
 if version >= 500
-    " necessite : sudo apt-get install php-xsl php-pear
-    " necessite : sudo pear install php_beautifier
-    " ... voire : sudo pear install channel://pear.php.net/php_beautifier-0.1.14
-    " ... ou    : sudo pear install PHP_Beautifier-0.1.14
-    " command Validate :%s/<?=\(.?*[^;]*\) *?>/<?php echo \1; ?>/g
-    function! Validate()
-        :%s/<?\//<?php\//g
-        :%s/<?php */<? /gi
-        :%s/<?=\(.?*[^;]*\)[\n ]* *?>/<? echo \1; ?>/g
-        :%s/<? /<?php /g
-        :%s/<?$/<?php/g
-        :%!php_beautifier
-        :%s/  *$//g
-        :set et
-        :retab
-        gg=G
-    endfunction
-    " reformatte le code PHP avec <C-I>
-    map <C-I> :%! php_beautifier --filters "ArrayNested() Lowercase() Pear(newline_class=true,newline_function=true,switch_without_indent=false) NewLines(before=if:switch:T_COMMENT)" 2>/dev/null <CR>
     " save as root
     cmap w!! %!sudo tee > /dev/null %
 
-    " format PHP code with php-auto-indent
+    " format PHP code with php-auto-indent (see https://github.com/pa-de-solminihac/php-auto-indent)
     func! PHPAutoIndent(mode) range
         :set ff=unix
         if (a:mode == 'visual')
@@ -424,6 +405,11 @@ autocmd FilterWritePre * if &diff | setlocal wrap< | endif
 " highlight! link DiffText MatchParen
 
 
+" make diff ignore indentation changes
+if &diff
+    set diffopt+=iwhite
+endif
+
 
 
 " ==============
@@ -462,7 +448,7 @@ if has('conceal')
   set conceallevel=2 concealcursor=i
 endif
 
-" test mappings pour Francis (pour remonter/descendre une ligne comme dans Notepadd++)
+" mappings pour Francis (pour remonter/descendre une ligne comme dans Notepadd++)
 inoremap <C-k> <esc>V"pdk"pPi
 noremap <C-k> V"pdk"pP
 vnoremap <C-k> V<esc>gv<esc>`<k"pdd`>"ppgv
