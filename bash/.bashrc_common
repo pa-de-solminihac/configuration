@@ -125,6 +125,9 @@ if [ "$SBASH_ALREADY_INCLUDED" == "" ]; then
     else
         alias ll="ls -alhG "
     fi
+    if [ "$(which ack-grep 2>/dev/null)" != "" ]; then
+        alias ack="ack-grep"
+    fi
     alias grep="grep --color"
     alias curdate='date +%Y%m%d%H%M%S'
     alias mysql="mysql --show-warnings "
@@ -144,6 +147,7 @@ if [ "$SBASH_ALREADY_INCLUDED" == "" ]; then
     alias gitst="git status --short"
     alias gitfa="git fetch --all"
     alias gitpure="git pull --rebase=preserve"
+    alias gitmerge="git merge --no-ff"
     function gitmergerebased() {
         GIT_CURRENT_BRANCH="$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)"
         if [ "$GIT_CURRENT_BRANCH" == "" ]; then
@@ -218,7 +222,16 @@ EOF
     }
 
     # sudo et SSH en transportant la configuration BASH et VIM
-    alias groot="sudo -s bash --rcfile /tmp/.bashrc_$SBASH_SUFFIX "
+    function groot() {
+        if [ "$1" != "" ]; then
+            GROOT_AS_USER="$1"
+            sudo /bin/cp /tmp/.bashrc_$SBASH_SUFFIX "/tmp/.bashrc_$SBASH_SUFFIX.$GROOT_AS_USER"
+            sudo chown "$GROOT_AS_USER" /tmp/.bashrc_$SBASH_SUFFIX "/tmp/.bashrc_$SBASH_SUFFIX.$GROOT_AS_USER"
+            sudo -u "$GROOT_AS_USER" bash --rcfile /dev/null -c "cd \"\$HOME\"; bash --rcfile \"/tmp/.bashrc_$SBASH_SUFFIX.$GROOT_AS_USER\" ; rm -f \"/tmp/.bashrc_$SBASH_SUFFIX.$GROOT_AS_USER\" "
+        else
+            sudo bash --rcfile "/tmp/.bashrc_$SBASH_SUFFIX"
+        fi
+    }
     # usage: sbash <[user@]host> [port]
     function sbash() {
         HOST="$1"
@@ -257,11 +270,14 @@ EOF
         rm -f /tmp/.{bashrc,vimrc,diffconflicts}_$SBASH_SUFFIX
         unset SBASH_SUFFIX
     }
+    function checkzone() {
+        DOMAINE="$1" sh -c '/usr/sbin/named-checkzone "$DOMAINE" /etc/bind/db."$DOMAINE"'
+    }
 
     # set default editor to vim if not already set
     export EDITOR=${EDITOR-vim}
 
     # remet chaque utilisateur dans son $HOME par défaut
-    cd $HOME
+    #cd $HOME
 
 fi;
