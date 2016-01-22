@@ -16,7 +16,6 @@ Pas de script d'install pour l'instant, mais ça reste relativement simple : il 
 git clone https://github.com/pa-de-solminihac/configuration.git
 # install pour bash
 echo "source ~/.bashrc_common" >> ~/.bash_profile
-cp ~/configuration/bash/.bashrc_common ~/.bashrc_common
 ln -s ~/configuration/bash/.bashrc_common
 # install pour vim
 echo "source ~/.vimrc_common" >> ~/.vimrc
