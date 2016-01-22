@@ -14,18 +14,21 @@ set list
 set mouse=a " pour que la souris fonctionnne aussi dans le terminal
 set mousemodel=popup
 set backspace=indent,eol,start
+set nocin noai nosi
+filetype plugin indent on
 
 " syntax with performance tips
 syntax on
 syn sync minlines=256
 syn sync maxlines=512
+
 " set synmaxcol=256 " fait planter la coloration des lignes suivantes
 set nocursorline
 set nocursorcolumn
+set number
 
-" highlight 'en space'U+2002 and 'em space'U+2003
-au VimEnter,BufWinEnter * syn match ErrorMsg " "
-au VimEnter,BufWinEnter * syn match ErrorMsg " "
+" highlight non ascii, suspect characters
+au VimEnter,BufWinEnter * syn match ErrorMsg '[^\x00-\x7F€àÀâÂéÉèÈêÊëËîÎïÏôÔöÖûÛùÙüÜçÇœŒæÆ]'
 
 " =================================
 " Statusline personnalisee (deluxe)
