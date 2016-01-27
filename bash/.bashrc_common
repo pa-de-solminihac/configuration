@@ -201,10 +201,14 @@ EOF
     alias gitlg="git log $GITLG_OPTIONS"
     if [[ "$SBASH_SUFFIX" != "" ]];
     then
-        alias vim="vim -u /tmp/.vimrc_$SBASH_SUFFIX"
-        alias vimdiff="vimdiff -u /tmp/.vimrc_$SBASH_SUFFIX"
-        alias_gitdifftool="git -c diff.tool=vimdiff -c difftool.prompt=false -c difftool.vimdiff.cmd='vimdiff -u /tmp/.vimrc_$SBASH_SUFFIX \$LOCAL \$REMOTE' difftool"
-        alias gitmergetool="git -c merge.tool=diffconflicts -c mergetool.diffconflicts.cmd='/usr/bin/env bash /tmp/.diffconflicts_$SBASH_SUFFIX \"vim -u /tmp/.vimrc_$SBASH_SUFFIX\" \$BASE \$LOCAL \$REMOTE \$MERGED' mergetool"
+        SUFFIX="$SBASH_SUFFIX"
+        if [[ "$GROOT_AS_USER" != "" ]]; then
+            SUFFIX="$SBASH_SUFFIX.$GROOT_AS_USER"
+        fi
+        alias vim="vim -u /tmp/.vimrc_$SUFFIX"
+        alias vimdiff="vimdiff -u /tmp/.vimrc_$SUFFIX"
+        alias_gitdifftool="git -c diff.tool=vimdiff -c difftool.prompt=false -c difftool.vimdiff.cmd='vimdiff -u /tmp/.vimrc_$SUFFIX \$LOCAL \$REMOTE' difftool"
+        alias gitmergetool="git -c merge.tool=diffconflicts -c mergetool.diffconflicts.cmd='/usr/bin/env bash /tmp/.diffconflicts_$SUFFIX \"vim -u /tmp/.vimrc_$SUFFIX\" \$BASE \$LOCAL \$REMOTE \$MERGED' mergetool"
     else
         alias_gitdifftool="git -c diff.tool=vimdiff -c difftool.prompt=false difftool"
         alias gitmergetool="git -c merge.tool=diffconflicts -c mergetool.diffconflicts.cmd='/usr/bin/env bash ~/bin/diffconflicts vim \$BASE \$LOCAL \$REMOTE \$MERGED' mergetool"
@@ -225,9 +229,13 @@ EOF
     function groot() {
         if [ "$1" != "" ]; then
             GROOT_AS_USER="$1"
-            sudo /bin/cp /tmp/.bashrc_$SBASH_SUFFIX "/tmp/.bashrc_$SBASH_SUFFIX.$GROOT_AS_USER"
-            sudo chown "$GROOT_AS_USER" /tmp/.bashrc_$SBASH_SUFFIX "/tmp/.bashrc_$SBASH_SUFFIX.$GROOT_AS_USER"
-            sudo -u "$GROOT_AS_USER" bash --rcfile /dev/null -c "cd \"\$HOME\"; bash --rcfile \"/tmp/.bashrc_$SBASH_SUFFIX.$GROOT_AS_USER\" ; rm -f \"/tmp/.bashrc_$SBASH_SUFFIX.$GROOT_AS_USER\" "
+            sudo cp -f "/tmp/.bashrc_$SBASH_SUFFIX" "/tmp/.bashrc_$SBASH_SUFFIX.$GROOT_AS_USER"
+            sudo cp -f "/tmp/.vimrc_$SBASH_SUFFIX" "/tmp/.vimrc_$SBASH_SUFFIX.$GROOT_AS_USER"
+            sudo cp -f "/tmp/.diffconflicts_$SBASH_SUFFIX" "/tmp/.diffconflicts_$SBASH_SUFFIX.$GROOT_AS_USER"
+            sudo chown "$GROOT_AS_USER" "/tmp/.bashrc_$SBASH_SUFFIX.$GROOT_AS_USER"
+            sudo chown "$GROOT_AS_USER" "/tmp/.vimrc_$SBASH_SUFFIX.$GROOT_AS_USER"
+            sudo chown "$GROOT_AS_USER" "/tmp/.diffconflicts_$SBASH_SUFFIX.$GROOT_AS_USER"
+            sudo -u "$GROOT_AS_USER" "GROOT_AS_USER=$GROOT_AS_USER" bash --rcfile /dev/null -c "cd \"\$HOME\"; bash --rcfile \"/tmp/.bashrc_$SBASH_SUFFIX.$GROOT_AS_USER\" ; rm -f \"/tmp/.bashrc_$SBASH_SUFFIX.$GROOT_AS_USER\" \"/tmp/.vimrc_$SBASH_SUFFIX.$GROOT_AS_USER\" \"/tmp/.diffconflicts_$SBASH_SUFFIX.$GROOT_AS_USER\" "
         else
             sudo bash --rcfile "/tmp/.bashrc_$SBASH_SUFFIX"
         fi
