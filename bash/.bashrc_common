@@ -128,6 +128,7 @@ if [ "$SBASH_ALREADY_INCLUDED" == "" ]; then
     if [ "$(which ack-grep 2>/dev/null)" != "" ]; then
         alias ack="ack-grep"
     fi
+    alias ag="ag -Us"
     alias grep="grep --color"
     alias curdate='date +%Y%m%d%H%M%S'
     alias mysql="mysql --show-warnings "
