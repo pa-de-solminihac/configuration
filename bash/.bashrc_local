@@ -1,12 +1,6 @@
 # PATH avec commandes perso
 export PATH="~/bin:/usr/local/sbin:/usr/local/bin:$PATH"
 
-# HISTORIQUE long et horodaté
-unset HISTCONTROL
-HISTTIMEFORMAT="%Y/%m/%d @ %T "
-HISTFILESIZE=999999
-HISTSIZE=999999
-
 # LANGUE et encodage du terminal
 LANG=fr_FR.UTF-8
 
@@ -14,3 +8,10 @@ LANG=fr_FR.UTF-8
 # ALIAS et fonctions
 ####################
 source ~/.bashrc_common
+
+# HISTORIQUE long et horodaté
+unset HISTCONTROL
+HISTFILE="/Users/pa/.bash_history_pa"
+HISTFILESIZE=-1
+HISTSIZE=-1
+HISTTIMEFORMAT="%Y/%m/%d @ %T "
