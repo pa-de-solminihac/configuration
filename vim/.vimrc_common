@@ -62,12 +62,46 @@ map <F1> gT
 imap <F2> <ESC>gt
 imap <F1> <ESC>gT
 
+" source: https://github.com/sd65/MiniVim/blob/master/vimrc
+" :W - To write with root rights.
+command SudoW :execute ':silent w !sudo tee % > /dev/null' | :edit!
+" :UndoCloseTab - To undo close tab
+command UndoCloseTab call OpenLastBufferInNewTab()
+function! OpenLastBufferInNewTab()
+    redir => ls_output
+    silent exec 'ls'
+    redir END
+    let ListBuffers = reverse(split(ls_output, "\n"))
+    for line in ListBuffers
+      let title = split(line, "\"")[1]
+      if title !~  "\[No Name"
+        execute "tabnew +" . split(line, " ")[0] . "buf"
+        break
+      endif
+    endfor
+endfunction
+" F3 - Line numbers toggle
+map <F3> :set nonumber!<Enter>
+imap <F3> :set nonumber!<Enter>
+map <S-F3> :set relativenumber!<Enter>
+imap <S-F3> :set relativenonumber!<Enter>
+" F12 - Paste from clipboard (makes paste toggle useless)
+map <F12> "*P
+imap <F12> <Esc>"*pa
+
+
 " colorscheme
-set t_Co=256
 " terminal/gui equivalent colorscheme, based on slate
-let macvim_skip_colorscheme=1
 set background=dark
 highlight clear
+
+if exists("syntax_on")
+  syntax reset
+endif
+
+set t_Co=256
+let g:colors_name = "sbash"
+let macvim_skip_colorscheme=1
 hi Normal ctermbg=235 guibg=#262626 ctermfg=15 guifg=#ffffff
 
 " TODO
