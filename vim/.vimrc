@@ -405,12 +405,6 @@ autocmd FilterWritePre * if &diff | setlocal wrap< | endif
 " highlight! link DiffText MatchParen
 
 
-" make diff ignore indentation changes
-if &diff
-    set diffopt+=iwhite
-endif
-
-
 
 " ==============
 " Autocompletion
