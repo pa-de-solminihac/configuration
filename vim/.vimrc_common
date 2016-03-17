@@ -122,8 +122,6 @@ hi Search guibg=#000000 guifg=#ffff00 gui=reverse cterm=reverse ctermfg=11 cterm
 " TODO
 hi SpecialKey term=none cterm=underline gui=underline ctermbg=0 ctermfg=17 guibg=#000000 guifg=#00005f
 
-hi StatusLine guibg=#c0c0c0 guifg=#000000 ctermbg=0 ctermfg=7 gui=bold cterm=bold,reverse
-hi StatusLineNC guibg=#808080 guifg=#000000 ctermbg=0 ctermfg=8 gui=none cterm=reverse
 hi Title cterm=bold gui=bold ctermfg=13 guifg=#ff00ff
 hi Underlined cterm=underline gui=underline ctermfg=5 guifg=#B000B0
 hi Statement guifg=#00d75f ctermfg=41 cterm=bold gui=bold
@@ -162,3 +160,22 @@ hi DiffChange cterm=none ctermbg=240  gui=none guibg=#3a3a3a
 hi DiffDelete cterm=none ctermfg=235 ctermbg=0  gui=none guifg=#262626 guibg=#000000
 hi DiffText cterm=bold ctermbg=52 gui=none guibg=DarkRed
 hi ExtraWhiteSpace cterm=none gui=none ctermfg=0 guifg=#000000 ctermbg=52 guibg=#550000
+
+" change statusline according to insert mode
+function! InsertStatuslineColor(mode)
+  if a:mode == 'i'
+    hi statusline guibg=#ff8787 guifg=#000000 ctermbg=0 ctermfg=210 gui=bold cterm=bold,reverse
+  elseif a:mode == 'r'
+    hi statusline guibg=#00afaf guifg=#000000 ctermbg=0 ctermfg=6 gui=bold cterm=bold,reverse
+  else
+    hi statusline guibg=#c0c0c0 guifg=#000000 ctermbg=0 ctermfg=7 gui=bold cterm=bold,reverse
+  endif
+endfunction
+au InsertEnter * call InsertStatuslineColor(v:insertmode)
+au InsertChange * call InsertStatuslineColor(v:insertmode)
+au InsertLeave * hi statusline guibg=#c0c0c0 guifg=#000000 ctermbg=0 ctermfg=7 gui=bold cterm=bold,reverse
+
+" default statusline when entering Vim
+hi statusline guibg=#c0c0c0 guifg=#000000 ctermbg=0 ctermfg=7 gui=bold cterm=bold,reverse
+hi StatusLineNC guibg=#808080 guifg=#000000 ctermbg=0 ctermfg=8 gui=none cterm=reverse
+
