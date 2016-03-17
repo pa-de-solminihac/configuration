@@ -243,6 +243,17 @@ EOF
     }
     # usage: sbash <[user@]host> [port]
     function sbash() {
+        case "$1" in
+            -h|--help|"")
+                echo
+                echo -e "\033${TERM_COLOR_LIGHT_RED}Usage: $FUNCNAME <[user@]host> [port]\033${TERM_COLOR_NORMAL}"
+                echo
+                    cat <<EOF
+        ssh alias that brings configuration (mainly bash, vim and git) with you when connecting
+EOF
+                return 1
+                ;;
+        esac
         HOST="$1"
         PORT=22
         if [ "$2" != "" ]; then
