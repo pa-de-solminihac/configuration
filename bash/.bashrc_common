@@ -140,6 +140,31 @@ if [ "$SBASH_ALREADY_INCLUDED" == "" ]; then
     function dirdiff() { local DIFFCMD="diff -rwq --exclude=.svn --exclude=.git "; local VIMDIFF="vimdiff"; LANG=C $DIFFCMD $1 $2 | sed "s/^Files /$VIMDIFF /g" | sed 's/ and / /g' | sed 's/ differ//g'; }
     function cGET() { curl -s -S -L -k "$1"; }
     function cHEAD() { curl -s -S -L -I -k "$1"; }
+    function detail() {
+        case "$1" in
+            -h|--help)
+                echo
+                echo -e "\033${TERM_COLOR_LIGHT_RED}Usage: $FUNCNAME [logfile [logfile]]\033${TERM_COLOR_NORMAL}"
+                echo
+                    cat <<EOF
+        tail -F [logfile] with colored output
+EOF
+                return 1
+                ;;
+        esac
+        # OSX portability: use GNU sed
+        local SED="sed"
+        local GSED="$(which gsed 2>/dev/null)"
+        if [ -x "$GSED" ];
+        then
+            SED="$GSED"
+        fi
+        local LOGFILE="$@"
+        if [ "$LOGFILE" == "" ]; then
+            LOGFILE="$HOME/log/error.log"
+        fi
+        tail -F $LOGFILE | $SED -u "s/\\\n/\n/g" | $SED -u "s/\\\x1b\[/\x1b\[/g"
+    }
 
     ########################
     # ALIAS et fonctions GIT
