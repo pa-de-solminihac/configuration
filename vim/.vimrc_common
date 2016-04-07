@@ -64,9 +64,9 @@ imap <F1> <ESC>gT
 
 " source: https://github.com/sd65/MiniVim/blob/master/vimrc
 " :W - To write with root rights.
-command SudoW :execute ':silent w !sudo tee % > /dev/null' | :edit!
+command! SudoW :execute ':silent w !sudo tee % > /dev/null' | :edit!
 " :UndoCloseTab - To undo close tab
-command UndoCloseTab call OpenLastBufferInNewTab()
+command! UndoCloseTab call OpenLastBufferInNewTab()
 function! OpenLastBufferInNewTab()
     redir => ls_output
     silent exec 'ls'
@@ -100,7 +100,7 @@ if exists("syntax_on")
 endif
 
 set t_Co=256
-let g:colors_name = "sbash"
+" let g:colors_name = "sbash"
 let macvim_skip_colorscheme=1
 hi Normal ctermbg=235 guibg=#262626 ctermfg=15 guifg=#ffffff
 
