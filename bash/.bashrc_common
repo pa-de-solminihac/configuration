@@ -9,9 +9,9 @@ if [ "$SBASH_ALREADY_INCLUDED" == "" ]; then
     #################
     # HISTORIQUE LONG
     #################
-    HISTTIMEFORMAT="%Y/%m/%d @ %T "
-    HISTFILESIZE=999999
-    HISTSIZE=999999
+    export HISTTIMEFORMAT="%Y/%m/%d @ %T "
+    export HISTFILESIZE=999999
+    export HISTSIZE=999999
 
     ################################
     # LANGUE et encodage du terminal

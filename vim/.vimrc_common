@@ -88,7 +88,9 @@ imap <S-F3> :set relativenonumber!<Enter>
 " F12 - Paste from clipboard (makes paste toggle useless)
 map <F12> "*P
 imap <F12> <Esc>"*pa
-
+" F11 - Paste from 'q' named clipboard (so you can delete, change, etc... without overwriting your clipboard)
+map <F11> "qP
+imap <F11> <Esc>"qpa
 
 " colorscheme
 " terminal/gui equivalent colorscheme, based on slate

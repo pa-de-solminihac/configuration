@@ -11,7 +11,7 @@ source ~/.bashrc_common
 
 # HISTORIQUE long et horodaté
 unset HISTCONTROL
-HISTFILE="/Users/pa/.bash_history_pa"
-HISTFILESIZE=-1
-HISTSIZE=-1
-HISTTIMEFORMAT="%Y/%m/%d @ %T "
+export HISTFILE="/Users/pa/.bash_history_pa"
+export HISTFILESIZE=-1
+export HISTSIZE=-1
+export HISTTIMEFORMAT="%Y/%m/%d @ %T "
