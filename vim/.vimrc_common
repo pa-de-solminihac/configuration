@@ -7,8 +7,8 @@ if filereadable("/usr/share/vim/vimrc")
 endif
 
 set enc=utf-8
-set et sw=4 ts=4
-set is ic smartcase hls
+set expandtab sw=4 ts=4
+set incsearch ignorecase smartcase hlsearch
 set listchars=tab:\ \ ,trail:\ ,extends:>,precedes:<,nbsp:.
 set list
 set mouse=a " pour que la souris fonctionnne aussi dans le terminal
