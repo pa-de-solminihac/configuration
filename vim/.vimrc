@@ -71,7 +71,8 @@ set guitablabel=%N/\ %t\ %M " affiche le numero de l'onglet, le fichier, et un "
 autocmd BufNew * if winnr('$') == 1 | tabmove999 | endif " open new tabs at the end
 set incsearch " find as you type search
 set hlsearch " highlight search terms
-set modeline " mesure de securite
+set modeline
+set modelines=1
 set ttyfast " Accélère le rendu graphique dans les terminaux véloces
 if version >= 500
     filetype plugin indent on " Automatically detect file types.
@@ -323,9 +324,9 @@ if version >= 500
     func! PHPAutoIndent(mode) range
         :set ff=unix
         if (a:mode == 'visual')
-            :exe "'<,'>!php-auto-indent -"
+            :exe "'<,'>!docker run -i 'quai2.quai13.com:5000/devdocker' php-auto-indent -"
         else
-            :exe "%!php-auto-indent -"
+            :exe "%!docker run -i 'quai2.quai13.com:5000/devdocker' php-auto-indent -"
         endif
     endfunc
     noremap <c-b> :call PHPAutoIndent('normal')<CR>

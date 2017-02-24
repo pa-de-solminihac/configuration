@@ -68,9 +68,11 @@ Le fichier `.vimrc_common` définit quelques réglages de base de vim, avec nota
 
 Utilisation d'alias pour fournir les fonctionnalités suivantes :
 - `gitfa` : `git fetch --all`
-- `gitst` : `git status --short` avec coloration syntaxique
-- `gitincoming` : log les commits qui viendront si on `git pull`
+- `gitst` : un `git status` concis, avec coloration syntaxique
+- `gitstu` : comme `gitst` mais sans afficher les fichiers non traqués
+- `gitincoming` : log les commits qui viendront si on `git pull` (à utiliser après avoir lancé un `gitfa`)
 - `gitunpushed` : log les commits qui partiront si on `git push`
+- `gitdiffwith [branch]` : log les commits qui diffèrent entre la branche courante et la branche demandée
 - `gitdifftool [fichier]` : affiche avec `vimdiff` les différences entre la version connue de git la version locale d'un fichier
 - `gitmergetool [fichier]` : effectue un **2-way merge** avec coloration syntaxique dans vimdiff (bien plus pratique que le 3-way merge habituel).
   - la fenêtre de gauche est le fichier local, celle de droite le fichier à merger dedans
