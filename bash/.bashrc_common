@@ -134,10 +134,15 @@ if [ "$SBASH_ALREADY_INCLUDED" == "" ]; then
     alias mysql="mysql --show-warnings "
     alias generate_password="openssl rand -base64 37 | cut -c1-16"
     alias generate_strong_password="head -n 999 /dev/urandom | grep -ao '[[:graph:]]' | tr -d '\n' | grep -o '^.\{32\}' | head -n 1"
+    alias find_latin1_files="find . -type f -exec sh -c \"file --mime-encoding {} | grep ': iso-8859-1$' | sed 's/: iso-8859-1$//g'\" \;"
+    alias find_latin1_files_php="find . -type f -iname '*.php' -exec sh -c \"file --mime-encoding {} | grep ': iso-8859-1$' | sed 's/: iso-8859-1$//g'\" \;"
+    alias convert_latin1_files_to_utf8="vim \"+set nomore\" \"+bufdo set fileencoding=utf8 | w\" \"+q\" \$(find_latin1_files)"
+    alias convert_latin1_files_to_utf8_php="vim \"+set nomore\" \"+bufdo set fileencoding=utf8 | w\" \"+q\" \$(find_latin1_files_php)"
     function monip() { echo "Private"; /sbin/ifconfig | grep 'inet ' | grep -v '127.0.0.1' | awk '{print $2}' | sort | uniq; echo; echo "Public"; dig +short myip.opendns.com @208.67.220.220; } # AKA @resolver1.opendns.com
     function mesip() { /sbin/ifconfig | grep 'inet ' | grep -v '127.0.0.1' | awk '{print $2}' | sed 's/.*://g' | sort | uniq | tr "\\n" " " | sed 's/ $//g' | sed 's/ /\\\|/g'; }
     function follow_http() { wget --no-check-certificate -O /dev/null -S "$1" 2>&1 | grep 'HTTP/\|Location'; }
     function dirdiff() { local DIFFCMD="diff -rwq --exclude=.svn --exclude=.git "; local VIMDIFF="vimdiff"; LANG=C $DIFFCMD $1 $2 | sed "s/^Files /$VIMDIFF /g" | sed 's/ and / /g' | sed 's/ differ//g'; }
+    function dirdiff_ionice() { local DIFFCMD="diff -rwq --exclude=.svn --exclude=.git "; local VIMDIFF="vimdiff"; LANG=C ionice -c3 $DIFFCMD $1 $2 | sed "s/^Files /$VIMDIFF /g" | sed 's/ and / /g' | sed 's/ differ//g'; }
     function cGET() { curl -s -S -L -k "$1"; }
     function cHEAD() { curl -s -S -L -I -k "$1"; }
     function detail() {
@@ -321,7 +326,7 @@ EOF
         unset SBASH_SUFFIX
     }
     function checkzone() {
-        DOMAINE="$1" sh -c '/usr/sbin/named-checkzone "$DOMAINE" /etc/bind/db."$DOMAINE"'
+        DOMAINE="$1" sh -c 'sudo /usr/sbin/named-checkzone "$DOMAINE" /etc/bind/db."$DOMAINE"'
     }
 
     # set default editor to vim if not already set
