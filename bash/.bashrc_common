@@ -276,6 +276,9 @@ EOF
             sudo bash --rcfile "/tmp/.bashrc_$SBASH_SUFFIX"
         fi
     }
+    function gscreen() {
+        screen bash --rcfile "/tmp/.bashrc_$SBASH_SUFFIX"
+    }
     # usage: sbash <[user@]host> [port]
     function sbash() {
         case "$1" in
