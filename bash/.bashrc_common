@@ -78,8 +78,9 @@ if [ "$SBASH_ALREADY_INCLUDED" == "" ]; then
         stashed="$(LANG=C git stash list | wc -l | sed 's/ *//g')"
         merging="$(echo "$status_long" | grep '^You have unmerged paths' | wc -l | sed 's/ *//g')"
         rebasing="$(echo "$status_long" | grep '^You are currently rebasing' | wc -l | sed 's/ *//g')"
+        bisecting="$(echo "$status_long" | grep '^You are currently bisecting' | wc -l | sed 's/ *//g')"
         echo -n "[$branch]"
-        if [ "$status_nb $incoming $unpushed $stashed $merging $rebasing" != "0 0 0 0 0 0" ]; then
+        if [ "$status_nb $incoming $unpushed $stashed $merging $rebasing $bisecting" != "0 0 0 0 0 0 0" ]; then
             local statusline=""
             if [ "$status_nb" != "0" ]; then
                 statusline="$statusline$status_nb files changed, "
@@ -98,6 +99,9 @@ if [ "$SBASH_ALREADY_INCLUDED" == "" ]; then
             fi
             if [ "$rebasing" != "0" ]; then
                 statusline="$statusline REBASING, "
+            fi
+            if [ "$bisecting" != "0" ]; then
+                statusline="$bisecting BISECTING, "
             fi
             if [ "$statusline" != "" ]; then
                 statusline="$(echo "$statusline" | sed 's/, $//g')"
