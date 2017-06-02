@@ -155,6 +155,8 @@ hi Directory guifg=#008080 ctermfg=6
 
 hi ErrorMsg guifg=#ffffff guibg=#af0000 gui=bold cterm=bold ctermfg=15 ctermbg=1
 
+hi ColorColumn guibg=#2e2e2e ctermbg=236
+
 " TODO
 hi VisualNOS cterm=bold,underline
 
