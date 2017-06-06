@@ -74,11 +74,7 @@ Utilisation d'alias pour fournir les fonctionnalités suivantes :
 - `gitunpushed` : log les commits qui partiront si on `git push`
 - `gitdiffwith [branch]` : log les commits qui diffèrent entre la branche courante et la branche demandée
 - `gitdifftool [fichier]` : affiche avec `vimdiff` les différences entre la version connue de git la version locale d'un fichier
-- `gitmergetool [fichier]` : effectue un **2-way merge** avec coloration syntaxique dans vimdiff (bien plus pratique que le 3-way merge habituel).
-  - la fenêtre de gauche est le fichier local, celle de droite le fichier à merger dedans
-  - lorsqu'on quitte, le fichier de la fenêtre de gauche sera utilisé comme résultat du merge
-  - pour annuler le merge, il faut quitter avec `:cq`
-
+- `gitmergetool [fichier]` : résolution de conflits avec `vimdiff` améliorée. Voir [Procédure de résolution de conflits](https://github.com/pa-de-solminihac/configuration/blob/master/diffconflicts.md)
 
 # Emporter cette configuration partout
 
