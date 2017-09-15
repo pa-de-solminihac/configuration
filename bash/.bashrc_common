@@ -77,6 +77,7 @@ if [ "$SBASH_ALREADY_INCLUDED" == "" ]; then
         unpushed="$(LANG=C git log --oneline origin/$branch..HEAD 2>/dev/null | wc -l | sed 's/ *//g')"
         stashed="$(LANG=C git stash list | wc -l | sed 's/ *//g')"
         merging="$(echo "$status_long" | grep '^You have unmerged paths' | wc -l | sed 's/ *//g')"
+        resolving="$(echo "$status_long" | grep '^All conflicts fixed but you are still merging\.' | wc -l | sed 's/ *//g')"
         rebasing="$(echo "$status_long" | grep '^You are currently rebasing' | wc -l | sed 's/ *//g')"
         bisecting="$(echo "$status_long" | grep '^You are currently bisecting' | wc -l | sed 's/ *//g')"
         echo -n "[$branch]"
@@ -96,6 +97,9 @@ if [ "$SBASH_ALREADY_INCLUDED" == "" ]; then
             fi
             if [ "$merging" != "0" ]; then
                 statusline="$statusline MERGING, "
+            fi
+            if [ "$resolving" != "0" ]; then
+                statusline="$statusline RESOLVING, "
             fi
             if [ "$rebasing" != "0" ]; then
                 statusline="$statusline REBASING, "
@@ -132,7 +136,7 @@ if [ "$SBASH_ALREADY_INCLUDED" == "" ]; then
     if [ "$(which ack-grep 2>/dev/null)" != "" ]; then
         alias ack="ack-grep"
     fi
-    alias ag="ag -Us --ignore='*.min.js' "
+    alias ag="ag -Us --ignore='*.min.js' --ignore='*.min.css' --ignore='/cache/' --ignore='/tmp/' "
     alias grep="grep --color"
     alias curdate='date +%Y%m%d%H%M%S'
     alias mysql="mysql --show-warnings "

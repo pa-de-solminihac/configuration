@@ -46,7 +46,7 @@ set nocompatible
 " ==========================================
 " set cursorline " highlight current line
 " set cursorcolumn " highlight current column
-set colorcolumn=78
+set colorcolumn=82
 hi cursorline guibg=#3a3a3a " highlight bg color of current line
 hi cursorcolumn guibg=#3a3a3a " highlight cursor
 hi ColorColumn guibg=#2e2e2e
@@ -68,7 +68,7 @@ set showmode " display the current mode
 set norelativenumber " perf tip
 set tabpagemax=15 " only show 15 tabs
 set guitablabel=%N/\ %t\ %M " affiche le numero de l'onglet, le fichier, et un "+" si le contenu de l'onglet a ete modifie
-autocmd BufNew * if winnr('$') == 1 | tabmove999 | endif " open new tabs at the end
+"autocmd BufNew * if winnr('$') == 1 | tabmove999 | endif " open new tabs at the end
 set incsearch " find as you type search
 set hlsearch " highlight search terms
 set modeline
@@ -332,6 +332,11 @@ if version >= 500
     noremap <c-b> :call PHPAutoIndent('normal')<CR>
     vnoremap <c-b> :call PHPAutoIndent('visual')<CR>
 
+    " format JSON code
+    command! -range -nargs=0 -bar JSONAutoIndent <line1>,<line2>!python -m json.tool
+    " format HTML code
+    command! -range -nargs=0 -bar HTMLAutoIndent <line1>,<line2>!tidy -i -m -w 0 --indent-spaces 4 -asxml 2> /dev/null
+
     "--------------------
     " Function: Open tag under cursor in new tab
     " Source:   http://stackoverflow.com/questions/563616/vimctags-tips-and-tricks
@@ -431,17 +436,27 @@ let g:neocomplete#enable_auto_select = 1
 "inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
 
 " SuperTab like snippets behavior.
-imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-\ "\<Plug>(neosnippet_expand_or_jump)"
-\: pumvisible() ? "\<C-n>" : "\<TAB>"
-smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-\ "\<Plug>(neosnippet_expand_or_jump)"
-\: "\<TAB>"
+"imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+"\ "\<Plug>(neosnippet_expand_or_jump)"
+"\: pumvisible() ? "\<C-n>" : "\<TAB>"
+"smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+"\ "\<Plug>(neosnippet_expand_or_jump)"
+"\: "\<TAB>"
+
+" make YCM compatible with UltiSnips (using supertab)
+let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+let g:SuperTabDefaultCompletionType = '<C-n>'
+
+" better key bindings for UltiSnipsExpandTrigger
+let g:UltiSnipsExpandTrigger = "<tab>"
+let g:UltiSnipsJumpForwardTrigger = "<tab>"
+let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 
 " For snippet_complete marker.
-if has('conceal')
-  set conceallevel=2 concealcursor=i
-endif
+" if has('conceal')
+"   set conceallevel=2 concealcursor=i
+" endif
 
 " mappings pour Francis (pour remonter/descendre une ligne comme dans Notepadd++)
 inoremap <C-k> <esc>V"pdk"pPi

@@ -2,7 +2,9 @@
 export PATH="~/bin:/usr/local/sbin:/usr/local/bin:$PATH"
 
 # LANGUE et encodage du terminal
-LANG=fr_FR.UTF-8
+export LANG="fr_FR.UTF-8"
+export LANGUAGE="$LANG"
+export LC_ALL="$LANG"
 
 ####################
 # ALIAS et fonctions

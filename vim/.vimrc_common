@@ -23,6 +23,7 @@ filetype plugin indent on
 syntax on
 syn sync minlines=256
 syn sync maxlines=512
+au BufWinEnter * if line2byte(line("$") + 1) > 1000000 | syntax clear | endif
 
 " set synmaxcol=256 " fait planter la coloration des lignes suivantes
 set nocursorline
@@ -82,6 +83,10 @@ function! OpenLastBufferInNewTab()
       endif
     endfor
 endfunction
+" format JSON code
+command! -range -nargs=0 -bar IndentJSON <line1>,<line2>!python -m json.tool
+" format HTML code
+command! -range -nargs=0 -bar IndentHTML <line1>,<line2>!tidy -q -f /dev/null -o /dev/stdout -w 0 -i --indent-spaces 2 -asxml 2> /dev/null
 " F3 - Line numbers toggle
 map <F3> :set nonumber!<Enter>
 imap <F3> :set nonumber!<Enter>
