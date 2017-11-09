@@ -80,17 +80,28 @@ if [ "$SBASH_ALREADY_INCLUDED" == "" ]; then
         resolving="$(echo "$status_long" | grep '^All conflicts fixed but you are still merging\.' | wc -l | sed 's/ *//g')"
         rebasing="$(echo "$status_long" | grep '^You are currently rebasing' | wc -l | sed 's/ *//g')"
         bisecting="$(echo "$status_long" | grep '^You are currently bisecting' | wc -l | sed 's/ *//g')"
+        reverting="$(echo "$status_long" | grep '^You are currently reverting' | wc -l | sed 's/ *//g')"
         echo -n "[$branch]"
-        if [ "$status_nb $incoming $unpushed $stashed $merging $rebasing $bisecting" != "0 0 0 0 0 0 0" ]; then
+        if [ "$status_nb $incoming $unpushed $stashed $merging $rebasing $bisecting $reverting" != "0 0 0 0 0 0 0" ]; then
             local statusline=""
             if [ "$status_nb" != "0" ]; then
                 statusline="$statusline$status_nb files changed, "
             fi
             if [ "$stashed" != "0" ]; then
-                statusline="$statusline$stashed stashed, "
+                nbstashconflicts="$(gitstashconflicts | wc -l | xargs)"
+                if [ "$nbstashconflicts" != "0" ]; then
+                    statusline="$statusline$stashed stashed ($nbstashconflicts conflicts), "
+                else
+                    statusline="$statusline$stashed stashed, "
+                fi
             fi
             if [ "$incoming" != "0" ]; then
-                statusline="$statusline$incoming incoming, "
+                nbconflicts="$(gitincomingconflicts | wc -l | xargs)"
+                if [ "$nbconflicts" != "0" ]; then
+                    statusline="$statusline$incoming incoming \033${TERM_COLOR_LIGHT_RED}($nbconflicts conflicts)\033${TERM_COLOR_YELLOW}, "
+                else
+                    statusline="$statusline$incoming incoming, "
+                fi
             fi
             if [ "$unpushed" != "0" ]; then
                 statusline="$statusline$unpushed unpushed, "
@@ -107,11 +118,14 @@ if [ "$SBASH_ALREADY_INCLUDED" == "" ]; then
             if [ "$bisecting" != "0" ]; then
                 statusline="$bisecting BISECTING, "
             fi
+            if [ "$reverting" != "0" ]; then
+                statusline="$reverting REVERTING, "
+            fi
             if [ "$statusline" != "" ]; then
-                statusline="$(echo "$statusline" | sed 's/, $//g')"
-                echo -n " (";
+                statusline="$(echo -e "$statusline" | sed 's/, $//g')"
+                echo -en "\033${TERM_COLOR_YELLOW} (";
                 echo -n $statusline
-                echo -n ")";
+                echo -en ")\033${TERM_COLOR_LIGHT_YELLOW}";
             fi
         fi
     }
@@ -238,7 +252,13 @@ EOF
     GITLG_OPTIONS="--graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ad)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' "
     alias gitunpushed="GIT_CURRENT_BRANCH=\"\$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)\" && git log origin/\$GIT_CURRENT_BRANCH..HEAD $GITLG_OPTIONS"
     alias gitincoming="GIT_CURRENT_BRANCH=\"\$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)\" && git log ..origin/\$GIT_CURRENT_BRANCH $GITLG_OPTIONS"
+    alias gitincomingfiles="gitincoming --name-status --diff-filter=MDACU | grep '^[[:space:]|\\/]*[MDARCU][[:space:]]*' | sed 's/^[[:space:]|\\/]*[MDARCU][[:space:]]*//g' | sort | uniq"
+    alias gitstfiles="gitst | grep '^[[:space:]|\\/]*[MDARCU?]*[[:space:]]*' | sed 's/^[[:space:]|\\/]*[MDARCU?]*[[:space:]]*//g' | sort | uniq"
+    alias gitstashfiles="git stash list --name-status | grep '^[[:space:]]*[MDARCU?]\?[[:space:]]' | sed 's/^[[:space:]*|\\/]*[MDARCU?]*[[:space:]]*//g' | sort | uniq"
+    alias gitincomingconflicts="comm -12 <(gitstfiles) <(gitincomingfiles)"
+    alias gitstashconflicts="comm -12 <(gitstfiles) <(gitstashfiles)"
     alias gitlg="git log $GITLG_OPTIONS"
+    alias gitlga="gitlg --all"
     if [[ "$SBASH_SUFFIX" != "" ]];
     then
         SUFFIX="$SBASH_SUFFIX"
@@ -247,12 +267,12 @@ EOF
         fi
         alias vim="vim -u /tmp/.vimrc_$SUFFIX"
         alias vimdiff="vimdiff -u /tmp/.vimrc_$SUFFIX"
-        alias_gitdifftool="git -c diff.tool=vimdiff -c difftool.prompt=false -c difftool.vimdiff.cmd='vimdiff -u /tmp/.vimrc_$SUFFIX \$LOCAL \$REMOTE' difftool"
-        alias gitmergetool="git -c merge.tool=diffconflicts -c mergetool.diffconflicts.cmd='/usr/bin/env bash /tmp/.diffconflicts_$SUFFIX \"vim -u /tmp/.vimrc_$SUFFIX\" \$BASE \$LOCAL \$REMOTE \$MERGED' mergetool"
+        alias_gitdifftool="git -c diff.tool=vimdiff -c difftool.prompt=false -c difftool.vimdiff.cmd='vimdiff -u /tmp/.vimrc_$SUFFIX \$LOCAL \$REMOTE && echo \"<ctrl+c> to abort, <enter> to continue...\" && read' difftool"
+        alias gitmergetool="git -c mergetool.keepBackup=false -c merge.tool=diffconflicts -c mergetool.diffconflicts.cmd='/usr/bin/env bash /tmp/.diffconflicts_$SUFFIX \"vim -u /tmp/.vimrc_$SUFFIX\" \$BASE \$LOCAL \$REMOTE \$MERGED && echo \"<ctrl+c> to abort, <enter> to continue...\" && read' mergetool"
     else
-        # sleep 1 sec between each diff so we can abort
-        alias_gitdifftool="git -c diff.tool=vimdiff -c difftool.prompt=false -c difftool.vimdiff.cmd='vimdiff \$LOCAL \$REMOTE; echo \"Press Ctrl+C to abort...\"; sleep 1' difftool"
-        alias gitmergetool="git -c merge.tool=diffconflicts -c mergetool.diffconflicts.cmd='/usr/bin/env bash ~/bin/diffconflicts vim \$BASE \$LOCAL \$REMOTE \$MERGED; echo \"Press Ctrl+C to abort...\"; sleep 1' mergetool"
+        # use "read" to wait for user input between each diff so we can abort
+        alias_gitdifftool="git -c diff.tool=vimdiff -c difftool.prompt=false -c difftool.vimdiff.cmd='vimdiff \$LOCAL \$REMOTE && echo \"<ctrl+c> to abort, <enter> to continue...\" && read' difftool"
+        alias gitmergetool="git -c mergetool.keepBackup=false -c merge.tool=diffconflicts -c mergetool.diffconflicts.cmd='/usr/bin/env bash ~/bin/diffconflicts vim \$BASE \$LOCAL \$REMOTE \$MERGED && echo \"<ctrl+c> to abort, <enter> to continue...\" && read' mergetool"
     fi
     alias gitdifftool="$alias_gitdifftool"
     function gitshowtool() {
