@@ -32,6 +32,8 @@ set number
 
 " highlight non ascii, suspect characters
 au VimEnter,BufWinEnter * syn match ErrorMsg '[^\x00-\x7F€àÀâÂéÉèÈêÊëËîÎïÏôÔöÖûÛùÙüÜçÇœŒæÆ]'
+au FilterWritePre * if &diff | set fdc=1 | endif
+
 
 " =================================
 " Statusline personnalisee (deluxe)
@@ -116,9 +118,9 @@ hi Normal ctermbg=235 guibg=#262626 ctermfg=15 guifg=#ffffff
 " TODO
 hi Cursor ctermbg=9 guibg=#ff0000
 
-hi VertSplit guibg=#121212 guifg=#c0c0c0 ctermbg=233 ctermfg=7
-hi Folded guibg=#c0c0c0 guifg=#ffffff ctermfg=15 ctermbg=7 cterm=bold gui=bold
-hi FoldColumn guibg=#c0c0c0 guifg=#ffffff ctermfg=15 ctermbg=7
+hi VertSplit guibg=#808080 guifg=#808080 ctermbg=244 ctermfg=244
+hi Folded guibg=#c0c0c0 guifg=#000000 ctermfg=0 ctermbg=7 cterm=bold gui=bold
+hi FoldColumn guibg=#c0c0c0 guifg=#000000 ctermfg=0 ctermbg=7
 hi IncSearch guifg=#ffff00 guibg=#000000 cterm=reverse,bold ctermfg=11 ctermbg=0
 
 hi ModeMsg guifg=#00d75f ctermfg=41
@@ -137,8 +139,8 @@ hi Statement guifg=#00d75f ctermfg=41 cterm=bold gui=bold
 hi Visual gui=none guifg=#000000 cterm=reverse ctermbg=0
 hi WarningMsg guifg=#af0000 ctermfg=1
 hi String guifg=#bcbcbc ctermfg=250 guibg=#121212 ctermbg=233
-hi Comment ctermfg=242 guifg=#666666
-hi phpDocTags cterm=bold gui=bold ctermfg=242 guifg=#666666
+hi Comment ctermfg=244 guifg=#808080
+hi phpDocTags cterm=bold gui=bold ctermfg=244 guifg=#808080 ctermbg=0 guibg=#000000
 hi Constant guifg=#ff8787 ctermfg=210 gui=bold cterm=bold
 hi Special guifg=#B0B000 ctermfg=3 cterm=none gui=none
 hi Number ctermfg=210 guifg=#ff8787 gui=none cterm=none
@@ -150,7 +152,7 @@ hi Define guifg=#00afaf ctermfg=37 gui=bold cterm=bold
 hi Type guifg=#5fafff ctermfg=75 gui=none cterm=none
 hi Function guifg=#00d7ff ctermfg=45
 hi Structure guifg=#5f5fff ctermfg=63
-hi LineNr guifg=#808080 ctermfg=8
+hi LineNr guifg=#808000 ctermfg=3
 
 " TODO
 hi Ignore guifg=grey40 cterm=bold ctermfg=7
@@ -188,5 +190,5 @@ au InsertLeave * hi statusline guibg=#c0c0c0 guifg=#000000 ctermbg=0 ctermfg=7 g
 
 " default statusline when entering Vim
 hi statusline guibg=#c0c0c0 guifg=#000000 ctermbg=0 ctermfg=7 gui=bold cterm=bold,reverse
-hi StatusLineNC guibg=#808080 guifg=#000000 ctermbg=0 ctermfg=8 gui=none cterm=reverse
+hi StatusLineNC guibg=#b2b2b2 guifg=#000000 ctermbg=0 ctermfg=249 gui=none cterm=reverse
 
