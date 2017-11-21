@@ -378,7 +378,7 @@ EOF
             if [ "$FAIL2BAN_RECENT" == "1" ]; then
                 sudo fail2ban-client set $JAIL unbanip $IP 2>&1 | grep -v "$IP is not banned";
             else
-                sudo fail2ban-client get $JAIL actionunban $IP 2>&1 | grep -v '^$' | grep -v "$IP is not banned";
+                sudo iptables -D fail2ban-$JAIL -s $IP -j DROP 2>&1 | grep -v 'iptables: Bad rule' && sleep 5 || echo "$IP is not banned";
             fi
         done
         return 0;
