@@ -267,11 +267,11 @@ EOF
         fi
         alias vim="vim -u /tmp/.vimrc_$SUFFIX"
         alias vimdiff="vimdiff -u /tmp/.vimrc_$SUFFIX"
-        alias_gitdifftool="git -c diff.tool=vimdiff -c difftool.prompt=false -c difftool.vimdiff.cmd='vimdiff -u /tmp/.vimrc_$SUFFIX \$LOCAL \$REMOTE && echo \"<ctrl+c> to abort, <enter> to continue...\" && read' difftool"
+        alias_gitdifftool="git -c diff.tool=vimdiff -c difftool.prompt=true -c difftool.vimdiff.cmd='vimdiff -u /tmp/.vimrc_$SUFFIX \$LOCAL \$REMOTE' difftool"
         alias gitmergetool="git -c mergetool.keepBackup=false -c merge.tool=diffconflicts -c mergetool.diffconflicts.cmd='/usr/bin/env bash /tmp/.diffconflicts_$SUFFIX \"vim -u /tmp/.vimrc_$SUFFIX\" \$BASE \$LOCAL \$REMOTE \$MERGED && echo \"<ctrl+c> to abort, <enter> to continue...\" && read' mergetool"
     else
         # use "read" to wait for user input between each diff so we can abort
-        alias_gitdifftool="git -c diff.tool=vimdiff -c difftool.prompt=false -c difftool.vimdiff.cmd='vimdiff \$LOCAL \$REMOTE && echo \"<ctrl+c> to abort, <enter> to continue...\" && read' difftool"
+        alias_gitdifftool="git -c diff.tool=vimdiff -c difftool.prompt=true -c difftool.vimdiff.cmd='vimdiff \$LOCAL \$REMOTE' difftool"
         alias gitmergetool="git -c mergetool.keepBackup=false -c merge.tool=diffconflicts -c mergetool.diffconflicts.cmd='/usr/bin/env bash ~/bin/diffconflicts vim \$BASE \$LOCAL \$REMOTE \$MERGED && echo \"<ctrl+c> to abort, <enter> to continue...\" && read' mergetool"
     fi
     alias gitdifftool="$alias_gitdifftool"
@@ -279,7 +279,7 @@ EOF
         REVISION='HEAD';
         if [[ "$1" != "" ]]; then REVISION="$1"; fi
         shift;
-        git -c diff.tool=vimdiff -c difftool.prompt=false difftool $REVISION~ $REVISION $@
+        git -c diff.tool=vimdiff -c difftool.prompt=true difftool $REVISION~ $REVISION $@
     }
     function gitdiffwith() {
         GIT_CURRENT_BRANCH="$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)"
