@@ -19,7 +19,7 @@ echo "source ~/.bashrc_common" >> ~/.bashrc
 ln -s ~/.config-pa-de-solminihac/bash/.bashrc_common ~/.bashrc_common
 # install pour vim
 echo "source ~/.vimrc_common" >> ~/.vimrc
-ln -s ~/.config-pa-de-solminihac/vim/.vimrc_common ~/.vimc_common
+ln -s ~/.config-pa-de-solminihac/vim/.vimrc_common ~/.vimrc_common
 # install pour git
 mkdir -p bin
 ln -s ~/.config-pa-de-solminihac/bin/diffconflicts ~/bin/
