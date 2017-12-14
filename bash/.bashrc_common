@@ -160,8 +160,8 @@ if [ "$SBASH_ALREADY_INCLUDED" == "" ]; then
     alias find_latin1_files_php="find . -type f -iname '*.php' -exec sh -c \"file --mime-encoding {} | grep ': iso-8859-1$' | sed 's/: iso-8859-1$//g'\" \;"
     alias convert_latin1_files_to_utf8="vim \"+set nomore\" \"+bufdo set fileencoding=utf8 | w\" \"+q\" \$(find_latin1_files)"
     alias convert_latin1_files_to_utf8_php="vim \"+set nomore\" \"+bufdo set fileencoding=utf8 | w\" \"+q\" \$(find_latin1_files_php)"
-    function monip() { echo "Private"; /sbin/ifconfig | grep 'inet ' | grep -v '127.0.0.1' | awk '{print $2}' | sort | uniq; echo; echo "Public"; dig +short myip.opendns.com @208.67.220.220; } # AKA @resolver1.opendns.com
-    function mesip() { /sbin/ifconfig | grep 'inet ' | grep -v '127.0.0.1' | awk '{print $2}' | sed 's/.*://g' | sort | uniq | tr "\\n" " " | sed 's/ $//g' | sed 's/ /\\\|/g'; }
+    function monip() { echo "# Private"; ALLIPS="$([ -x /bin/ip ] && ip a || /sbin/ifconfig -a)"; echo "$ALLIPS" | grep 'inet ' | grep -v '127.0.0.1' | awk '{print $2}' | sed 's/\/[0-9]*//g' | sort | uniq; echo; echo "# Public"; dig +short myip.opendns.com @208.67.220.220; } # AKA @resolver1.opendns.com
+    function mesip() { ALLIPS="$([ -x /bin/ip ] && ip a || /sbin/ifconfig -a)"; echo "$ALLIPS" | grep 'inet ' | grep -v '127.0.0.1' | awk '{print $2}' | sed 's/.*://g' | sed 's/\/[0-9]*//g' | sort | uniq | tr "\\n" " " | sed 's/ $//g' | sed 's/ /\\\|/g'; }
     function follow_http() { wget --no-check-certificate -O /dev/null -S "$1" 2>&1 | grep 'HTTP/\|Location'; }
     function dirdiff() { local DIFFCMD="diff -rwq --exclude=.svn --exclude=.git "; local VIMDIFF="vimdiff"; LANG=C $DIFFCMD $1 $2 | sed "s/^Files /$VIMDIFF /g" | sed 's/ and / /g' | sed 's/ differ//g'; }
     function dirdiff_ionice() { local DIFFCMD="diff -rwq --exclude=.svn --exclude=.git "; local VIMDIFF="vimdiff"; LANG=C ionice -c3 $DIFFCMD $1 $2 | sed "s/^Files /$VIMDIFF /g" | sed 's/ and / /g' | sed 's/ differ//g'; }
@@ -267,9 +267,11 @@ EOF
         fi
         alias vim="vim -u /tmp/.vimrc_$SUFFIX"
         alias vimdiff="vimdiff -u /tmp/.vimrc_$SUFFIX"
+        export EDITOR=${EDITOR-vim -u /tmp/.vimrc_$SUFFIX} # set default editor to vim if not already set
         alias_gitdifftool="git -c diff.tool=vimdiff -c difftool.prompt=true -c difftool.vimdiff.cmd='vimdiff -u /tmp/.vimrc_$SUFFIX \$LOCAL \$REMOTE' difftool"
         alias gitmergetool="git -c mergetool.keepBackup=false -c merge.tool=diffconflicts -c mergetool.diffconflicts.cmd='/usr/bin/env bash /tmp/.diffconflicts_$SUFFIX \"vim -u /tmp/.vimrc_$SUFFIX\" \$BASE \$LOCAL \$REMOTE \$MERGED && echo \"<ctrl+c> to abort, <enter> to continue...\" && read' mergetool"
     else
+        export EDITOR=${EDITOR-vim} # set default editor to vim if not already set
         # use "read" to wait for user input between each diff so we can abort
         alias_gitdifftool="git -c diff.tool=vimdiff -c difftool.prompt=true -c difftool.vimdiff.cmd='vimdiff \$LOCAL \$REMOTE' difftool"
         alias gitmergetool="git -c mergetool.keepBackup=false -c merge.tool=diffconflicts -c mergetool.diffconflicts.cmd='/usr/bin/env bash ~/bin/diffconflicts vim \$BASE \$LOCAL \$REMOTE \$MERGED && echo \"<ctrl+c> to abort, <enter> to continue...\" && read' mergetool"
@@ -383,9 +385,6 @@ EOF
         done
         return 0;
     }
-
-    # set default editor to vim if not already set
-    export EDITOR=${EDITOR-vim}
 
     # remet chaque utilisateur dans son $HOME par défaut
     #cd $HOME
