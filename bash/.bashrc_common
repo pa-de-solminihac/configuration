@@ -71,11 +71,11 @@ if [ "$SBASH_ALREADY_INCLUDED" == "" ]; then
         if [ "$branch" == "" ]; then
             exit 0;
         fi
-        status_nb="$(LANG=C git status -suno | wc -l | sed 's/ *//g')"
-        status_long="$(LANG=C git status -uno)"
-        incoming="$(LANG=C git log --oneline ..origin/$branch 2>/dev/null | wc -l | sed 's/ *//g')"
-        unpushed="$(LANG=C git log --oneline origin/$branch..HEAD 2>/dev/null | wc -l | sed 's/ *//g')"
-        stashed="$(LANG=C git stash list | wc -l | sed 's/ *//g')"
+        status_nb="$(LANG=C LANGUAGE=C LC_ALL=C git status -suno | wc -l | sed 's/ *//g')"
+        status_long="$(LANG=C LANGUAGE=C LC_ALL=C git status -uno)"
+        incoming="$(LANG=C LANGUAGE=C LC_ALL=C git log --oneline ..origin/$branch 2>/dev/null | wc -l | sed 's/ *//g')"
+        unpushed="$(LANG=C LANGUAGE=C LC_ALL=C git log --oneline origin/$branch..HEAD 2>/dev/null | wc -l | sed 's/ *//g')"
+        stashed="$(LANG=C LANGUAGE=C LC_ALL=C git stash list | wc -l | sed 's/ *//g')"
         merging="$(echo "$status_long" | grep '^You have unmerged paths' | wc -l | sed 's/ *//g')"
         resolving="$(echo "$status_long" | grep '^All conflicts fixed but you are still merging\.' | wc -l | sed 's/ *//g')"
         rebasing="$(echo "$status_long" | grep '^You are currently rebasing' | wc -l | sed 's/ *//g')"
@@ -156,15 +156,17 @@ if [ "$SBASH_ALREADY_INCLUDED" == "" ]; then
     alias mysql="mysql --show-warnings "
     alias generate_password="openssl rand -base64 37 | cut -c1-16"
     alias generate_strong_password="head -n 999 /dev/urandom | grep -ao '[[:graph:]]' | tr -d '\n' | grep -o '^.\{32\}' | head -n 1"
-    alias find_latin1_files="find . -type f -exec sh -c \"file --mime-encoding {} | grep ': iso-8859-1$' | sed 's/: iso-8859-1$//g'\" \;"
+    alias find_latin1_files="find . -type f \( -iname '*.php' -or -iname '*.php3' -or -iname '*.php4' -or -iname '*.php5' -or -iname '*.html' -or -iname '*.shtml' -or -iname '*.htm' -or -iname '*.html' -or -iname '*.inc' -or -iname '*.ini' -or -iname '*.tpl' -or -iname '*.css' -or -iname '*.js' \) -exec sh -c \"file --mime-encoding {} | grep ': iso-8859-1$' | sed 's/: iso-8859-1$//g'\" \;"
     alias find_latin1_files_php="find . -type f -iname '*.php' -exec sh -c \"file --mime-encoding {} | grep ': iso-8859-1$' | sed 's/: iso-8859-1$//g'\" \;"
+    alias find_latin1_files_html="find . -type f -iname '*.html' -exec sh -c \"file --mime-encoding {} | grep ': iso-8859-1$' | sed 's/: iso-8859-1$//g'\" \;"
     alias convert_latin1_files_to_utf8="vim \"+set nomore\" \"+bufdo set fileencoding=utf8 | w\" \"+q\" \$(find_latin1_files)"
     alias convert_latin1_files_to_utf8_php="vim \"+set nomore\" \"+bufdo set fileencoding=utf8 | w\" \"+q\" \$(find_latin1_files_php)"
+    alias convert_latin1_files_to_utf8_html="vim \"+set nomore\" \"+bufdo set fileencoding=utf8 | w\" \"+q\" \$(find_latin1_files_html)"
     function monip() { echo "# Private"; ALLIPS="$([ -x /bin/ip ] && ip a || /sbin/ifconfig -a)"; echo "$ALLIPS" | grep 'inet ' | grep -v '127.0.0.1' | awk '{print $2}' | sed 's/\/[0-9]*//g' | sort | uniq; echo; echo "# Public"; dig +short myip.opendns.com @208.67.220.220; } # AKA @resolver1.opendns.com
     function mesip() { ALLIPS="$([ -x /bin/ip ] && ip a || /sbin/ifconfig -a)"; echo "$ALLIPS" | grep 'inet ' | grep -v '127.0.0.1' | awk '{print $2}' | sed 's/.*://g' | sed 's/\/[0-9]*//g' | sort | uniq | tr "\\n" " " | sed 's/ $//g' | sed 's/ /\\\|/g'; }
     function follow_http() { wget --no-check-certificate -O /dev/null -S "$1" 2>&1 | grep 'HTTP/\|Location'; }
-    function dirdiff() { local DIFFCMD="diff -rwq --exclude=.svn --exclude=.git "; local VIMDIFF="vimdiff"; LANG=C $DIFFCMD $1 $2 | sed "s/^Files /$VIMDIFF /g" | sed 's/ and / /g' | sed 's/ differ//g'; }
-    function dirdiff_ionice() { local DIFFCMD="diff -rwq --exclude=.svn --exclude=.git "; local VIMDIFF="vimdiff"; LANG=C ionice -c3 $DIFFCMD $1 $2 | sed "s/^Files /$VIMDIFF /g" | sed 's/ and / /g' | sed 's/ differ//g'; }
+    function dirdiff() { local DIFFCMD="diff -rwq --exclude=.svn --exclude=.git "; local VIMDIFF="vimdiff"; LANG=C LANGUAGE=C LC_ALL=C $DIFFCMD $1 $2 | sed "s/^Files /$VIMDIFF /g" | sed 's/ and / /g' | sed 's/ differ//g'; }
+    function dirdiff_ionice() { local DIFFCMD="diff -rwq --exclude=.svn --exclude=.git "; local VIMDIFF="vimdiff"; LANG=C LANGUAGE=C LC_ALL=C ionice -c3 $DIFFCMD $1 $2 | sed "s/^Files /$VIMDIFF /g" | sed 's/ and / /g' | sed 's/ differ//g'; }
     function cGET() { curl -s -S -L -k "$1"; }
     function cHEAD() { curl -s -S -L -I -k "$1"; }
     function detail() {
