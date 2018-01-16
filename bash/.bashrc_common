@@ -74,7 +74,9 @@ if [ "$SBASH_ALREADY_INCLUDED" == "" ]; then
         status_nb="$(LANG=C LANGUAGE=C LC_ALL=C git status -suno | wc -l | sed 's/ *//g')"
         status_long="$(LANG=C LANGUAGE=C LC_ALL=C git status -uno)"
         incoming="$(LANG=C LANGUAGE=C LC_ALL=C git log --oneline ..origin/$branch 2>/dev/null | wc -l | sed 's/ *//g')"
+        incomingupstream="$(LANG=C LANGUAGE=C LC_ALL=C git log --oneline ..upstream/$branch 2>/dev/null | wc -l | sed 's/ *//g')"
         unpushed="$(LANG=C LANGUAGE=C LC_ALL=C git log --oneline origin/$branch..HEAD 2>/dev/null | wc -l | sed 's/ *//g')"
+        unpushedupstream="$(LANG=C LANGUAGE=C LC_ALL=C git log --oneline upstream/$branch..HEAD 2>/dev/null | wc -l | sed 's/ *//g')"
         stashed="$(LANG=C LANGUAGE=C LC_ALL=C git stash list | wc -l | sed 's/ *//g')"
         merging="$(echo "$status_long" | grep '^You have unmerged paths' | wc -l | sed 's/ *//g')"
         resolving="$(echo "$status_long" | grep '^All conflicts fixed but you are still merging\.' | wc -l | sed 's/ *//g')"
@@ -82,7 +84,7 @@ if [ "$SBASH_ALREADY_INCLUDED" == "" ]; then
         bisecting="$(echo "$status_long" | grep '^You are currently bisecting' | wc -l | sed 's/ *//g')"
         reverting="$(echo "$status_long" | grep '^You are currently reverting' | wc -l | sed 's/ *//g')"
         echo -n "[$branch]"
-        if [ "$status_nb $incoming $unpushed $stashed $merging $rebasing $bisecting $reverting" != "0 0 0 0 0 0 0" ]; then
+        if [ "$status_nb $incoming $incomingupstream $unpushed $unpushedupstream $stashed $merging $rebasing $bisecting $reverting" != "0 0 0 0 0 0 0 0 0" ]; then
             local statusline=""
             if [ "$status_nb" != "0" ]; then
                 statusline="$statusline$status_nb files changed, "
@@ -90,7 +92,7 @@ if [ "$SBASH_ALREADY_INCLUDED" == "" ]; then
             if [ "$stashed" != "0" ]; then
                 nbstashconflicts="$(gitstashconflicts | wc -l | xargs)"
                 if [ "$nbstashconflicts" != "0" ]; then
-                    statusline="$statusline$stashed stashed ($nbstashconflicts conflicts), "
+                    statusline="$statusline$stashed stashed ($nbstashconflicts may conflict), "
                 else
                     statusline="$statusline$stashed stashed, "
                 fi
@@ -98,13 +100,24 @@ if [ "$SBASH_ALREADY_INCLUDED" == "" ]; then
             if [ "$incoming" != "0" ]; then
                 nbconflicts="$(gitincomingconflicts | wc -l | xargs)"
                 if [ "$nbconflicts" != "0" ]; then
-                    statusline="$statusline$incoming incoming \033${TERM_COLOR_LIGHT_RED}($nbconflicts conflicts)\033${TERM_COLOR_YELLOW}, "
+                    statusline="$statusline$incoming incoming \033${TERM_COLOR_LIGHT_RED}($nbconflicts may conflict)\033${TERM_COLOR_YELLOW}, "
                 else
                     statusline="$statusline$incoming incoming, "
                 fi
             fi
+            if [ "$incomingupstream" != "0" ]; then
+                nbconflictsupstream="$(gitincomingupstreamconflicts | wc -l | xargs)"
+                if [ "$nbconflictsupstream" != "0" ]; then
+                    statusline="$statusline$incomingupstream behind upstream \033${TERM_COLOR_LIGHT_RED}($nbconflictsupstream may conflict)\033${TERM_COLOR_YELLOW}, "
+                else
+                    statusline="$statusline$incomingupstream behind upstream, "
+                fi
+            fi
             if [ "$unpushed" != "0" ]; then
                 statusline="$statusline$unpushed unpushed, "
+            fi
+            if [ "$unpushedupstream" != "0" ]; then
+                statusline="$statusline$unpushedupstream ahead, "
             fi
             if [ "$merging" != "0" ]; then
                 statusline="$statusline MERGING, "
@@ -165,8 +178,11 @@ if [ "$SBASH_ALREADY_INCLUDED" == "" ]; then
     function monip() { echo "# Private"; ALLIPS="$([ -x /bin/ip ] && ip a || /sbin/ifconfig -a)"; echo "$ALLIPS" | grep 'inet ' | grep -v '127.0.0.1' | awk '{print $2}' | sed 's/\/[0-9]*//g' | sort | uniq; echo; echo "# Public"; dig +short myip.opendns.com @208.67.220.220; } # AKA @resolver1.opendns.com
     function mesip() { ALLIPS="$([ -x /bin/ip ] && ip a || /sbin/ifconfig -a)"; echo "$ALLIPS" | grep 'inet ' | grep -v '127.0.0.1' | awk '{print $2}' | sed 's/.*://g' | sed 's/\/[0-9]*//g' | sort | uniq | tr "\\n" " " | sed 's/ $//g' | sed 's/ /\\\|/g'; }
     function follow_http() { wget --no-check-certificate -O /dev/null -S "$1" 2>&1 | grep 'HTTP/\|Location'; }
-    function dirdiff() { local DIFFCMD="diff -rwq --exclude=.svn --exclude=.git "; local VIMDIFF="vimdiff"; LANG=C LANGUAGE=C LC_ALL=C $DIFFCMD $1 $2 | sed "s/^Files /$VIMDIFF /g" | sed 's/ and / /g' | sed 's/ differ//g'; }
-    function dirdiff_ionice() { local DIFFCMD="diff -rwq --exclude=.svn --exclude=.git "; local VIMDIFF="vimdiff"; LANG=C LANGUAGE=C LC_ALL=C ionice -c3 $DIFFCMD $1 $2 | sed "s/^Files /$VIMDIFF /g" | sed 's/ and / /g' | sed 's/ differ//g'; }
+    function dirdiff() {
+        local DIFFCMD="diff -rwq --exclude=.svn --exclude=.git ";
+        local VIMDIFF="vimdiff";
+        LANG=C LANGUAGE=C LC_ALL=C $DIFFCMD "$1" "$2" | sed "s/^Files /$VIMDIFF \"/g" | sed 's/ and /" "/g' | sed 's/ differ/"/g';
+    }
     function cGET() { curl -s -S -L -k "$1"; }
     function cHEAD() { curl -s -S -L -I -k "$1"; }
     function detail() {
@@ -253,11 +269,15 @@ EOF
     }
     GITLG_OPTIONS="--graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ad)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' "
     alias gitunpushed="GIT_CURRENT_BRANCH=\"\$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)\" && git log origin/\$GIT_CURRENT_BRANCH..HEAD $GITLG_OPTIONS"
+    alias gitunpushedupstream="GIT_CURRENT_BRANCH=\"\$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)\" && git log upstream/\$GIT_CURRENT_BRANCH..HEAD $GITLG_OPTIONS"
     alias gitincoming="GIT_CURRENT_BRANCH=\"\$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)\" && git log ..origin/\$GIT_CURRENT_BRANCH $GITLG_OPTIONS"
+    alias gitincomingupstream="GIT_CURRENT_BRANCH=\"\$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)\" && git log ..upstream/\$GIT_CURRENT_BRANCH $GITLG_OPTIONS"
     alias gitincomingfiles="gitincoming --name-status --diff-filter=MDACU | grep '^[[:space:]|\\/]*[MDARCU][[:space:]]*' | sed 's/^[[:space:]|\\/]*[MDARCU][[:space:]]*//g' | sort | uniq"
+    alias gitincomingupstreamfiles="gitincoming --name-status --diff-filter=MDACU | grep '^[[:space:]|\\/]*[MDARCU][[:space:]]*' | sed 's/^[[:space:]|\\/]*[MDARCU][[:space:]]*//g' | sort | uniq"
     alias gitstfiles="gitst | grep '^[[:space:]|\\/]*[MDARCU?]*[[:space:]]*' | sed 's/^[[:space:]|\\/]*[MDARCU?]*[[:space:]]*//g' | sort | uniq"
     alias gitstashfiles="git stash list --name-status | grep '^[[:space:]]*[MDARCU?]\?[[:space:]]' | sed 's/^[[:space:]*|\\/]*[MDARCU?]*[[:space:]]*//g' | sort | uniq"
     alias gitincomingconflicts="comm -12 <(gitstfiles) <(gitincomingfiles)"
+    alias gitincomingupstreamconflicts="comm -12 <(gitstfiles) <(gitincomingupstreamfiles)"
     alias gitstashconflicts="comm -12 <(gitstfiles) <(gitstashfiles)"
     alias gitlg="git log $GITLG_OPTIONS"
     alias gitlga="gitlg --all"
@@ -269,11 +289,11 @@ EOF
         fi
         alias vim="vim -u /tmp/.vimrc_$SUFFIX"
         alias vimdiff="vimdiff -u /tmp/.vimrc_$SUFFIX"
-        export EDITOR=${EDITOR-vim -u /tmp/.vimrc_$SUFFIX} # set default editor to vim if not already set
+        export EDITOR="vim -u /tmp/.vimrc_$SUFFIX" # set default editor to vim if not already set
         alias_gitdifftool="git -c diff.tool=vimdiff -c difftool.prompt=true -c difftool.vimdiff.cmd='vimdiff -u /tmp/.vimrc_$SUFFIX \$LOCAL \$REMOTE' difftool"
         alias gitmergetool="git -c mergetool.keepBackup=false -c merge.tool=diffconflicts -c mergetool.diffconflicts.cmd='/usr/bin/env bash /tmp/.diffconflicts_$SUFFIX \"vim -u /tmp/.vimrc_$SUFFIX\" \$BASE \$LOCAL \$REMOTE \$MERGED && echo \"<ctrl+c> to abort, <enter> to continue...\" && read' mergetool"
     else
-        export EDITOR=${EDITOR-vim} # set default editor to vim if not already set
+        export EDITOR="vim" # set default editor to vim if not already set
         # use "read" to wait for user input between each diff so we can abort
         alias_gitdifftool="git -c diff.tool=vimdiff -c difftool.prompt=true -c difftool.vimdiff.cmd='vimdiff \$LOCAL \$REMOTE' difftool"
         alias gitmergetool="git -c mergetool.keepBackup=false -c merge.tool=diffconflicts -c mergetool.diffconflicts.cmd='/usr/bin/env bash ~/bin/diffconflicts vim \$BASE \$LOCAL \$REMOTE \$MERGED && echo \"<ctrl+c> to abort, <enter> to continue...\" && read' mergetool"
