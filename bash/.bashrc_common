@@ -330,7 +330,14 @@ EOF
             sudo bash --rcfile "/tmp/.bashrc_$SBASH_SUFFIX"
         fi
     }
-    alias screen='SBASH_INSCREEN=" screen" \screen bash --rcfile "/tmp/.bashrc_$SBASH_SUFFIX"'
+    function screen() {
+        PATHTOSCREEN="$(which screen)"
+        if [ "$#" == "0" ]; then
+            SBASH_INSCREEN=" screen" "$PATHTOSCREEN" bash --rcfile "/tmp/.bashrc_$SBASH_SUFFIX";
+        else
+            "$PATHTOSCREEN" "$@";
+        fi
+    }
     # disable timeout when using gscreen
     if [ "$SBASH_INSCREEN" != "" ]; then
         export TMOUT=""
