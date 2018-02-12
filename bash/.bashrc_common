@@ -142,7 +142,7 @@ if [ "$SBASH_ALREADY_INCLUDED" == "" ]; then
             fi
         fi
     }
-    PS1="\n\`if [ \$? = 0 ]; then echo -e '\[\033${TERM_COLOR_LIGHT_GRAY}\]'; else echo -e '\[\033${TERM_COLOR_LIGHT_RED}\]'; fi\`\D{%d-%m:%H:%M }\[\033\`if [ '$SBASH_SUFFIX' = '' ]; then echo "\${TERM_COLOR_GREEN}"; else echo "\${TERM_COLOR_CYAN}"; fi\`\]\`if [ \$(whoami) = 'root' ]; then echo -e '\[\033${TERM_COLOR_LIGHT_RED}\]root'; else echo '\u'; fi\`@\h:\[\033\`if [ '$SBASH_SUFFIX' = '' ]; then echo "\${TERM_COLOR_LIGHT_GREEN}"; else echo "\${TERM_COLOR_LIGHT_CYAN}"; fi\`\]\w\`if [ '$SBASH_SUFFIX' = '' ]; then echo ''; else echo ' \[\033${TERM_COLOR_LIGHT_RED}\]SSH\[\033${TERM_COLOR_NORMAL}\]'; fi\`\[\033${TERM_COLOR_LIGHT_YELLOW}\]\$(SBASH_git_ps1)\[\033${TERM_COLOR_NORMAL}\]\n\[\033${TERM_COLOR_NORMAL}\]\`if [ \$(whoami) = 'root' ]; then echo '\[\033${TERM_COLOR_WHITE}\]#\[\033${TERM_COLOR_NORMAL}\]'; else echo '\[\033${TERM_COLOR_WHITE}\]$\[\033${TERM_COLOR_NORMAL}\]'; fi\` "
+    PS1="\n\`if [ \$? = 0 ]; then echo -e '\[\033${TERM_COLOR_LIGHT_GRAY}\]'; else echo -e '\[\033${TERM_COLOR_LIGHT_RED}\]'; fi\`\D{%d-%m:%H:%M }\[\033\`if [ '$SBASH_SUFFIX' = '' ]; then echo "\${TERM_COLOR_GREEN}"; else echo "\${TERM_COLOR_CYAN}"; fi\`\]\`if [ \$(whoami) = 'root' ]; then echo -e '\[\033${TERM_COLOR_LIGHT_RED}\]root'; else echo '\u'; fi\`@\h:\[\033\`if [ '$SBASH_SUFFIX' = '' ]; then echo "\${TERM_COLOR_LIGHT_GREEN}"; else echo "\${TERM_COLOR_LIGHT_CYAN}"; fi\`\]\w\`if [ '$SBASH_INSCREEN$SBASH_SUFFIX' = '' ]; then echo ''; else echo ' \[\033${TERM_COLOR_LIGHT_RED}\]SSH$SBASH_INSCREEN\[\033${TERM_COLOR_NORMAL}\]'; fi\`\[\033${TERM_COLOR_LIGHT_YELLOW}\]\$(SBASH_git_ps1)\[\033${TERM_COLOR_NORMAL}\]\n\[\033${TERM_COLOR_NORMAL}\]\`if [ \$(whoami) = 'root' ]; then echo '\[\033${TERM_COLOR_WHITE}\]#\[\033${TERM_COLOR_NORMAL}\]'; else echo '\[\033${TERM_COLOR_WHITE}\]$\[\033${TERM_COLOR_NORMAL}\]'; fi\` "
 
 
     ###########################
@@ -290,10 +290,12 @@ EOF
         alias vim="vim -u /tmp/.vimrc_$SUFFIX"
         alias vimdiff="vimdiff -u /tmp/.vimrc_$SUFFIX"
         export EDITOR="vim -u /tmp/.vimrc_$SUFFIX" # set default editor to vim if not already set
+        function man() { sought=$*; /usr/bin/man $sought | col -b | vim -u /tmp/.vimrc_$SUFFIX -R -c "set nonumber" -c "set syntax=man" -c "set nolist" -c "match" -; }
         alias_gitdifftool="git -c diff.tool=vimdiff -c difftool.prompt=true -c difftool.vimdiff.cmd='vimdiff -u /tmp/.vimrc_$SUFFIX \$LOCAL \$REMOTE' difftool"
         alias gitmergetool="git -c mergetool.keepBackup=false -c merge.tool=diffconflicts -c mergetool.diffconflicts.cmd='/usr/bin/env bash /tmp/.diffconflicts_$SUFFIX \"vim -u /tmp/.vimrc_$SUFFIX\" \$BASE \$LOCAL \$REMOTE \$MERGED && echo \"<ctrl+c> to abort, <enter> to continue...\" && read' mergetool"
     else
         export EDITOR="vim" # set default editor to vim if not already set
+        function man() { sought=$*; /usr/bin/man $sought | col -b | vim -R -c "set nonumber" -c "set syntax=man" -c "set nolist" -c "match" -; }
         # use "read" to wait for user input between each diff so we can abort
         alias_gitdifftool="git -c diff.tool=vimdiff -c difftool.prompt=true -c difftool.vimdiff.cmd='vimdiff \$LOCAL \$REMOTE' difftool"
         alias gitmergetool="git -c mergetool.keepBackup=false -c merge.tool=diffconflicts -c mergetool.diffconflicts.cmd='/usr/bin/env bash ~/bin/diffconflicts vim \$BASE \$LOCAL \$REMOTE \$MERGED && echo \"<ctrl+c> to abort, <enter> to continue...\" && read' mergetool"
@@ -328,9 +330,11 @@ EOF
             sudo bash --rcfile "/tmp/.bashrc_$SBASH_SUFFIX"
         fi
     }
-    function gscreen() {
-        screen bash --rcfile "/tmp/.bashrc_$SBASH_SUFFIX"
-    }
+    alias screen='SBASH_INSCREEN=" screen" \screen bash --rcfile "/tmp/.bashrc_$SBASH_SUFFIX"'
+    # disable timeout when using gscreen
+    if [ "$SBASH_INSCREEN" != "" ]; then
+        export TMOUT=""
+    fi;
     # usage: sbash <[user@]host> [port]
     function sbash() {
         case "$1" in
