@@ -185,6 +185,18 @@ if [ "$SBASH_ALREADY_INCLUDED" == "" ]; then
     }
     function cGET() { curl -s -S -L -k "$1"; }
     function cHEAD() { curl -s -S -L -I -k "$1"; }
+    function cTIME()  { sh -c "time curl -s -S -L -k "$1" -o /dev/null" 2>&1 | grep real; }
+    # filter domain from url
+    function ping()  {
+        PING="$(which ping)"
+        if [ "$#" == "1" ]; then
+            DOMAINE="$(echo "$1" | sed 's/https\{0,1\}:\/\///g' | sed 's/\/.*//g')";
+            echo $DOMAINE;
+            $PING "$DOMAINE";
+        else
+            $PING $@
+        fi
+    }
     function detail() {
         case "$1" in
             -h|--help)
@@ -327,13 +339,21 @@ EOF
             sudo chown "$GROOT_AS_USER" "/tmp/.diffconflicts_$SBASH_SUFFIX.$GROOT_AS_USER"
             sudo -u "$GROOT_AS_USER" "GROOT_AS_USER=$GROOT_AS_USER" bash --rcfile /dev/null -c "cd \"\$HOME\"; bash --rcfile \"/tmp/.bashrc_$SBASH_SUFFIX.$GROOT_AS_USER\" ; rm -f \"/tmp/.bashrc_$SBASH_SUFFIX.$GROOT_AS_USER\" \"/tmp/.vimrc_$SBASH_SUFFIX.$GROOT_AS_USER\" \"/tmp/.diffconflicts_$SBASH_SUFFIX.$GROOT_AS_USER\" "
         else
-            sudo bash --rcfile "/tmp/.bashrc_$SBASH_SUFFIX"
+            if [ "$SBASH_SUFFIX" != "" ]; then
+                sudo bash --rcfile "/tmp/.bashrc_$SBASH_SUFFIX"
+            else
+                sudo bash --rcfile "~/.bashrc_common"
+            fi
         fi
     }
     function screen() {
         PATHTOSCREEN="$(which screen)"
         if [ "$#" == "0" ]; then
-            SBASH_INSCREEN=" screen" "$PATHTOSCREEN" bash --rcfile "/tmp/.bashrc_$SBASH_SUFFIX";
+            if [ "$SBASH_SUFFIX" != "" ]; then
+                SBASH_INSCREEN=" screen" "$PATHTOSCREEN" bash --rcfile "/tmp/.bashrc_$SBASH_SUFFIX";
+            else
+                SBASH_INSCREEN=" screen" "$PATHTOSCREEN" bash --rcfile "~/.bashrc_common";
+            fi
         else
             "$PATHTOSCREEN" "$@";
         fi
