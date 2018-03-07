@@ -188,13 +188,11 @@ if [ "$SBASH_ALREADY_INCLUDED" == "" ]; then
     function cTIME()  { sh -c "time curl -s -S -L -k "$1" -o /dev/null" 2>&1 | grep real; }
     # filter domain from url
     function ping()  {
-        PING="$(which ping)"
         if [ "$#" == "1" ]; then
             DOMAINE="$(echo "$1" | sed 's/https\{0,1\}:\/\///g' | sed 's/\/.*//g')";
-            echo $DOMAINE;
-            $PING "$DOMAINE";
+            command ping "$DOMAINE";
         else
-            $PING $@
+            command ping "$@"
         fi
     }
     function detail() {
@@ -347,15 +345,14 @@ EOF
         fi
     }
     function screen() {
-        PATHTOSCREEN="$(which screen)"
         if [ "$#" == "0" ]; then
             if [ "$SBASH_SUFFIX" != "" ]; then
-                SBASH_INSCREEN=" screen" "$PATHTOSCREEN" bash --rcfile "/tmp/.bashrc_$SBASH_SUFFIX";
+                SBASH_INSCREEN=" screen" command screen bash --rcfile "/tmp/.bashrc_$SBASH_SUFFIX";
             else
-                SBASH_INSCREEN=" screen" "$PATHTOSCREEN" bash --rcfile "~/.bashrc_common";
+                SBASH_INSCREEN=" screen" command screen bash --rcfile "~/.bashrc_common";
             fi
         else
-            "$PATHTOSCREEN" "$@";
+            command screen "$@";
         fi
     }
     # disable timeout when using gscreen
