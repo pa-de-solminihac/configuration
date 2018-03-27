@@ -169,9 +169,9 @@ if [ "$SBASH_ALREADY_INCLUDED" == "" ]; then
     alias mysql="mysql --show-warnings "
     alias generate_password="openssl rand -base64 37 | cut -c1-16"
     alias generate_strong_password="head -n 999 /dev/urandom | grep -ao '[[:graph:]]' | tr -d '\n' | grep -o '^.\{32\}' | head -n 1"
-    alias find_latin1_files="find . -type f \( -iname '*.php' -or -iname '*.php3' -or -iname '*.php4' -or -iname '*.php5' -or -iname '*.html' -or -iname '*.shtml' -or -iname '*.htm' -or -iname '*.html' -or -iname '*.inc' -or -iname '*.ini' -or -iname '*.tpl' -or -iname '*.css' -or -iname '*.js' \) -exec sh -c \"file --mime-encoding {} | grep ': iso-8859-1$' | sed 's/: iso-8859-1$//g'\" \;"
-    alias find_latin1_files_php="find . -type f -iname '*.php' -exec sh -c \"file --mime-encoding {} | grep ': iso-8859-1$' | sed 's/: iso-8859-1$//g'\" \;"
-    alias find_latin1_files_html="find . -type f -iname '*.html' -exec sh -c \"file --mime-encoding {} | grep ': iso-8859-1$' | sed 's/: iso-8859-1$//g'\" \;"
+    alias find_latin1_files="find . -type f \( -iname '*.php' -or -iname '*.php3' -or -iname '*.php4' -or -iname '*.php5' -or -iname '*.html' -or -iname '*.shtml' -or -iname '*.htm' -or -iname '*.html' -or -iname '*.inc' -or -iname '*.ini' -or -iname '*.tpl' -or -iname '*.css' -or -iname '*.js' \) -exec bash -c \"file --mime-encoding {} | grep ': iso-8859-1$' | sed 's/: iso-8859-1$//g'\" \;"
+    alias find_latin1_files_php="find . -type f -iname '*.php' -exec bash -c \"file --mime-encoding {} | grep ': iso-8859-1$' | sed 's/: iso-8859-1$//g'\" \;"
+    alias find_latin1_files_html="find . -type f -iname '*.html' -exec bash -c \"file --mime-encoding {} | grep ': iso-8859-1$' | sed 's/: iso-8859-1$//g'\" \;"
     alias convert_latin1_files_to_utf8="vim \"+set nomore\" \"+bufdo set fileencoding=utf8 | w\" \"+q\" \$(find_latin1_files)"
     alias convert_latin1_files_to_utf8_php="vim \"+set nomore\" \"+bufdo set fileencoding=utf8 | w\" \"+q\" \$(find_latin1_files_php)"
     alias convert_latin1_files_to_utf8_html="vim \"+set nomore\" \"+bufdo set fileencoding=utf8 | w\" \"+q\" \$(find_latin1_files_html)"
@@ -185,7 +185,7 @@ if [ "$SBASH_ALREADY_INCLUDED" == "" ]; then
     }
     function cGET() { curl -s -S -L -k "$1"; }
     function cHEAD() { curl -s -S -L -I -k "$1"; }
-    function cTIME()  { sh -c "time curl -s -S -L -k "$1" -o /dev/null" 2>&1 | grep real; }
+    function cTIME()  { bash -c "time curl -s -S -L -k "$1" -o /dev/null" 2>&1 | grep real; }
     # filter domain from url
     function ping()  {
         if [ "$#" == "1" ]; then
@@ -409,7 +409,7 @@ EOF
         unset SBASH_SUFFIX
     }
     function checkzone() {
-        DOMAINE="$1" sh -c 'sudo /usr/sbin/named-checkzone "$DOMAINE" /etc/bind/db."$DOMAINE"'
+        DOMAINE="$1" bash -c 'sudo /usr/sbin/named-checkzone "$DOMAINE" /etc/bind/db."$DOMAINE"'
     }
     function unbanip() {
         function version_gt() { test "$(printf '%s\n' "$@" | sort -V | head -n 1)" != "$1"; }
