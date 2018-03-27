@@ -16,10 +16,10 @@ Pas de script d'install pour l'instant, mais ça reste relativement simple : il 
 git clone https://github.com/pa-de-solminihac/configuration.git ~/.config-pa-de-solminihac
 # install pour bash
 echo "source ~/.bashrc_common" >> ~/.bashrc
-ln -s ~/.config-pa-de-solminihac/bash/.bashrc_common ~/.bashrc_common
+ln -s ~/configuration/bash/.bashrc_common ~/.bashrc_common
 # install pour vim
 echo "source ~/.vimrc_common" >> ~/.vimrc
-ln -s ~/.config-pa-de-solminihac/vim/.vimrc_common ~/.vimrc_common
+ln -s ~/configuration/vim/.vimrc_common ~/.vimrc_common
 # install pour git
 mkdir -p bin
 ln -s ~/.config-pa-de-solminihac/bin/diffconflicts ~/bin/
