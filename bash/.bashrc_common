@@ -185,7 +185,7 @@ if [ "$SBASH_ALREADY_INCLUDED" == "" ]; then
     }
     function cGET() { curl -s -S -L -k "$1"; }
     function cHEAD() { curl -s -S -L -I -k "$1"; }
-    function cTIME()  { bash -c "time curl -s -S -L -k "$1" -o /dev/null" 2>&1 | grep real; }
+    function cTIME()  { bash -c "time curl -s -S -L -k '$1' -o /dev/null" 2>&1 | grep real; }
     # filter domain from url
     function ping()  {
         if [ "$#" == "1" ]; then
