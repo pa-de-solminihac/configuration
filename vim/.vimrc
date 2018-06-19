@@ -1,6 +1,9 @@
 " execute pathogen#infect()
 
 source ~/.vimrc_common
+if has('gui_running')
+    set mouse=a
+endif
 
 " let g:ycm_key_list_select_completion = ['<Down>']
 " let g:ycm_key_list_previous_completion = ['<Up>']
@@ -66,6 +69,8 @@ set showmode " display the current mode
 " set spell " spell checking on
 " set relativenumber " Relative line numbers on
 set norelativenumber " perf tip
+let g:ale_max_signs=0
+let g:ale_echo_delay=100
 set tabpagemax=15 " only show 15 tabs
 set guitablabel=%N/\ %t\ %M " affiche le numero de l'onglet, le fichier, et un "+" si le contenu de l'onglet a ete modifie
 "autocmd BufNew * if winnr('$') == 1 | tabmove999 | endif " open new tabs at the end
@@ -148,6 +153,11 @@ if version >= 500
     autocmd FileType php set omnifunc=phpcomplete#CompletePHP
     autocmd FileType php setlocal iskeyword-=$
     autocmd FileType php normal zR
+    " autocmd FileType php let g:pdv_cfg_Author='Pierre-Alexis de Solminihac <pa@solminihac.fr>'
+    " autocmd FileType php let g:pdv_cfg_Package=''
+    " autocmd FileType php let g:pdv_cfg_Version=''
+    " autocmd FileType php let g:pdv_cfg_Copyright=''
+    " autocmd FileType php let g:pdv_cfg_License=''
     autocmd FileType c set omnifunc=ccomplete#Complete
 endif
 " Récupérer la position du curseur entre 2 ouvertures de fichiers

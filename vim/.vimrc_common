@@ -13,7 +13,7 @@ set expandtab sw=4 ts=4
 set incsearch ignorecase smartcase hlsearch
 set listchars=tab:\ \ ,trail:\ ,extends:>,precedes:<,nbsp:.
 set list
-set mouse=a " pour que la souris fonctionnne aussi dans le terminal
+set mouse= " facilite le copier-coller pour les newcomers
 set mousemodel=popup
 set backspace=indent,eol,start
 set nocin noai nosi
@@ -32,6 +32,8 @@ set number
 
 " highlight non ascii, suspect characters
 au VimEnter,BufWinEnter * syn match ErrorMsg '[^\x00-\x7F€àÀâÂéÉèÈêÊëËîÎïÏôÔöÖûÛùÙüÜçÇœŒæÆ]'
+
+" minimal foldcolumn if vimdiff
 au FilterWritePre * if &diff | set fdc=1 | endif
 
 

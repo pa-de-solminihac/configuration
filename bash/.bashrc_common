@@ -166,7 +166,7 @@ if [ "$SBASH_ALREADY_INCLUDED" == "" ]; then
     alias ag="ag -Us --ignore='*.min.js' --ignore='*.min.css' --ignore='/cache/' --ignore='/tmp/' "
     alias grep="grep --color"
     alias curdate='date +%Y%m%d%H%M%S'
-    alias mysql="mysql --show-warnings "
+    alias mysql="mysql --show-warnings --auto-rehash "
     alias generate_password="openssl rand -base64 37 | cut -c1-16"
     alias generate_strong_password="head -n 999 /dev/urandom | grep -ao '[[:graph:]]' | tr -d '\n' | grep -o '^.\{32\}' | head -n 1"
     alias find_latin1_files="find . -type f \( -iname '*.php' -or -iname '*.php3' -or -iname '*.php4' -or -iname '*.php5' -or -iname '*.html' -or -iname '*.shtml' -or -iname '*.htm' -or -iname '*.html' -or -iname '*.inc' -or -iname '*.ini' -or -iname '*.tpl' -or -iname '*.css' -or -iname '*.js' \) -exec bash -c \"file --mime-encoding {} | grep ': iso-8859-1$' | sed 's/: iso-8859-1$//g'\" \;"
@@ -179,13 +179,27 @@ if [ "$SBASH_ALREADY_INCLUDED" == "" ]; then
     function mesip() { ALLIPS="$([ -x /bin/ip ] && ip a || /sbin/ifconfig -a)"; echo "$ALLIPS" | grep 'inet ' | grep -v '127.0.0.1' | awk '{print $2}' | sed 's/.*://g' | sed 's/\/[0-9]*//g' | sort | uniq | tr "\\n" " " | sed 's/ $//g' | sed 's/ /\\\|/g'; }
     function follow_http() { wget --no-check-certificate -O /dev/null -S "$1" 2>&1 | grep 'HTTP/\|Location'; }
     function dirdiff() {
-        local DIFFCMD="diff -rwq --exclude=.svn --exclude=.git ";
+        if [ "$1" == "" ] || [ "$2" == "" ] || [ "$1" == "-h" ] || [ "$1" == "--help" ]; then
+            echo
+            echo -e "\033${TERM_COLOR_LIGHT_RED}Usage: $FUNCNAME directory1 directory2 ["override diff command"]\033${TERM_COLOR_NORMAL}"
+            echo
+                cat <<EOF
+    List differences between directories DIRECTORY1 and DIRECTORY2
+    
+    Options: you can override the default diff command used by providing an alternative diff command enclosed with quotes
+    
+    Example: $FUNCNAME directory1 directory2 "nice diff -rwq --exclude=.git --exclude=*.jpg"
+EOF
+            return 1
+        fi
         local VIMDIFF="vimdiff";
+        local DIFFCMD="${3:- diff -rwq --exclude=.svn --exclude=.git }"
         LANG=C LANGUAGE=C LC_ALL=C $DIFFCMD "$1" "$2" | sed "s/^Files /$VIMDIFF \"/g" | sed 's/ and /" "/g' | sed 's/ differ/"/g';
     }
     function cGET() { curl -s -S -L -k "$1"; }
     function cHEAD() { curl -s -S -L -I -k "$1"; }
     function cTIME()  { bash -c "time curl -s -S -L -k '$1' -o /dev/null" 2>&1 | grep real; }
+    function cTIME2()  { bash -c "time curl -s -S -L -k --http2 '$1' -o /dev/null" 2>&1 | grep real; }
     # filter domain from url
     function ping()  {
         if [ "$#" == "1" ]; then
@@ -319,12 +333,17 @@ EOF
     }
     function gitdiffwith() {
         GIT_CURRENT_BRANCH="$(git rev-parse --symbolic-full-name --abbrev-ref HEAD)"
-        git log $1..$GIT_CURRENT_BRANCH \
-            --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ad)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)'
-        #git log $GIT_CURRENT_BRANCH..$1 \
-            #--graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ad)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)'
+        GIT_OTHER_BRANCH="$1"
+        shift # shift so that we can inject more parameters by using the $@ parameter
+        git log $GIT_OTHER_BRANCH..$GIT_CURRENT_BRANCH \
+            --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ad)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' $@
     }
-
+    function ssh_fingerprints {
+        local file="${1:-$HOME/.ssh/authorized_keys}"
+        while read l; do
+            [[ -n $l && ${l###} = $l ]] && ssh-keygen -l -f /dev/stdin <<<$l
+        done < "${file}"
+    }
     # sudo et SSH en transportant la configuration BASH et VIM
     function groot() {
         if [ "$1" != "" ]; then
@@ -403,6 +422,7 @@ EOF
         # connect only once for scp
         scp -P $PORT -Cqp /tmp/.{bashrc,vimrc,diffconflicts}_$SBASH_SUFFIX $1:/tmp/ || return 2;
         echo -e "\r.."
+        #SBASH_CMD="ionice -c 3 nice bash --rcfile /tmp/.bashrc_$SBASH_SUFFIX ; rm -f /tmp/.{bashrc,vimrc,diffconflicts}_$SBASH_SUFFIX "
         SBASH_CMD="bash --rcfile /tmp/.bashrc_$SBASH_SUFFIX ; rm -f /tmp/.{bashrc,vimrc,diffconflicts}_$SBASH_SUFFIX "
         ssh -p $PORT -C -t "$HOST" "$SBASH_CMD"
         rm -f /tmp/.{bashrc,vimrc,diffconflicts}_$SBASH_SUFFIX

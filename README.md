@@ -31,21 +31,21 @@ Ces fichiers définissent une configuration basique pour `bash`, `vim`, et `git`
 
 ## Bash
 
-Prompt amélioré avec :
-- mise en évidence des dépôts GIT
-- mise en évidence du fait d'être connecté en SSH
-- mise en évidence du fait d'être connecté en tant que `root`
+Prompt amélioré avec mise en évidence :
+- des dépôts GIT
+- du fait d'être connecté en SSH, dans un screen, en tant que `root`...
 
 Alias classiques :
 - `ll` : `ls -l`
 - `curdate` : affiche la date courante au format YYYYmmddHHMMSS
 - `generate_password` : génère un mot de passe
+- `detail` : un `tail -F` qui gère les couleurs
 
 Fonctions simples :
 - `monip` : affiche les IP LAN et WAN de la machine
 - `follow_http "<url>"` : met en évidence les redirections HTTP
 - `dirdiff <dossier1> <dossier2>` : diff entre deux dossiers
-- `cGET "<url>"` : raccourci afficher le contenu d'une URL avec `curl`
+- `cGET '<url>'` : raccourci afficher le contenu d'une URL avec `curl` (voir aussi `cHEAD` et `cTIME`)
 
 
 ## VIM
@@ -55,7 +55,7 @@ Le fichier `.vimrc_common` définit quelques réglages de base de vim, avec nota
 - recherche incrémentale
 - utilisation de la souris
 - une statusline améliorée avec mise en évidence de l'encodage
-- mise en évidence de caractères tels que les espaces insécables, tabulations, espaces en fin de lignes...
+- mise en évidence des caractères spéciaux, potentiellement indésirables, notamment les espaces insécables, tabulations, espaces en fin de lignes...
 - tabulations expandtab
 
 
