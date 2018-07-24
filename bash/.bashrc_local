@@ -1,10 +1,11 @@
 # PATH avec commandes perso
 export PATH="~/bin:/usr/local/sbin:/usr/local/bin:$PATH"
+export PATH="~/flutter/bin:$PATH"
 
 # LANGUE et encodage du terminal
+#export LC_ALL="en_US.UTF-8"
 export LANG="en_US.UTF-8"
 export LANGUAGE="$LANG"
-export LC_ALL="$LANG"
 
 ####################
 # ALIAS et fonctions
@@ -92,3 +93,7 @@ export HISTFILE="$HOME/.bash_history_$USER"
 export HISTFILESIZE=-1
 export HISTSIZE=-1
 export HISTTIMEFORMAT="%Y/%m/%d @ %T "
+
+# bash vi mode with vim mode displayed in prompt
+#set -o vi
+#bind 'set show-mode-in-prompt on'
