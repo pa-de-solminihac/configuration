@@ -8,6 +8,10 @@ endif
 
 set nocompatible
 
+" store swapfiles in a specific directory
+call system("mkdir -p $HOME/.vim/swap && chmod 700 $HOME/.vim/swap")
+set dir=$HOME/.vim/swap//
+
 set enc=utf-8
 set expandtab sw=4 ts=4
 set incsearch ignorecase smartcase hlsearch
@@ -87,6 +91,23 @@ function! OpenLastBufferInNewTab()
       endif
     endfor
 endfunction
+" fix common bad encoded characters
+
+func! FixCommonEncoding(mode) range
+    :set ff=unix
+    if (a:mode == 'visual')
+        :exe "'<,'>/è/è/g"
+        :exe "'<,'>/é/é/g"
+        :exe "'<,'>/ê/ê/g"
+    else
+        :exe "%s/è/è/g"
+        :exe "%s/é/é/g"
+        :exe "%s/ê/ê/g"
+    endif
+endfunc
+"noremap <c-b> :call PHPAutoIndent('normal')<CR> " TODO: find key binding
+"vnoremap <c-b> :call PHPAutoIndent('visual')<CR> " TODO: find key binding
+
 " format JSON code
 command! -range -nargs=0 -bar IndentJSON <line1>,<line2>!python -m json.tool
 " format HTML code
