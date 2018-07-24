@@ -160,8 +160,18 @@ if [ "$SBASH_ALREADY_INCLUDED" == "" ]; then
     else
         alias ll="ls -alhG "
     fi
+    NICECMD="nice"
+    if [ "$(which ionice 2>/dev/null)" != "" ]; then
+        NICECMD="ionice -c 3 $NICECMD"
+    fi
+    NACKIGNORES=" --ignore-file=ext:svg --ignore-file=ext:jpg --ignore-file=ext:png --ignore-file=ext:gif --ignore-file=ext:pdf --ignore-file=ext:avi --ignore-file=ext:mp4 --ignore-file=match:/[.-]min[.]js --ignore-file=match:[.-]min[.]css --ignore-dir=.git --ignore-dir=.svn --ignore-dir=cache --ignore-dir=tmp "
     if [ "$(which ack-grep 2>/dev/null)" != "" ]; then
         alias ack="ack-grep"
+        alias nack="$NICECMD ack-grep $NACKIGNORES --ignore-file=ext:sql "
+        alias nacksql="$NICECMD ack-grep $NACKIGNORES "
+    else
+        alias nack="$NICECMD ack $NACKIGNORES --ignore-file=ext:sql "
+        alias nacksql="$NICECMD ack $NACKIGNORES "
     fi
     alias ag="ag -Us --ignore='*.min.js' --ignore='*.min.css' --ignore='/cache/' --ignore='/tmp/' "
     alias grep="grep --color"
@@ -198,8 +208,8 @@ EOF
     }
     function cGET() { curl -s -S -L -k "$1"; }
     function cHEAD() { curl -s -S -L -I -k "$1"; }
-    function cTIME()  { bash -c "time curl -s -S -L -k '$1' -o /dev/null" 2>&1 | grep real; }
-    function cTIME2()  { bash -c "time curl -s -S -L -k --http2 '$1' -o /dev/null" 2>&1 | grep real; }
+    function cTIME()  { bash -c "time curl -s -S -k '$1' -o /dev/null" 2>&1 | grep real; }
+    function cTIME2()  { bash -c "time curl -s -S -k --http2 '$1' -o /dev/null" 2>&1 | grep real; }
     # filter domain from url
     function ping()  {
         if [ "$#" == "1" ]; then
