@@ -175,6 +175,9 @@ if [ "$SBASH_ALREADY_INCLUDED" == "" ]; then
     fi
     alias ag="ag -Us --ignore='*.min.js' --ignore='*.min.css' --ignore='/cache/' --ignore='/tmp/' "
     alias grep="grep --color"
+    if [ "$(which wp-cli 2>/dev/null)" != "" ]; then
+        alias wp="wp-cli"
+    fi
     alias curdate='date +%Y%m%d%H%M%S'
     alias mysql="mysql --show-warnings --auto-rehash "
     alias generate_password="openssl rand -base64 37 | cut -c1-16"
