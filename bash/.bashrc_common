@@ -442,7 +442,7 @@ EOF
         unset SBASH_SUFFIX
     }
     function checkzone() {
-        DOMAINE="$1" bash -c 'sudo /usr/sbin/named-checkzone "$DOMAINE" /etc/bind/db."$DOMAINE"'
+        DOMAINE="$(echo "$1" | sed 's/.*db\.//g')" bash -c 'sudo /usr/sbin/named-checkzone "$DOMAINE" /etc/bind/db."$DOMAINE" | grep -v "found SPF/TXT record but no SPF/SPF record found"'
     }
     function unbanip() {
         function version_gt() { test "$(printf '%s\n' "$@" | sort -V | head -n 1)" != "$1"; }
