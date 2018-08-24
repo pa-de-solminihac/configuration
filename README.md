@@ -13,11 +13,8 @@ Le **minimum vital**, sur place ou à emporter.
 Pas de script d'install pour l'instant, mais ça reste relativement simple : il suffit de copier-coller les lignes suivantes dans un terminal :
 
 ```bash
-cd ~ && [ ! -d ".config" ] && mkdir .config && chmod 700 .config
-git clone https://github.com/pa-de-solminihac/configuration.git ~/.config/config-pa-de-solminihac
-echo "source ~/.bashrc_common" >> ~/.bashrc && ln -s ~/.config/config-pa-de-solminihac/bash/.bashrc_common ~/.bashrc_common
-echo "source ~/.vimrc_common" >> ~/.vimrc && ln -s ~/.config/config-pa-de-solminihac/vim/.vimrc_common ~/.vimrc_common
-mkdir -p bin && ln -s ~/.config/config-pa-de-solminihac/bin/diffconflicts ~/bin/
+# install to ~/.config/config-pa-de-solminihac directory
+./install.sh
 ```
 
 C'est tout. Fermez votre terminal et ouvrez-en un nouveau, vous devriez voir un nouveau prompt... qui signifie que tout s'est bien passé.

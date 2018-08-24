@@ -164,6 +164,7 @@ if [ "$SBASH_ALREADY_INCLUDED" == "" ]; then
     if [ "$(which ionice 2>/dev/null)" != "" ]; then
         NICECMD="ionice -c 3 $NICECMD"
     fi
+    alias nn="$NICECMD "
     NACKIGNORES=" --ignore-file=ext:svg --ignore-file=ext:jpg --ignore-file=ext:png --ignore-file=ext:gif --ignore-file=ext:pdf --ignore-file=ext:avi --ignore-file=ext:mp4 --ignore-file=match:/[.-]min[.]js --ignore-file=match:[.-]min[.]css --ignore-dir=.git --ignore-dir=.svn --ignore-dir=cache --ignore-dir=tmp "
     if [ "$(which ack-grep 2>/dev/null)" != "" ]; then
         alias ack="ack-grep"
@@ -191,6 +192,15 @@ if [ "$SBASH_ALREADY_INCLUDED" == "" ]; then
     function monip() { echo "# Private"; ALLIPS="$([ -x /bin/ip ] && ip a || /sbin/ifconfig -a)"; echo "$ALLIPS" | grep 'inet ' | grep -v '127.0.0.1' | awk '{print $2}' | sed 's/\/[0-9]*//g' | sort | uniq; echo; echo "# Public"; dig +short myip.opendns.com @208.67.220.220; } # AKA @resolver1.opendns.com
     function mesip() { ALLIPS="$([ -x /bin/ip ] && ip a || /sbin/ifconfig -a)"; echo "$ALLIPS" | grep 'inet ' | grep -v '127.0.0.1' | awk '{print $2}' | sed 's/.*://g' | sed 's/\/[0-9]*//g' | sort | uniq | tr "\\n" " " | sed 's/ $//g' | sed 's/ /\\\|/g'; }
     function follow_http() { wget --no-check-certificate -O /dev/null -S "$1" 2>&1 | grep 'HTTP/\|Location'; }
+    function highlight () {
+        local GREP="grep"
+        local GGREP="$(which ggrep 2>/dev/null)"
+        if [ -x "$GGREP" ];
+        then
+            GREP="$GGREP"
+        fi
+        $GREP --color "\($1\)\|$" $2
+    }
     function dirdiff() {
         if [ "$1" == "" ] || [ "$2" == "" ] || [ "$1" == "-h" ] || [ "$1" == "--help" ]; then
             echo
