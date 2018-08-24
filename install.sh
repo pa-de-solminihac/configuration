@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-[ ! -d "~/.config/config-pa-de-solminihac" ] && echo "Already installed, update with:" && echo "cd ~/.config/config-pa-de-solminihac && ./update.sh" && exit
+[ -d "~/.config/config-pa-de-solminihac" ] && echo "Already installed, update with:" && echo "cd ~/.config/config-pa-de-solminihac && ./update.sh" && exit
 cd ~ && [ ! -d ".config" ] && mkdir .config && chmod 700 .config
 git clone https://github.com/pa-de-solminihac/configuration.git ~/.config/config-pa-de-solminihac
 echo "source ~/.bashrc_common" >> ~/.bashrc && ln -s ~/.config/config-pa-de-solminihac/bash/.bashrc_common ~/.bashrc_common
